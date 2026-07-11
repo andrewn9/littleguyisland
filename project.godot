@@ -18,6 +18,10 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 
 MapData="*uid://nuxupllisxqo"
 
+[dotnet]
+
+project/assembly_name="little guy island"
+
 [rendering]
 
 rendering_device/driver.windows="d3d12"
