@@ -3,7 +3,7 @@ extends Camera3D
 @export var sensitivity := 0.005
 @export var zoom_step := 2.0
 
-@export var perspective_distance := 25.0
+@export var perspective_distance := 50.0
 @export var orthographic_size := 25.0
 
 var _yaw := 0.0
@@ -31,7 +31,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					perspective_distance = clampf(perspective_distance + zoom_step, 8.0, 60.0)
 				_update_camera()
 
-	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
+	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_RIGHT:
 		_yaw -= event.relative.x * sensitivity
 		_elev = clampf(_elev + event.relative.y * sensitivity, 0.1, 1.4)
 		_update_camera()
