@@ -6,8 +6,9 @@
 [ext_resource type="Shader" uid="uid://yphip34bcg22" path="res://shaders/terrain.gdshader" id="4_fc0e3"]
 [ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://shaders/outline.gdshader" id="5_7jktm"]
 [ext_resource type="Texture2D" uid="uid://veiok4j32p0k" path="res://pencil.jpg" id="6_eow3j"]
-[ext_resource type="Script" uid="uid://gvyegn21kxqq" path="res://entity.gd" id="7_j5wjh"]
+[ext_resource type="Script" uid="uid://gvyegn21kxqq" path="res://scripts/entity.gd" id="7_j5wjh"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="8_vef74"]
+
 
 [sub_resource type="Environment" id="env"]
 background_mode = 1
