@@ -9,7 +9,7 @@ extends Camera3D
 var _yaw := 0.0
 var _elev := 0.5
 
-const ORTHO_DISTANCE := 100.0
+const ORTHO_DISTANCE := 400.0
 
 func _ready() -> void:
 	_update_camera()
@@ -21,14 +21,14 @@ func _unhandled_input(event: InputEvent) -> void:
 				if projection == PROJECTION_ORTHOGONAL:
 					orthographic_size = max(1.0, orthographic_size - zoom_step)
 				else:
-					perspective_distance = clampf(perspective_distance - zoom_step, 8.0, 60.0)
+					perspective_distance = max(perspective_distance - zoom_step, 8.0)
 				_update_camera()
 
 			MOUSE_BUTTON_WHEEL_DOWN:
 				if projection == PROJECTION_ORTHOGONAL:
 					orthographic_size += zoom_step
 				else:
-					perspective_distance = clampf(perspective_distance + zoom_step, 8.0, 60.0)
+					perspective_distance = max(perspective_distance + zoom_step, 8.0)
 				_update_camera()
 
 	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_RIGHT:

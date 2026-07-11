@@ -108,11 +108,12 @@ mouse_filter = 1
 
 [node name="Camera" type="Camera3D" parent="." unique_id=1001981088]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+transform = Transform3D(1, 0, 0, 0, 0.9453799, 0.32597074, 0, -0.32597074, 0.9453799, 0, 79.67054, 205.26761)
 projection = 1
-size = 50.0
+size = 100.0
 script = ExtResource("1_80nbo")
-perspective_distance = 2500.0
+zoom_step = 8.0
+perspective_distance = 500.0
 orthographic_size = 250.0
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera" unique_id=921282201]
