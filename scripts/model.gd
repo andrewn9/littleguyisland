@@ -44,7 +44,6 @@ func draw_at(tex_pos: Vector2, to: DrawableTexture2D):
 	)
 
 func stroke(from: Vector2, to: Vector2, tex):
-	print((from - to).length())
 	for i in range(0, (from - to).length(), 2):
 		draw_at(from + (to - from).limit_length(i), tex)
 		prev_stroke = from + (to - from).limit_length(i)

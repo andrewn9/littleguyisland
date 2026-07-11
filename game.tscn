@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://veiok4j32p0k" path="res://pencil.jpg" id="6_eow3j"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
 [ext_resource type="PackedScene" uid="uid://b3x881tg3w600" path="res://sprites/guy.res" id="7_hve3p"]
-[ext_resource type="PackedScene" uid="uid://ukt47opfhd72" path="res://sprites/tree.res" id="7_mfdv2"]
+[ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
 
 [sub_resource type="Environment" id="env"]
 background_mode = 1
@@ -88,9 +88,7 @@ offset_right = 369.0
 offset_bottom = 525.0
 
 [node name="Entities" type="Node" parent="." unique_id=2001399486]
-
-[node name="Sprite3D2" parent="Entities" unique_id=455084091 instance=ExtResource("7_mfdv2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54.901188, 21.914246, 0)
+script = ExtResource("7_iotsf")
 
 [node name="Sprite3D" parent="Entities" unique_id=1712821898 instance=ExtResource("7_hve3p")]
 
