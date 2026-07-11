@@ -1,6 +1,8 @@
 class_name Entity extends Sprite3D
 
-var pos: Vector2
+var pos = Vector2.ZERO
+var target_pos = Vector2.ZERO
+var speed = 20
 
 @onready var geometry = %Geometry
 
@@ -20,10 +22,10 @@ func _input(event):
 			raycast.force_raycast_update()
 
 			if raycast.get_collider():
-				print(raycast.get_collision_point())
-				position = raycast.get_collision_point()
+				target_pos = Vector2(raycast.get_collision_point().x + MapData.WORLD_SIZE / 2, raycast.get_collision_point().z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
 
 
 func _process(delta):
-	pass
+	pos += (target_pos - pos).limit_length(speed * delta)
 
+	update_height()
