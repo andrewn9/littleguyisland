@@ -10,8 +10,7 @@ var speed = 20
 @onready var camera: Camera3D = %Camera
 
 func _ready() -> void:
-	pos = Vector2(position.x + MapData.WORLD_SIZE / 2, position.y + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
-	
+	pos = Vector2(position.x + MapData.WORLD_SIZE / 2, position.z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
 	target_pos = pos
 	
 func update_height():
