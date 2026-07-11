@@ -22,47 +22,67 @@ func pick_random_scene(path: StringName):
 	var scene = load(paths.pick_random())
 	return scene
 
-func trees():
-	var cluster := NoiseTexture2D.new()
-	cluster.width = MapData.RESOLUTION
-	cluster.height = MapData.RESOLUTION
+var mountain_cluster := NoiseTexture2D.new()
+var mountain_noise: PackedFloat32Array = []
 
-	var fast_noise = FastNoiseLite.new()
-	fast_noise.seed = hash("the trees of all")
+var tree_cluster := NoiseTexture2D.new()
+var tree_noise: PackedFloat32Array = []
 
-	cluster.noise = fast_noise
+func _ready():
+	mountain_cluster.width = MapData.RESOLUTION
+	mountain_cluster.height = MapData.RESOLUTION
+
+	var mountain_fast_noise = FastNoiseLite.new()
+	mountain_fast_noise.seed = hash("country road")
+
+	mountain_cluster.noise = mountain_fast_noise
 	
-	if cluster.get_image() == null:
-		await cluster.changed
+	if mountain_cluster.get_image() == null:
+		await mountain_cluster.changed
+
+	rng.seed = hash("mountains")
+	rng.state = 0
+
+	for i in range(MapData.RESOLUTION * MapData.RESOLUTION):
+		mountain_noise.append(rng.randf())
+	
+	tree_cluster.width = MapData.RESOLUTION
+	tree_cluster.height = MapData.RESOLUTION
+
+	var tree_fast_noise = FastNoiseLite.new()
+	tree_fast_noise.seed = hash("the trees of all")
+
+	tree_cluster.noise = tree_fast_noise
+	
+	if tree_cluster.get_image() == null:
+		await tree_cluster.changed
 
 	rng.seed = hash("tree")
 	rng.state = 0
 
-	for x in range(MapData.RESOLUTION - 1):
-		for y in range(MapData.RESOLUTION - 1):
+	for i in range(MapData.RESOLUTION * MapData.RESOLUTION):
+		tree_noise.append(rng.randf())
+	
+	trees()
+	mountains()
+
+func trees():
+
+
+	for x in range(MapData.RESOLUTION):
+		for y in range(MapData.RESOLUTION):
 			var height = MapData.height.get_image().get_pixel(x, y).r
 
 			if height < 0.1:
 				continue
 
 			var color = MapData.val.get_image().get_pixel(x, y)
-			var noise = cluster.get_image().get_pixel(x, y).r
+			var cluster_val = tree_cluster.get_image().get_pixel(x, y).r
+			var white_val = tree_noise[x * MapData.RESOLUTION + y]
 
 			var diff = color - Color(0.1294, 0.698, 0.2902)
 
-			if Vector3(diff.r, diff.g, diff.b).length() < 0.1 && (noise * rng.randf() > 0.6 || rng.randf() > 0.997):
-				var ent = pick_random_scene("res://entities/trees/").instantiate() as Entity
-
-				ent.pos = Vector2(x, y)
-				ent.scale = Vector3.ONE * rng.randf_range(0.3, 0.8)
-
-				add_child(ent)
-				continue
-			
-			diff = color - Color(0.4941, 0.502, 0.4941)
-
-			if Vector3(diff.r, diff.g, diff.b).length() < 0.1 && (noise * rng.randf() > 0.8 || rng.randf() > 0.997):
-				print(color)
+			if white_val > 0.998 || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.16 && (white_val > 0.95 && white_val * cluster_val > 0.5):
 				var ent = pick_random_scene("res://entities/trees/").instantiate() as Entity
 
 				ent.pos = Vector2(x, y)
@@ -72,45 +92,28 @@ func trees():
 				continue
 
 func mountains():
-	var cluster := NoiseTexture2D.new()
-	cluster.width = MapData.RESOLUTION
-	cluster.height = MapData.RESOLUTION
+	for x in range(MapData.RESOLUTION):
+		for y in range(MapData.RESOLUTION):
+			var cluster_val = mountain_cluster.get_image().get_pixel(x, y).r
+			var white_val = mountain_noise[x * MapData.RESOLUTION + y]
 
-	var fast_noise = FastNoiseLite.new()
-	fast_noise.seed = hash("mountains")
+			if white_val * cluster_val > 0.3 && white_val > 0.998:
+				var diff = MapData.val.get_image().get_pixel(x, y) - Color(0.4941, 0.502, 0.4941)
+				if Vector3(diff.r, diff.g, diff.b).length_squared() > 0.16:
+					continue
 
-	cluster.noise = fast_noise
-	
-	if cluster.get_image() == null:
-		await cluster.changed
-
-	var ui = TextureRect.new()
-	ui.texture = cluster
-	%Debug.add_child(ui)
-
-	rng.seed = hash("mountataat")
-	rng.state = 0
-
-	for x in range(MapData.RESOLUTION - 1):
-		for y in range(MapData.RESOLUTION - 1):
-			var color = MapData.val.get_image().get_pixel(x, y)
-			var noise = cluster.get_image().get_pixel(x, y).r
-
-			var diff = color - Color(0.1294, 0.698, 0.2902)
-			
-			diff = color - Color(0.4941, 0.502, 0.4941)
-
-			if Vector3(diff.r, diff.g, diff.b).length() < 0.1 && (noise * rng.randf() > 0.8 || rng.randf() > 0.997):
 				var ent = pick_random_scene("res://entities/mountains/").instantiate() as Entity
 
 				ent.pos = Vector2(x, y)
-				ent.scale = Vector3.ONE * rng.randf_range(0.8, 1.5)
+				ent.scale = Vector3.ONE * rng.randf_range(0.8, 1.3)
 
-				ent.scale *= 1 - Vector3(diff.r, diff.g, diff.b).length() / 0.1
+				ent.scale *= 1 - Vector3(diff.r, diff.g, diff.b).length() / 0.4
 
 				add_child(ent)
 				continue
 
-func _ready():
-	trees()
-	mountains()
+
+
+
+		
+
