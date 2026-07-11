@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 [autoload]
 
 MapData="*uid://nuxupllisxqo"
+Hud="*uid://d3a07uu08qw8"
 
 [dotnet]
 
