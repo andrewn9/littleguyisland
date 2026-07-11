@@ -5,11 +5,11 @@
 [ext_resource type="Script" uid="uid://du7arglt47vj" path="res://scripts/model.gd" id="3_feb5d"]
 [ext_resource type="Shader" uid="uid://yphip34bcg22" path="res://shaders/terrain.gdshader" id="4_fc0e3"]
 [ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://shaders/outline.gdshader" id="5_7jktm"]
-[ext_resource type="Texture2D" uid="uid://bgpnqos621w3v" path="res://testing/sample_values.png" id="5_eow3j"]
+[ext_resource type="Texture2D" uid="uid://bn6ubm31jlyix" path="res://testing/sample_value.png" id="5_eow3j"]
+[ext_resource type="Texture2D" uid="uid://binmu0wpak5yr" path="res://testing/sample_height.png" id="5_hve3p"]
 [ext_resource type="Texture2D" uid="uid://veiok4j32p0k" path="res://pencil.jpg" id="6_eow3j"]
 [ext_resource type="Script" uid="uid://gvyegn21kxqq" path="res://scripts/entity.gd" id="7_j5wjh"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="8_vef74"]
-
 
 [sub_resource type="Environment" id="env"]
 background_mode = 1
@@ -21,7 +21,7 @@ data = PackedVector3Array(10, 0, 10, 9.0476, 0, 10, 10, 0, 9.0476, 9.0476, 0, 10
 
 [sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
 size = Vector2(250, 250)
-subdivide_width = 20
+subdivide_width = 49
 subdivide_depth = 20
 orientation = 1
 
@@ -31,8 +31,8 @@ shading_mode = 0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eow3j"]
 render_priority = 0
 shader = ExtResource("4_fc0e3")
-shader_parameter/heightmap = ExtResource("5_eow3j")
-shader_parameter/valuemap = ExtResource("6_eow3j")
+shader_parameter/heightmap = ExtResource("5_hve3p")
+shader_parameter/valuemap = ExtResource("5_eow3j")
 shader_parameter/height_scale = 42.385
 shader_parameter/uv_scale = Vector2(1, 1)
 shader_parameter/texel_size = 0.025
@@ -77,6 +77,7 @@ orthographic_size = 300.0
 script = ExtResource("3_feb5d")
 
 [node name="InteractionLayer" type="StaticBody3D" parent="Island/Model" unique_id=1129089784]
+visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Island/Model/InteractionLayer" unique_id=911066580]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -9, 0)

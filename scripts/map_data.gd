@@ -8,7 +8,8 @@ var height : DrawableTexture2D
 
 var layers : Dictionary = {}
 
-const temp_values : Texture2D = preload("res://testing/sample_values.png")
+const temp_value : Texture2D = preload("res://testing/sample_value.png")
+const temp_height : Texture2D = preload("res://testing/sample_height.png")
 
 func _ready() -> void:
 	val = _make_layer(Color.WHITE)
@@ -17,7 +18,11 @@ func _ready() -> void:
 	
 	height.blit_rect(
 		Rect2i(0, 0, RESOLUTION, RESOLUTION),
-		temp_values
+		temp_height
+	)
+	val.blit_rect(
+		Rect2i(0, 0, RESOLUTION, RESOLUTION),
+		temp_value
 	)
 
 func _make_layer(fill: Color) -> DrawableTexture2D:
