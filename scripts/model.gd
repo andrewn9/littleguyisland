@@ -27,26 +27,44 @@ func _ready() -> void:
 
 var drawing := false
 
-func get_mouse_to_map():
-	raycast.position = camera.to_local(camera.project_ray_origin(mouse_position))
+func project_screen_pos(pos: Vector2):
+	raycast.position = camera.to_local(camera.project_ray_origin(pos))
 	raycast.target_position = Vector3(0, 0, -99999)
 	raycast.force_raycast_update()
 	if raycast.get_collider():
 		var target_pos = Vector2(raycast.get_collision_point().x + MapData.WORLD_SIZE / 2, raycast.get_collision_point().z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
 		return target_pos
-	return Vector2i(-1, -1)
+	return null
 
-func draw_at(tex_pos: Vector2i, to: DrawableTexture2D):
+func draw_at(tex_pos: Vector2, to: DrawableTexture2D):
 	var brush_size = 8
 	to.blit_rect(
-		Rect2i(tex_pos.x - brush_size/2, tex_pos.y - brush_size/2, brush_size, brush_size),
+		Rect2i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5), brush_size, brush_size),
 		blot, Color.GRAY
 	)
 
+func stroke(from: Vector2, to: Vector2, tex):
+	print((from - to).length())
+	for i in range(0, (from - to).length(), 2):
+		draw_at(from + (to - from).limit_length(i), tex)
+		prev_stroke = from + (to - from).limit_length(i)
+
+var prev_stroke
+
 func _input(event):
-	if event is InputEventMouseButton or event is InputEventMouseMotion:
-		mouse_position = event.position
-		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			draw_at(get_mouse_to_map(), MapData.val)
+	if event is InputEventMouseButton:
+		if event.button_mask & MOUSE_BUTTON_MASK_LEFT and event.pressed:
+			prev_stroke = project_screen_pos(event.position)
+			if prev_stroke:
+				draw_at(prev_stroke, MapData.val)
+	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
+		if not prev_stroke:
+			prev_stroke = project_screen_pos(event.position)
+			if prev_stroke:
+				draw_at(prev_stroke, MapData.val)
+				return
+
+		if prev_stroke && project_screen_pos(event.position):
+			stroke(prev_stroke, project_screen_pos(event.position), MapData.val)
 			
 	
