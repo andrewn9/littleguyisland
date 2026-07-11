@@ -14,8 +14,8 @@ const blot: Texture2D = preload("res://sprites/brush.tres")
 func _ready() -> void:
 	var quad = QuadMesh.new()
 	quad.size = Vector2i(MapData.WORLD_SIZE, MapData.WORLD_SIZE)
-	quad.subdivide_width = 49
-	quad.subdivide_depth = 49
+	quad.subdivide_width = 127
+	quad.subdivide_depth = 127
 	quad.orientation = PlaneMesh.FACE_Y
 	geometry.mesh = quad.duplicate()
 	
@@ -44,7 +44,6 @@ func draw_at(tex_pos: Vector2, to: DrawableTexture2D):
 	)
 
 func stroke(from: Vector2, to: Vector2, tex):
-	print((from - to).length())
 	for i in range(0, (from - to).length(), 2):
 		draw_at(from + (to - from).limit_length(i), tex)
 		prev_stroke = from + (to - from).limit_length(i)

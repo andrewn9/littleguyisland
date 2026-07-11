@@ -1,18 +1,15 @@
 class_name Entity extends Sprite3D
 
-var pos
-var target_pos
+var pos: Vector2
+var target_pos: Vector2
 var speed = 20
 
-@onready var geometry = %Geometry
-
-@onready var raycast: RayCast3D = %RayCast3D
-@onready var camera: Camera3D = %Camera
-
 func _ready() -> void:
-	pos = Vector2(position.x + MapData.WORLD_SIZE / 2, position.y + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
-	
-	target_pos = pos
+	if not pos:
+		pos = Vector2(position.x + MapData.WORLD_SIZE / 2, position.z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
+		target_pos = pos
+	else:
+		target_pos = pos
 	
 func update_height():
 	var height = MapData.height.get_image().get_pixelv(pos.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))).r
