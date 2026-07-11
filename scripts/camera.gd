@@ -10,8 +10,14 @@ var _yaw := 0.0
 var _elev := 0.5
 
 const ORTHO_DISTANCE := 400.0
-
+var start_tween: PropertyTweener
 func _ready() -> void:
+	var target = orthographic_size
+	orthographic_size = 1
+	_update_camera()
+	start_tween = get_tree().create_tween().tween_property(self, "orthographic_size", target, 1.0).set_trans(Tween.TRANS_QUAD)
+
+func _process(_delta: float) -> void:
 	_update_camera()
 
 func _unhandled_input(event: InputEvent) -> void:
