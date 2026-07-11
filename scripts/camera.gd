@@ -33,7 +33,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_RIGHT:
 		_yaw -= event.relative.x * sensitivity
-		_elev = clampf(_elev + event.relative.y * sensitivity, 0.1, 1.4)
+		_elev = clampf(_elev + event.relative.y * sensitivity, 0.1, 0.6)
 		_update_camera()
 
 func _update_camera() -> void:

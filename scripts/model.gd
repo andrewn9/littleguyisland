@@ -9,7 +9,7 @@ extends Node3D
 
 var mouse_position: Vector2
 
-const blot: Texture2D = preload("res://sprites/brush.tres")
+const blot: Texture2D = preload("res://testing/brush.tres")
 
 func _ready() -> void:
 	var quad = QuadMesh.new()
@@ -36,34 +36,37 @@ func project_screen_pos(pos: Vector2):
 		return target_pos
 	return null
 
-func draw_at(tex_pos: Vector2, to: DrawableTexture2D):
+func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color):
 	var brush_size = 8
 	to.blit_rect(
 		Rect2i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5), brush_size, brush_size),
-		blot, Color.GRAY
+		blot, color
 	)
 
-func stroke(from: Vector2, to: Vector2, tex):
+func stroke(from: Vector2, to: Vector2):
 	for i in range(0, (from - to).length(), 2):
-		draw_at(from + (to - from).limit_length(i), tex)
+		use_tool(from + (to - from).limit_length(i))
 		prev_stroke = from + (to - from).limit_length(i)
 
 var prev_stroke
+
+func use_tool(pos: Vector2):
+	draw_at(pos, MapData.val, Color.WHITE)
 
 func _input(event):
 	if event is InputEventMouseButton:
 		if event.button_mask & MOUSE_BUTTON_MASK_LEFT and event.pressed:
 			prev_stroke = project_screen_pos(event.position)
 			if prev_stroke:
-				draw_at(prev_stroke, MapData.val)
+				use_tool(prev_stroke)
 	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
 		if not prev_stroke:
 			prev_stroke = project_screen_pos(event.position)
 			if prev_stroke:
-				draw_at(prev_stroke, MapData.val)
+				use_tool(prev_stroke)
 				return
 
 		if prev_stroke && project_screen_pos(event.position):
-			stroke(prev_stroke, project_screen_pos(event.position), MapData.val)
+			stroke(prev_stroke, project_screen_pos(event.position))
 			
 	

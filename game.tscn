@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://binmu0wpak5yr" path="res://testing/sample_height.png" id="5_hve3p"]
 [ext_resource type="Texture2D" uid="uid://veiok4j32p0k" path="res://pencil.jpg" id="6_eow3j"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
-[ext_resource type="PackedScene" uid="uid://b3x881tg3w600" path="res://sprites/guy.res" id="7_hve3p"]
+[ext_resource type="PackedScene" uid="uid://b3x881tg3w600" path="res://entities/guy.res" id="7_hve3p"]
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
 
 [sub_resource type="Environment" id="env"]
@@ -30,7 +30,7 @@ shader_parameter/heightmap = ExtResource("5_hve3p")
 shader_parameter/valuemap = ExtResource("5_eow3j")
 shader_parameter/height_scale = 15.0
 shader_parameter/uv_scale = Vector2(1, 1)
-shader_parameter/texel_size = 0.025
+shader_parameter/texel_size = -0.02
 shader_parameter/near_threshold = 0.05
 shader_parameter/wobble_strength = 0.065
 shader_parameter/wobble_speed = 1.3
