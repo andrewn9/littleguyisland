@@ -12,4 +12,4 @@ func _ready():
 
 	shape = heightmap
 
-	scale = Vector3(MapData.WORLD_SIZE / MapData.RESOLUTION, 10, MapData.WORLD_SIZE / MapData.RESOLUTION)
+	scale = Vector3(MapData.WORLD_SIZE / MapData.RESOLUTION, MapData.HEIGHT_SCALE, MapData.WORLD_SIZE / MapData.RESOLUTION)
