@@ -1,9 +1,26 @@
 extends Node
 
-var tree = preload("res://sprites/tree.res")
-var mountain = preload("res://sprites/mountain.res")
+var tree = preload("res://entities/trees/tree.res")
+var mountain = preload("res://entities/mountains/mountain.res")
 
 var rng = RandomNumberGenerator.new()
+
+func pick_random_scene(path: StringName):
+	var paths = []
+	var dir = DirAccess.open(path)
+	dir.list_dir_begin()
+	var file = dir.get_next()
+	while file != "":
+		if !dir.current_is_dir():
+			paths.append(path + file)
+		file = dir.get_next()
+	dir.list_dir_end()
+	
+	if paths.is_empty():
+		return
+	
+	var scene = load(paths.pick_random())
+	return scene
 
 func trees():
 	var cluster := NoiseTexture2D.new()
@@ -34,7 +51,7 @@ func trees():
 			var diff = color - Color(0.1294, 0.698, 0.2902)
 
 			if Vector3(diff.r, diff.g, diff.b).length() < 0.1 && (noise * rng.randf() > 0.6 || rng.randf() > 0.997):
-				var ent = tree.instantiate() as Entity
+				var ent = pick_random_scene("res://entities/trees/").instantiate() as Entity
 
 				ent.pos = Vector2(x, y)
 				ent.scale = Vector3.ONE * rng.randf_range(0.3, 0.8)
@@ -46,7 +63,7 @@ func trees():
 
 			if Vector3(diff.r, diff.g, diff.b).length() < 0.1 && (noise * rng.randf() > 0.8 || rng.randf() > 0.997):
 				print(color)
-				var ent = tree.instantiate() as Entity
+				var ent = pick_random_scene("res://entities/trees/").instantiate() as Entity
 
 				ent.pos = Vector2(x, y)
 				ent.scale = Vector3.ONE * rng.randf_range(0.3, 0.8)
@@ -84,7 +101,7 @@ func mountains():
 			diff = color - Color(0.4941, 0.502, 0.4941)
 
 			if Vector3(diff.r, diff.g, diff.b).length() < 0.1 && (noise * rng.randf() > 0.8 || rng.randf() > 0.997):
-				var ent = mountain.instantiate() as Entity
+				var ent = pick_random_scene("res://entities/mountains/").instantiate() as Entity
 
 				ent.pos = Vector2(x, y)
 				ent.scale = Vector3.ONE * rng.randf_range(0.8, 1.5)
