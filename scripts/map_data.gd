@@ -1,7 +1,7 @@
 extends Node
 
 const RESOLUTION := 128
-const WORLD_SIZE := 20.0
+const WORLD_SIZE := 250.0
 
 var val : DrawableTexture2D
 var height : DrawableTexture2D
@@ -11,7 +11,7 @@ var layers : Dictionary = {}
 const temp_values : Texture2D = preload("res://testing/sample_values.png")
 
 func _ready() -> void:
-	val = _make_layer(Color.BLUE)
+	val = _make_layer(Color.WHITE)
 	height = _make_layer(Color.TRANSPARENT)
 	layers = {val = val, height = height}
 	

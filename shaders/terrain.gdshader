@@ -9,6 +9,7 @@ uniform sampler2D valuemap : source_color;
 uniform float height_scale = 20.0;
 uniform vec2 uv_scale = vec2(8.0);
 uniform float texel_size;
+uniform float near_threshold = 0.5;
 
 
 // Wobble controls
@@ -63,8 +64,14 @@ void vertex() {
 
 
 void fragment() {
-	if (height(UV) < 0.05) {
-		discard;
+	if (height(UV) < near_threshold) {
+	    bool nearKept =
+	        height(UV + vec2(-texel_size, 0.0)) >= near_threshold ||
+	        height(UV + vec2( texel_size, 0.0)) >= near_threshold ||
+	        height(UV + vec2(0.0, -texel_size)) >= near_threshold ||
+	        height(UV + vec2(0.0,  texel_size)) >= near_threshold;
+		if (!nearKept)
+			discard;
 	}
     ALBEDO = texture(
         valuemap,
