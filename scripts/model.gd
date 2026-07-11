@@ -9,13 +9,16 @@ extends Node3D
 
 var mouse_position: Vector2
 
-const blot: Texture2D = preload("res://testing/brush.tres")
+const brushes: Dictionary[StringName, Texture2D] = {
+	"default": preload("res://testing/brush.tres"),
+	"harsh": preload("res://testing/harsher brush.tres"),
+}
 
 func _ready() -> void:
 	var quad = QuadMesh.new()
 	quad.size = Vector2i(MapData.WORLD_SIZE, MapData.WORLD_SIZE)
-	quad.subdivide_width = 127
-	quad.subdivide_depth = 127
+	quad.subdivide_width = 256
+	quad.subdivide_depth = 256
 	quad.orientation = PlaneMesh.FACE_Y
 	geometry.mesh = quad.duplicate()
 	
@@ -36,11 +39,10 @@ func project_screen_pos(pos: Vector2):
 		return target_pos
 	return null
 
-func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color):
-	var brush_size = 8
+func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: int, brush_type="default"):
 	to.blit_rect(
 		Rect2i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5), brush_size, brush_size),
-		blot, color
+		brushes[brush_type], color
 	)
 
 func stroke(from: Vector2, to: Vector2):
@@ -51,7 +53,15 @@ func stroke(from: Vector2, to: Vector2):
 var prev_stroke
 
 func use_tool(pos: Vector2):
-	draw_at(pos, MapData.val, Color.WHITE)
+	if Hud.active == "Land":
+		draw_at(pos, MapData.val, Color.GREEN, 18)
+		draw_at(pos, MapData.height, Color.WEB_GRAY, 8)
+	elif Hud.active == "Mountain":
+		draw_at(pos, MapData.height, Color.WHITE, 100, "harsh")
+		draw_at(pos, MapData.val, Color.GRAY, 50)
+	elif Hud.active == "Water":
+		draw_at(pos, MapData.height, Color.BLACK, 5)
+		draw_at(pos, MapData.val, Color.BLUE, 5)
 
 func _input(event):
 	if event is InputEventMouseButton:
