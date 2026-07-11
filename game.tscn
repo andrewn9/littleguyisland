@@ -1,16 +1,46 @@
 [gd_scene format=3 uid="uid://cbtff2g0rblin"]
 
-[ext_resource type="Script" uid="uid://cba0w7iu3m4ge" path="res://camera.gd" id="1_80nbo"]
+[ext_resource type="Script" uid="uid://cba0w7iu3m4ge" path="res://scripts/camera.gd" id="1_80nbo"]
+[ext_resource type="Script" uid="uid://bjyydtgntx0kv" path="res://game.gd" id="1_feb5d"]
+[ext_resource type="Script" uid="uid://du7arglt47vj" path="res://scripts/model.gd" id="3_feb5d"]
+[ext_resource type="Shader" uid="uid://yphip34bcg22" path="res://shaders/terrain.gdshader" id="4_fc0e3"]
+[ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://color.gdshader" id="5_7jktm"]
+[ext_resource type="Texture2D" uid="uid://veiok4j32p0k" path="res://pencil.jpg" id="6_eow3j"]
 
 [sub_resource type="Environment" id="env"]
 background_mode = 1
 background_color = Color(0.76392156, 0.8541025, 0.87759906, 1)
 background_energy_multiplier = 1.1
 
-[sub_resource type="PlaneMesh" id="plane_mesh"]
+[sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
 size = Vector2(20, 20)
+subdivide_width = 20
+subdivide_depth = 20
+orientation = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7jktm"]
+shading_mode = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eow3j"]
+render_priority = 0
+shader = ExtResource("4_fc0e3")
+shader_parameter/height_scale = 10.0
+shader_parameter/uv_scale = Vector2(1, 1)
+shader_parameter/texel_size = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_st70h"]
+shader = ExtResource("5_7jktm")
+shader_parameter/weight = 0.07
+shader_parameter/line_thickness = 1.0
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/opacity = 0.999999977648
+shader_parameter/scale = Vector2(200, 200)
+shader_parameter/strength = 1.56
+shader_parameter/fps = 1.0
+shader_parameter/noise = ExtResource("6_eow3j")
 
 [node name="Game" type="Node3D" unique_id=556122064]
+script = ExtResource("1_feb5d")
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=34043254]
 transform = Transform3D(0.87758255, 0.37554693, -0.2980157, 0, 0.62161, 0.7833269, 0.47942555, -0.687434, 0.54551405, 0, 0, 0)
@@ -19,17 +49,37 @@ transform = Transform3D(0.87758255, 0.37554693, -0.2980157, 0, 0.62161, 0.783326
 environment = SubResource("env")
 
 [node name="Camera" type="Camera3D" parent="." unique_id=1181946286]
+projection = 1
+size = 50.0
 script = ExtResource("1_80nbo")
 
-[node name="Island" type="Node3D" parent="." unique_id=342800800]
+[node name="Island" type="Node" parent="." unique_id=847606793]
 
-[node name="Plane" type="MeshInstance3D" parent="Island" unique_id=1026173782]
-mesh = SubResource("plane_mesh")
+[node name="Model" type="Node3D" parent="Island" unique_id=1558068165]
+script = ExtResource("3_feb5d")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=342415757]
+[node name="DrawSurface" type="MeshInstance3D" parent="Island/Model" unique_id=2067703868]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0, 0)
+mesh = SubResource("QuadMesh_feb5d")
+surface_material_override/0 = SubResource("StandardMaterial3D_7jktm")
 
-[node name="Control" type="Control" parent="." unique_id=961917524]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Geometry" type="MeshInstance3D" parent="Island/Model" unique_id=1044236274]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.10796, 0, -0.19634628)
+mesh = SubResource("QuadMesh_feb5d")
+surface_material_override/0 = SubResource("ShaderMaterial_eow3j")
+
+[node name="Debug" type="VFlowContainer" parent="." unique_id=1814383400]
+unique_name_in_owner = true
+offset_right = 369.0
+offset_bottom = 525.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=786883146]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=622731514]
+material = SubResource("ShaderMaterial_st70h")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
