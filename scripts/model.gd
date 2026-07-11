@@ -2,7 +2,7 @@ extends Node3D
 
 @export var threshold := 0.5
 
-@onready var draw_surface = $DrawSurface
+@onready var draw_surface = $InteractionLayer/DrawSurface
 @onready var geometry = $Geometry
 func _ready() -> void:
 	var quad = QuadMesh.new()
@@ -18,7 +18,7 @@ func _ready() -> void:
 	var geom_shader = geometry.get_surface_override_material(0) as ShaderMaterial
 	geom_shader.set_shader_parameter("valuemap", MapData.val)
 	geom_shader.set_shader_parameter("heightmap", MapData.height)
-	geom_shader.set_shader_parameter("texel_size", 1.0/MapData.RESOLUTION)
+	geom_shader.set_shader_parameter("texel_size", 1.0/20)
 	
 func _process(delta: float) -> void:
 	pass
