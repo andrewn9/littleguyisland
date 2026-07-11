@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://cbtff2g0rblin"]
+
+[ext_resource type="Script" uid="uid://cba0w7iu3m4ge" path="res://camera.gd" id="1_80nbo"]
+
+[sub_resource type="Environment" id="env"]
+background_mode = 1
+background_color = Color(0.76392156, 0.8541025, 0.87759906, 1)
+background_energy_multiplier = 1.1
+
+[sub_resource type="PlaneMesh" id="plane_mesh"]
+size = Vector2(20, 20)
+
+[node name="Game" type="Node3D" unique_id=556122064]
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=34043254]
+transform = Transform3D(0.87758255, 0.37554693, -0.2980157, 0, 0.62161, 0.7833269, 0.47942555, -0.687434, 0.54551405, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=145169130]
+environment = SubResource("env")
+
+[node name="Camera" type="Camera3D" parent="." unique_id=1181946286]
+script = ExtResource("1_80nbo")
+
+[node name="Island" type="Node3D" parent="." unique_id=342800800]
+
+[node name="Plane" type="MeshInstance3D" parent="Island" unique_id=1026173782]
+mesh = SubResource("plane_mesh")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=342415757]
+
+[node name="Control" type="Control" parent="." unique_id=961917524]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
