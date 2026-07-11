@@ -2,6 +2,7 @@ extends Node
 
 const RESOLUTION := 128
 const WORLD_SIZE := 250.0
+const HEIGHT_SCALE := 45
 
 var val : DrawableTexture2D
 var height : DrawableTexture2D
