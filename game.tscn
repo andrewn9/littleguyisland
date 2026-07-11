@@ -7,6 +7,9 @@
 [ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://shaders/outline.gdshader" id="5_7jktm"]
 [ext_resource type="Texture2D" uid="uid://bgpnqos621w3v" path="res://testing/sample_values.png" id="5_eow3j"]
 [ext_resource type="Texture2D" uid="uid://veiok4j32p0k" path="res://pencil.jpg" id="6_eow3j"]
+[ext_resource type="Script" uid="uid://gvyegn21kxqq" path="res://scripts/entity.gd" id="7_j5wjh"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="8_vef74"]
+
 
 [sub_resource type="Environment" id="env"]
 background_mode = 1
@@ -37,6 +40,9 @@ shader_parameter/near_threshold = 0.05
 shader_parameter/wobble_strength = 0.065
 shader_parameter/wobble_speed = 1.3
 shader_parameter/wobble_frequency = 21.895
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_xbydb"]
+viewport_path = NodePath("Entities/Sprite3D/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_st70h"]
 shader = ExtResource("5_7jktm")
@@ -82,6 +88,7 @@ mesh = SubResource("QuadMesh_feb5d")
 surface_material_override/0 = SubResource("StandardMaterial3D_7jktm")
 
 [node name="Geometry" type="MeshInstance3D" parent="Island/Model" unique_id=1044236274]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10795975, 0, -0.19634628)
 mesh = SubResource("QuadMesh_feb5d")
 surface_material_override/0 = SubResource("ShaderMaterial_eow3j")
@@ -93,6 +100,26 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.446134, 26.075766)
 unique_name_in_owner = true
 offset_right = 369.0
 offset_bottom = 525.0
+
+[node name="Entities" type="Node" parent="." unique_id=2001399486]
+
+[node name="Sprite3D" type="Sprite3D" parent="Entities" unique_id=944794670]
+billboard = 2
+double_sided = false
+texture = SubResource("ViewportTexture_xbydb")
+script = ExtResource("7_j5wjh")
+
+[node name="SubViewport" type="SubViewport" parent="Entities/Sprite3D" unique_id=1707268144]
+transparent_bg = true
+size = Vector2i(256, 256)
+
+[node name="TextureRect" type="TextureRect" parent="Entities/Sprite3D/SubViewport" unique_id=1492391892]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_vef74")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=786883146]
 
