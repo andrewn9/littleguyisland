@@ -6,7 +6,7 @@
 [ext_resource type="Shader" uid="uid://yphip34bcg22" path="res://shaders/terrain.gdshader" id="4_d00jw"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="5_o4s1j"]
 [ext_resource type="Script" uid="uid://gvyegn21kxqq" path="res://scripts/entity.gd" id="5_u3o8e"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="6_1ov0q"]
+[ext_resource type="Texture2D" uid="uid://b2b1d0isbtki0" path="res://sprites/worker.png" id="6_o4s1j"]
 [ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://shaders/outline.gdshader" id="7_rtn76"]
 [ext_resource type="Texture2D" uid="uid://veiok4j32p0k" path="res://pencil.jpg" id="8_tgw6y"]
 
@@ -39,9 +39,6 @@ shading_mode = 0
 map_width = 20
 map_depth = 20
 map_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_xbydb"]
-viewport_path = NodePath("Entities/Sprite3D/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_st70h"]
 shader = ExtResource("7_rtn76")
@@ -102,22 +99,11 @@ offset_bottom = 525.0
 [node name="Entities" type="Node" parent="." unique_id=2001399486]
 
 [node name="Sprite3D" type="Sprite3D" parent="Entities" unique_id=944794670]
+offset = Vector2(0, 48.795)
 billboard = 2
 double_sided = false
-texture = SubResource("ViewportTexture_xbydb")
+texture = ExtResource("6_o4s1j")
 script = ExtResource("5_u3o8e")
-
-[node name="SubViewport" type="SubViewport" parent="Entities/Sprite3D" unique_id=1707268144]
-transparent_bg = true
-size = Vector2i(256, 256)
-
-[node name="TextureRect" type="TextureRect" parent="Entities/Sprite3D/SubViewport" unique_id=1492391892]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("6_1ov0q")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=786883146]
 

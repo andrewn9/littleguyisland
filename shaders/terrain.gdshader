@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode vertex_lighting;
 
-#include "includes/vertex_wobble.gdshaderinc"
+//#include "includes/vertex_wobble.gdshaderinc"
 
 uniform sampler2D heightmap : source_color;
 uniform sampler2D valuemap : source_color;
@@ -35,14 +35,14 @@ void vertex() {
     VERTEX.y = h;
 
 
-    // Apply wobble
-    VERTEX.y += vertex_wobble_noise(
-        VERTEX,
-        TIME,
-        wobble_strength,
-        wobble_speed,
-        wobble_frequency
-    );
+    //// Apply wobble
+    //VERTEX.y += vertex_wobble_noise(
+        //VERTEX,
+        //TIME,
+        //wobble_strength,
+        //wobble_speed,
+        //wobble_frequency
+    //);
 
 
     vec3 tangent = vec3(

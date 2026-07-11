@@ -14,8 +14,8 @@ const blot: Texture2D = preload("res://sprites/brush.tres")
 func _ready() -> void:
 	var quad = QuadMesh.new()
 	quad.size = Vector2i(MapData.WORLD_SIZE, MapData.WORLD_SIZE)
-	quad.subdivide_width = 20
-	quad.subdivide_depth = 20
+	quad.subdivide_width = 49
+	quad.subdivide_depth = 49
 	quad.orientation = PlaneMesh.FACE_Y
 	geometry.mesh = quad.duplicate()
 	

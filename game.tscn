@@ -9,8 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://binmu0wpak5yr" path="res://testing/sample_height.png" id="5_hve3p"]
 [ext_resource type="Texture2D" uid="uid://veiok4j32p0k" path="res://pencil.jpg" id="6_eow3j"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
-[ext_resource type="Script" uid="uid://gvyegn21kxqq" path="res://scripts/entity.gd" id="7_j5wjh"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="8_vef74"]
+[ext_resource type="PackedScene" uid="uid://b3x881tg3w600" path="res://sprites/guy.res" id="7_hve3p"]
+[ext_resource type="PackedScene" uid="uid://ukt47opfhd72" path="res://sprites/tree.res" id="7_mfdv2"]
 
 [sub_resource type="Environment" id="env"]
 background_mode = 1
@@ -20,7 +20,7 @@ background_energy_multiplier = 1.1
 [sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
 size = Vector2(250, 250)
 subdivide_width = 49
-subdivide_depth = 20
+subdivide_depth = 49
 orientation = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eow3j"]
@@ -28,7 +28,7 @@ render_priority = 0
 shader = ExtResource("4_fc0e3")
 shader_parameter/heightmap = ExtResource("5_hve3p")
 shader_parameter/valuemap = ExtResource("5_eow3j")
-shader_parameter/height_scale = 45.0
+shader_parameter/height_scale = 15.0
 shader_parameter/uv_scale = Vector2(1, 1)
 shader_parameter/texel_size = 0.025
 shader_parameter/near_threshold = 0.05
@@ -40,9 +40,6 @@ shader_parameter/wobble_frequency = 21.895
 map_width = 20
 map_depth = 20
 map_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_xbydb"]
-viewport_path = NodePath("Entities/Sprite3D/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_st70h"]
 shader = ExtResource("5_7jktm")
@@ -92,27 +89,15 @@ offset_bottom = 525.0
 
 [node name="Entities" type="Node" parent="." unique_id=2001399486]
 
-[node name="Sprite3D" type="Sprite3D" parent="Entities" unique_id=944794670]
-billboard = 2
-double_sided = false
-texture = SubResource("ViewportTexture_xbydb")
-script = ExtResource("7_j5wjh")
+[node name="Sprite3D2" parent="Entities" unique_id=455084091 instance=ExtResource("7_mfdv2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54.901188, 21.914246, 0)
 
-[node name="SubViewport" type="SubViewport" parent="Entities/Sprite3D" unique_id=1707268144]
-transparent_bg = true
-size = Vector2i(256, 256)
-
-[node name="TextureRect" type="TextureRect" parent="Entities/Sprite3D/SubViewport" unique_id=1492391892]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("8_vef74")
+[node name="Sprite3D" parent="Entities" unique_id=1712821898 instance=ExtResource("7_hve3p")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=786883146]
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=622731514]
+visible = false
 material = SubResource("ShaderMaterial_st70h")
 anchors_preset = 15
 anchor_right = 1.0
