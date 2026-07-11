@@ -8,20 +8,16 @@ var height : DrawableTexture2D
 
 var layers : Dictionary = {}
 
+const temp_values : Texture2D = preload("res://testing/sample_values.png")
+
 func _ready() -> void:
 	val = _make_layer(Color.BLUE)
 	height = _make_layer(Color.TRANSPARENT)
 	layers = {val = val, height = height}
 	
-	var base_tex := NoiseTexture2D.new()
-	base_tex.width = RESOLUTION
-	base_tex.height = RESOLUTION
-	base_tex.noise = FastNoiseLite.new()
-	if base_tex.get_image() == null:
-		await base_tex.changed
 	height.blit_rect(
 		Rect2i(0, 0, RESOLUTION, RESOLUTION),
-		base_tex
+		temp_values
 	)
 
 func _make_layer(fill: Color) -> DrawableTexture2D:
