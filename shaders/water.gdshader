@@ -71,7 +71,7 @@ void fragment(){
 	
 	ALBEDO = vec3(fin) + mix(alpha.rgb, col.rgb, color.a);
 	
-	NORMALMAP = texture(normalmap, uv_movement).rgb;
-	ROUGHNESS = 0.1;
-	SPECULAR = 1f;
+	// NORMALMAP = texture(normalmap, uv_movement).rgb;
+	ROUGHNESS = 0.1f;
+	SPECULAR = 1.0f;
 }
