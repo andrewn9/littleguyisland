@@ -1,8 +1,5 @@
 class_name EntityGen extends Node
 
-var tree = preload("res://entities/trees/tree.res")
-var mountain = preload("res://entities/mountains/mountain.res")
-
 var rng = RandomNumberGenerator.new()
 
 func pick_random_scene(path: StringName):
@@ -122,3 +119,9 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 			child.queue_free()
 	trees(x1, y1, x2, y2)
 	mountains(x1, y1, x2, y2)
+	
+func spawn_person(x: int, y: int):
+	var ent = load("res://entities/folk.res").instantiate() as Entity
+	ent.pos = Vector2(x, y)
+	ent.name = "Folk"
+	add_child(ent)

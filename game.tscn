@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://cbtff2g0rblin"]
 
 [ext_resource type="Script" uid="uid://cba0w7iu3m4ge" path="res://scripts/camera.gd" id="1_80nbo"]
-[ext_resource type="Script" uid="uid://bjyydtgntx0kv" path="res://game.gd" id="1_feb5d"]
+[ext_resource type="Texture2D" uid="uid://de2c02rr7iav6" path="res://testing/height.png" id="2_iotsf"]
 [ext_resource type="Script" uid="uid://du7arglt47vj" path="res://scripts/model.gd" id="3_feb5d"]
+[ext_resource type="Texture2D" uid="uid://ikyxuqwdcus6" path="res://testing/value.png" id="3_lc2xo"]
 [ext_resource type="Shader" uid="uid://yphip34bcg22" path="res://shaders/terrain.gdshader" id="4_fc0e3"]
 [ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://shaders/outline.gdshader" id="5_7jktm"]
-[ext_resource type="Texture2D" uid="uid://bn6ubm31jlyix" path="res://testing/sample_value.png" id="5_eow3j"]
 [ext_resource type="Texture2D" uid="uid://binmu0wpak5yr" path="res://testing/sample_height.png" id="5_hve3p"]
 [ext_resource type="Texture2D" uid="uid://veiok4j32p0k" path="res://pencil.jpg" id="6_eow3j"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
@@ -15,16 +15,15 @@
 [sub_resource type="Environment" id="env"]
 background_mode = 1
 background_color = Color(0.76392156, 0.8541025, 0.87759906, 1)
-background_energy_multiplier = 1.1
 
 [sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
 size = Vector2(1500, 1500)
-subdivide_width = 49
-subdivide_depth = 49
+subdivide_width = 256
+subdivide_depth = 256
 orientation = 1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_st70h"]
-shading_mode = 0
+shading_mode = 2
 albedo_color = Color(0.26385593, 0.8367717, 0.937542, 1)
 heightmap_enabled = true
 
@@ -54,7 +53,7 @@ gradient = SubResource("Gradient_mountain")
 render_priority = 0
 shader = ExtResource("4_fc0e3")
 shader_parameter/heightmap = ExtResource("5_hve3p")
-shader_parameter/valuemap = ExtResource("5_eow3j")
+shader_parameter/valuemap = ExtResource("3_lc2xo")
 shader_parameter/height_scale = 55.0
 shader_parameter/uv_scale = Vector2(1, 1)
 shader_parameter/texel_size = 0.01
@@ -88,10 +87,10 @@ shader_parameter/fps = 2.0
 shader_parameter/noise = ExtResource("6_eow3j")
 
 [node name="Game" type="Node3D" unique_id=556122064]
-script = ExtResource("1_feb5d")
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=34043254]
 transform = Transform3D(0.87758255, 0.37554693, -0.2980157, 0, 0.62161, 0.7833269, 0.47942555, -0.687434, 0.54551405, 0, 0, 0)
+shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=145169130]
 environment = SubResource("env")
@@ -105,6 +104,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_st70h")
 
 [node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen", "map_collision")]
 script = ExtResource("3_feb5d")
+Heightmap = ExtResource("2_iotsf")
+Valuemap = ExtResource("3_lc2xo")
 entity_gen = NodePath("../../Entities")
 map_collision = NodePath("InteractionLayer/CollisionShape3D")
 
@@ -152,8 +153,10 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.9453799, 0.32597074, 0, -0.32597074, 0.9453799, 0, 79.671, 208.238)
 projection = 1
 script = ExtResource("1_80nbo")
-zoom_step = 16.0
-orthographic_size = 400.0
+zoom_step = 40.0
+zoom_ramp_speed = 16.045
+orthographic_size = 389.83
+max_orthographic_size = 1200
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera" unique_id=921282201]
 unique_name_in_owner = true
