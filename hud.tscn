@@ -33,29 +33,34 @@ alignment = 1
 [node name="Click" type="TextureButton" parent="CanvasLayer/Toolbar" unique_id=1710411045]
 custom_maximum_size = Vector2(95, 95)
 layout_mode = 2
+offset_transform_enabled = true
 texture_normal = ExtResource("1_a2258")
 stretch_mode = 0
 
 [node name="TextureButton4" type="TextureButton" parent="CanvasLayer/Toolbar" unique_id=493872940]
 custom_maximum_size = Vector2(95, 95)
 layout_mode = 2
+offset_transform_enabled = true
 texture_normal = ExtResource("2_1xsix")
 stretch_mode = 0
 
 [node name="Land" type="TextureButton" parent="CanvasLayer/Toolbar" unique_id=108184716]
 custom_maximum_size = Vector2(95, 95)
 layout_mode = 2
+offset_transform_enabled = true
 texture_normal = ExtResource("2_8sq4i")
 stretch_mode = 0
 
 [node name="Water" type="TextureButton" parent="CanvasLayer/Toolbar" unique_id=1112902201]
 custom_maximum_size = Vector2(95, 95)
 layout_mode = 2
+offset_transform_enabled = true
 texture_normal = ExtResource("3_8sq4i")
 stretch_mode = 0
 
 [node name="Mountain" type="TextureButton" parent="CanvasLayer/Toolbar" unique_id=1393556634]
 custom_maximum_size = Vector2(95, 95)
 layout_mode = 2
+offset_transform_enabled = true
 texture_normal = ExtResource("1_64ctp")
 stretch_mode = 0

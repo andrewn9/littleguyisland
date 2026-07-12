@@ -2,7 +2,7 @@ extends Node
 
 const RESOLUTION := 256
 const WORLD_SIZE := 1500.0
-const HEIGHT_SCALE := 65
+const HEIGHT_SCALE := 165
 
 var val : DrawableTexture2D
 var height : DrawableTexture2D
@@ -13,18 +13,10 @@ const temp_value : Texture2D = preload("res://testing/sample_value.png")
 const temp_height : Texture2D = preload("res://testing/sample_height.png")
 
 func _ready() -> void:
-	val = _make_layer(Color.WHITE)
-	height = _make_layer(Color.TRANSPARENT)
+	val = _make_layer(Color.ANTIQUE_WHITE)
+	height = _make_layer(Color.BLACK)
 	layers = {val = val, height = height}
 	
-	height.blit_rect(
-		Rect2i(0, 0, RESOLUTION, RESOLUTION),
-		temp_height
-	)
-	val.blit_rect(
-		Rect2i(0, 0, RESOLUTION, RESOLUTION),
-		temp_value
-	)
 
 func _make_layer(fill: Color) -> DrawableTexture2D:
 	var tex := DrawableTexture2D.new()

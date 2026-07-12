@@ -26,6 +26,7 @@ orientation = 1
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_st70h"]
 shading_mode = 0
 albedo_color = Color(0.26385593, 0.8367717, 0.937542, 1)
+heightmap_enabled = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eow3j"]
 render_priority = 0
@@ -35,7 +36,7 @@ shader_parameter/valuemap = ExtResource("5_eow3j")
 shader_parameter/height_scale = 55.0
 shader_parameter/uv_scale = Vector2(1, 1)
 shader_parameter/texel_size = 0.01
-shader_parameter/near_threshold = 0.05
+shader_parameter/near_threshold = 0.5
 shader_parameter/wobble_strength = 0.065
 shader_parameter/wobble_speed = 1.3
 shader_parameter/wobble_frequency = 21.895
@@ -68,7 +69,7 @@ environment = SubResource("env")
 [node name="Island" type="Node" parent="." unique_id=847606793]
 
 [node name="Water" type="MeshInstance3D" parent="Island" unique_id=1387438961]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2159195, -35.968384, -0.39269257)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2159195, 3.7860107, -0.39269257)
 mesh = SubResource("QuadMesh_feb5d")
 surface_material_override/0 = SubResource("StandardMaterial3D_st70h")
 
@@ -91,9 +92,12 @@ script = ExtResource("6_mfdv2")
 [node name="CSGSphere3D" type="CSGCylinder3D" parent="Island" unique_id=749472182]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.446134, 26.075766)
 
-[node name="Debug" type="VFlowContainer" parent="." unique_id=1814383400]
+[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=2010596024]
+scale = Vector2(0.33, 0.33)
+transform = Transform2D(0.33, 0, 0, 0.33, 0, 0)
+
+[node name="Debug" type="VFlowContainer" parent="CanvasLayer2" unique_id=1814383400]
 unique_name_in_owner = true
-visible = false
 anchors_preset = 9
 anchor_bottom = 1.0
 grow_vertical = 2
@@ -117,7 +121,7 @@ mouse_filter = 1
 
 [node name="Camera" type="Camera3D" parent="." unique_id=1001981088]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 0.9453799, 0.32597074, 0, -0.32597074, 0.9453799, 0, 79.67054, 205.26761)
+transform = Transform3D(1, 0, 0, 0, 0.9453799, 0.32597074, 0, -0.32597074, 0.9453799, 0, 79.671, 208.238)
 projection = 1
 script = ExtResource("1_80nbo")
 zoom_step = 8.0

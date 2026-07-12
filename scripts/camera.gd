@@ -15,6 +15,7 @@ func _ready() -> void:
 	var target = orthographic_size
 	orthographic_size = 1
 	_update_camera()
+	near = -2000
 	start_tween = get_tree().create_tween().tween_property(self, "orthographic_size", target, 1.0).set_trans(Tween.TRANS_QUAD)
 
 func _process(_delta: float) -> void:

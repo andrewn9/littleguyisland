@@ -11,8 +11,19 @@ var mouse_position: Vector2
 
 const brushes: Dictionary[StringName, Texture2D] = {
 	"default": preload("res://testing/brush.tres"),
+	"flat": preload("res://testing/flat brush.tres"),
+	"fuzzy": preload("res://testing/fuzzy_brush.png"),
+	"grassy": preload("res://testing/grassy_brush.png"),
 	"harsh": preload("res://testing/harsher brush.tres"),
+	"mountain": preload("res://testing/mountain_brush.png"),
+	"shallow": preload("res://testing/shallow brush.tres"),
+	"mon": preload("res://testing/Illustration.png"),
+	"smooth": preload("res://testing/smooth.png"),
+	"water": preload("res://testing/water.png"),
 }
+
+const ROT_VARIANTS := 12
+var _rot_pool: Dictionary = {}  # brush_type -> Array[ImageTexture]
 
 func _ready() -> void:
 	var quad = QuadMesh.new()
@@ -21,12 +32,14 @@ func _ready() -> void:
 	quad.subdivide_depth = 256
 	quad.orientation = PlaneMesh.FACE_Y
 	geometry.mesh = quad.duplicate()
-	
+
 	var geom_shader = geometry.get_surface_override_material(0) as ShaderMaterial
 	geom_shader.set_shader_parameter("valuemap", MapData.val)
 	geom_shader.set_shader_parameter("heightmap", MapData.height)
 	geom_shader.set_shader_parameter("height_scale", MapData.HEIGHT_SCALE)
-	geom_shader.set_shader_parameter("texel_size", 1.0/20)
+	geom_shader.set_shader_parameter("texel_size", 1.0/MapData.RESOLUTION)
+
+	_bake_rotations()
 
 var drawing := false
 
@@ -39,10 +52,47 @@ func project_screen_pos(pos: Vector2):
 		return target_pos
 	return null
 
-func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: int, brush_type="default"):
+func _bake_rotations() -> void:
+	for t in brushes:
+		var img: Image = brushes[t].get_image()
+		if img == null:
+			continue  # e.g. a noise texture not generated yet; falls back to unrotated
+		if img.is_compressed():
+			img.decompress()
+		img.convert(Image.FORMAT_RGBA8)
+		var variants: Array[ImageTexture] = []
+		for i in ROT_VARIANTS:
+			variants.append(_rotate_tex(img, randf() * TAU))
+		_rot_pool[t] = variants
+
+func _rotate_tex(src: Image, angle: float) -> ImageTexture:
+	var w := src.get_width()
+	var h := src.get_height()
+	var out := Image.create(w, h, false, Image.FORMAT_RGBA8)
+	var cx := w * 0.5
+	var cy := h * 0.5
+	var ca := cos(angle)
+	var sa := sin(angle)
+	for y in h:
+		for x in w:
+			var dx := x - cx
+			var dy := y - cy
+			var su := int(dx * ca - dy * sa + cx)
+			var sv := int(dx * sa + dy * ca + cy)
+			if su >= 0 and su < w and sv >= 0 and sv < h:
+				out.set_pixel(x, y, src.get_pixel(su, sv))
+	return ImageTexture.create_from_image(out)
+
+func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: int, brush_type := "default", scale_jitter := 0.35):
+	var tex: Texture2D = brushes[brush_type]
+	if _rot_pool.has(brush_type):
+		var variants: Array = _rot_pool[brush_type]
+		tex = variants[randi() % variants.size()]
+
+	var s := maxi(1, roundi(brush_size * (1.0 + randf_range(-scale_jitter, scale_jitter))))
 	to.blit_rect(
-		Rect2i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5), brush_size, brush_size),
-		brushes[brush_type], color
+		Rect2i(roundi(tex_pos.x - s * 0.5), roundi(tex_pos.y - s * 0.5), s, s),
+		tex, color
 	)
 
 func stroke(from: Vector2, to: Vector2):
@@ -54,14 +104,14 @@ var prev_stroke
 
 func use_tool(pos: Vector2):
 	if Hud.active == "Land":
-		draw_at(pos, MapData.val, Color.GREEN, 18)
-		draw_at(pos, MapData.height, Color.WEB_GRAY, 8)
+		draw_at(pos, MapData.val, Color.GREEN, 28, "smooth")
+		draw_at(pos, MapData.height, Color.from_rgba8(30, 30, 30, 255), 28, "flat")
 	elif Hud.active == "Mountain":
-		draw_at(pos, MapData.height, Color.WHITE, 100, "harsh")
-		draw_at(pos, MapData.val, Color.GRAY, 50)
+		draw_at(pos, MapData.height, Color.GRAY, 20, "mon")
+		draw_at(pos, MapData.val, Color.GRAY, 20, "mon")
 	elif Hud.active == "Water":
-		draw_at(pos, MapData.height, Color.BLACK, 5)
-		draw_at(pos, MapData.val, Color.BLUE, 5)
+		draw_at(pos, MapData.height, Color.BLACK, 7)
+		draw_at(pos, MapData.val, Color.WHITE, 7, "water")
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -78,5 +128,8 @@ func _input(event):
 
 		if prev_stroke && project_screen_pos(event.position):
 			stroke(prev_stroke, project_screen_pos(event.position))
-			
-	
+
+	if Input.is_action_just_pressed("out"):
+		MapData.height.get_image().save_png("height.png")
+		MapData.val.get_image().save_png("value.png")
+
