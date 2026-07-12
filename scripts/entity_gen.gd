@@ -99,7 +99,7 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 			var cluster_val = mountain_cluster.get_image().get_pixel(x, y).r
 			var white_val = mountain_noise[x * MapData.RESOLUTION + y]
 
-			if white_val * cluster_val > 0.3 && white_val > 0.995:
+			if white_val * cluster_val > 0.3 && white_val > 0.915:
 				var diff = MapData.val.get_image().get_pixel(x, y) - Color.GRAY
 				if Vector3(diff.r, diff.g, diff.b).length_squared() > 0.16:
 					continue

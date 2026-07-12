@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wapp7pqogara"
-path.s3tc="res://.godot/imported/shovel.png-f432b884341ef62a494f00a3a8d32c50.s3tc.ctex"
+uid="uid://bodqi6bnxskja"
+path.s3tc="res://.godot/imported/oak2.png-81f0a90b4d154be5bda89c2152f6b76a.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://sprites/shovel.png"
-dest_files=["res://.godot/imported/shovel.png-f432b884341ef62a494f00a3a8d32c50.s3tc.ctex"]
+source_file="res://sprites/oak2.png"
+dest_files=["res://.godot/imported/oak2.png-81f0a90b4d154be5bda89c2152f6b76a.s3tc.ctex"]
 
 [params]
 

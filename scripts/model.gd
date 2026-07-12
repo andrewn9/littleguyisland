@@ -20,7 +20,7 @@ const brushes: Dictionary[StringName, Texture2D] = {
 	"mountain": preload("res://testing/mountain_brush.png"),
 	"shallow": preload("res://testing/shallow brush.tres"),
 	"mon": preload("res://testing/Illustration.png"),
-	"smooth": preload("res://testing/smooth.png"),
+	"smooth": preload("res://testing/Smooth.png"),
 	"water": preload("res://testing/water.png"),
 }
 
@@ -115,14 +115,14 @@ var prev_stroke
 
 func use_tool(pos: Vector2):
 	if Hud.active == "Land":
-		draw_at(pos, MapData.val, Color.GREEN, 28, "smooth")
+		draw_at(pos, MapData.val, Color.from_rgba8(91, 162, 31, 255), 25, "smooth")
 		draw_at(pos, MapData.height, Color.from_rgba8(30, 30, 30, 255), 28, "flat")
 	elif Hud.active == "Mountain":
 		draw_at(pos, MapData.height, Color.GRAY, 20, "mon")
-		draw_at(pos, MapData.val, Color.GRAY, 20, "mon")
+		draw_at(pos, MapData.val, Color.from_rgba8(162, 200, 197, 255), 35)
 	elif Hud.active == "Water":
 		draw_at(pos, MapData.height, Color.BLACK, 7)
-		draw_at(pos, MapData.val, Color.WHITE, 7, "water")
+		draw_at(pos, MapData.val, Color.BLUE, 7, "fuzzy")
 
 func _input(event):
 	if event is InputEventMouseButton:

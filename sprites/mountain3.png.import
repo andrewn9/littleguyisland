@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://pn5nllsfc4fc"
-path="res://.godot/imported/height.png-83bcf8479e4c8934a8826eb858c1985e.ctex"
+uid="uid://w3vlyau6f68d"
+path="res://.godot/imported/mountain3.png-b12545dcbb6a434b452f25c2770e2b41.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://height.png"
-dest_files=["res://.godot/imported/height.png-83bcf8479e4c8934a8826eb858c1985e.ctex"]
+source_file="res://sprites/mountain3.png"
+dest_files=["res://.godot/imported/mountain3.png-b12545dcbb6a434b452f25c2770e2b41.ctex"]
 
 [params]
 

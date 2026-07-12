@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bi05nv3y2aa7q"
-path="res://.godot/imported/value.png-647dafa8956772181034419dc92d2166.ctex"
+uid="uid://dty0ve3ai5fnr"
+path="res://.godot/imported/birch2.png-177fa8d2b78982176e2a98e65d102dcf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://value.png"
-dest_files=["res://.godot/imported/value.png-647dafa8956772181034419dc92d2166.ctex"]
+source_file="res://sprites/birch2.png"
+dest_files=["res://.godot/imported/birch2.png-177fa8d2b78982176e2a98e65d102dcf.ctex"]
 
 [params]
 
