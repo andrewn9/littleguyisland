@@ -1,117 +1,24 @@
 [gd_scene format=3 uid="uid://blgvw64liodr1"]
 
 [ext_resource type="Script" uid="uid://bjyydtgntx0kv" path="res://game.gd" id="1_qk1l1"]
-[ext_resource type="Script" uid="uid://cba0w7iu3m4ge" path="res://scripts/camera.gd" id="2_o4s1j"]
-[ext_resource type="Script" uid="uid://du7arglt47vj" path="res://scripts/model.gd" id="3_cnqbl"]
-[ext_resource type="Shader" uid="uid://yphip34bcg22" path="res://shaders/terrain.gdshader" id="4_d00jw"]
-[ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="5_o4s1j"]
-[ext_resource type="Script" uid="uid://gvyegn21kxqq" path="res://scripts/entity.gd" id="5_u3o8e"]
-[ext_resource type="Texture2D" uid="uid://b2b1d0isbtki0" path="res://sprites/worker.png" id="6_o4s1j"]
-[ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://shaders/outline.gdshader" id="7_rtn76"]
-[ext_resource type="Texture2D" uid="uid://veiok4j32p0k" path="res://pencil.jpg" id="8_tgw6y"]
+[ext_resource type="Shader" uid="uid://b5caf5n8vdpxi" path="res://better_water.gdshader" id="2_keahw"]
 
-[sub_resource type="Environment" id="env"]
-background_mode = 1
-background_color = Color(0.76392156, 0.8541025, 0.87759906, 1)
-background_energy_multiplier = 1.1
-
-[sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
-size = Vector2(20, 20)
-subdivide_width = 20
-subdivide_depth = 20
-orientation = 1
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_eow3j"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tevtn"]
 render_priority = 0
-shader = ExtResource("4_d00jw")
-shader_parameter/height_scale = 10.0
-shader_parameter/uv_scale = Vector2(1, 1)
-shader_parameter/texel_size = 0.0
-shader_parameter/near_threshold = 0.5
-shader_parameter/wobble_strength = 0.065
-shader_parameter/wobble_speed = 1.3
-shader_parameter/wobble_frequency = 21.895
+shader = ExtResource("2_keahw")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7jktm"]
-shading_mode = 0
-
-[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_xbydb"]
-map_width = 20
-map_depth = 20
-map_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_st70h"]
-shader = ExtResource("7_rtn76")
-shader_parameter/weight = 0.07
-shader_parameter/line_thickness = 1.0
-shader_parameter/color = Color(0, 0, 0, 1)
-shader_parameter/opacity = 0.999999977648
-shader_parameter/scale = Vector2(200, 200)
-shader_parameter/strength = 1.56
-shader_parameter/fps = 2.0
-shader_parameter/noise = ExtResource("8_tgw6y")
+[sub_resource type="PlaneMesh" id="PlaneMesh_xbydb"]
+material = SubResource("ShaderMaterial_tevtn")
+size = Vector2(10, 10)
+subdivide_width = 31
+subdivide_depth = 31
 
 [node name="Game" type="Node3D" unique_id=556122064]
 script = ExtResource("1_qk1l1")
 
-[node name="Sun" type="DirectionalLight3D" parent="." unique_id=34043254]
-transform = Transform3D(0.87758255, 0.37554693, -0.2980157, 0, 0.62161, 0.7833269, 0.47942555, -0.687434, 0.54551405, 0, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1250506992]
+transform = Transform3D(1.0000001, 0, 0, 0, 0.9999997, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_xbydb")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=145169130]
-environment = SubResource("env")
-
-[node name="Camera" type="Camera3D" parent="." unique_id=1181946286]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-projection = 1
-size = 50.0
-script = ExtResource("2_o4s1j")
-
-[node name="RayCast3D" type="RayCast3D" parent="Camera" unique_id=686940063]
-unique_name_in_owner = true
-
-[node name="Island" type="Node" parent="." unique_id=847606793]
-
-[node name="Model" type="Node3D" parent="Island" unique_id=1558068165]
-script = ExtResource("3_cnqbl")
-
-[node name="Geometry" type="MeshInstance3D" parent="Island/Model" unique_id=1044236274]
-unique_name_in_owner = true
-mesh = SubResource("QuadMesh_feb5d")
-surface_material_override/0 = SubResource("ShaderMaterial_eow3j")
-
-[node name="InteractionLayer" type="StaticBody3D" parent="Island/Model" unique_id=940127628]
-unique_name_in_owner = true
-
-[node name="DrawSurface" type="MeshInstance3D" parent="Island/Model/InteractionLayer" unique_id=2067703868]
-mesh = SubResource("QuadMesh_feb5d")
-surface_material_override/0 = SubResource("StandardMaterial3D_7jktm")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Island/Model/InteractionLayer" unique_id=958070596]
-shape = SubResource("HeightMapShape3D_xbydb")
-script = ExtResource("5_o4s1j")
-
-[node name="Debug" type="VFlowContainer" parent="." unique_id=1814383400]
-unique_name_in_owner = true
-offset_right = 369.0
-offset_bottom = 525.0
-
-[node name="Entities" type="Node" parent="." unique_id=2001399486]
-
-[node name="Sprite3D" type="Sprite3D" parent="Entities" unique_id=944794670]
-offset = Vector2(0, 48.795)
-billboard = 2
-double_sided = false
-texture = ExtResource("6_o4s1j")
-script = ExtResource("5_u3o8e")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=786883146]
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=622731514]
-material = SubResource("ShaderMaterial_st70h")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=324299325]
+transform = Transform3D(-4.3711395e-08, 0.70710677, -0.70710677, -3.588829e-15, 0.70710677, 0.70710677, 1, 3.0908623e-08, -3.0908616e-08, 0, 1, 0)
