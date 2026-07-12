@@ -30,6 +30,8 @@ const brushes: Dictionary[StringName, Texture2D] = {
 const ROT_VARIANTS := 12
 var _rot_pool: Dictionary = {}  # brush_type -> Array[ImageTexture]
 
+var _add_mat := BlitMaterial.new()
+
 var first_stroke = null
 var last_stroke = null
 
@@ -46,6 +48,8 @@ func _ready() -> void:
 	geom_shader.set_shader_parameter("heightmap", MapData.height)
 	geom_shader.set_shader_parameter("height_scale", MapData.HEIGHT_SCALE)
 	geom_shader.set_shader_parameter("texel_size", 1.0/MapData.RESOLUTION)
+
+	_add_mat.blend_mode = BlitMaterial.BLEND_MODE_ADD
 
 	_bake_rotations()
 
@@ -91,7 +95,7 @@ func _rotate_tex(src: Image, angle: float) -> ImageTexture:
 				out.set_pixel(x, y, src.get_pixel(su, sv))
 	return ImageTexture.create_from_image(out)
 
-func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: int, brush_type := "default", scale_jitter := 0.35):
+func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: int, brush_type := "default", scale_jitter := 0.35, additive := false):
 	var tex: Texture2D = brushes[brush_type]
 	if _rot_pool.has(brush_type):
 		var variants: Array = _rot_pool[brush_type]
@@ -120,7 +124,7 @@ func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: 
 		var s := maxi(1, roundi(brush_size * (1.0 + randf_range(-scale_jitter, scale_jitter))))
 		to.blit_rect(
 			Rect2i(roundi(tex_pos.x - s * 0.5), roundi(tex_pos.y - s * 0.5), s, s),
-			tex, color
+			tex, color, 0, _add_mat if additive else null
 		)
 
 	if not first_stroke:
@@ -137,7 +141,7 @@ var prev_stroke
 func use_tool(pos: Vector2):
 	if Hud.active == "Land":
 		draw_at(pos, MapData.val, Color.from_rgba8(91, 162, 31, 255), 25, "smooth")
-		draw_at(pos, MapData.height, Color.from_rgba8(30, 30, 30, 255), 28, "flat")
+		draw_at(pos, MapData.height, Color.from_rgba8(4, 4, 4, 255), 28, "flat", 0.35, true)
 	elif Hud.active == "Mountain":
 		draw_at(pos, MapData.height, Color.GRAY, 20, "mon")
 		draw_at(pos, MapData.val, Color.GRAY, 20)
