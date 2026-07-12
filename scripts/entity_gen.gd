@@ -70,7 +70,7 @@ func trees(x1: int, y1: int, x2: int, y2: int):
 		for y in range(y1, y2):
 			var elevation = MapData.height.get_image().get_pixel(x, y).r
 
-			if elevation < 0.01:
+			if elevation < 0.1:
 				continue
 
 			var color = MapData.val.get_image().get_pixel(x, y)

@@ -22,6 +22,7 @@ const brushes: Dictionary[StringName, Texture2D] = {
 	"mon": preload("res://testing/Illustration.png"),
 	"smooth": preload("res://testing/Smooth.png"),
 	"water": preload("res://testing/water.png"),
+	"average": preload("res://testing/Smooth.png"),
 }
 
 
@@ -95,16 +96,35 @@ func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: 
 		var variants: Array = _rot_pool[brush_type]
 		tex = variants[randi() % variants.size()]
 
-	var s := maxi(1, roundi(brush_size * (1.0 + randf_range(-scale_jitter, scale_jitter))))
-	to.blit_rect(
-		Rect2i(roundi(tex_pos.x - s * 0.5), roundi(tex_pos.y - s * 0.5), s, s),
-		tex, color
-	)
+	if brush_type == "average":
+		var s := maxi(1, roundi(brush_size * (1.0 + randf_range(-scale_jitter, scale_jitter))))
+
+		var img = to.get_image()
+		var sum = Vector3.ZERO
+		var count = 0
+
+		for x in range(roundi(tex_pos.x - s * 0.5), roundi(tex_pos.x + s * 0.5)):
+			for y in range(roundi(tex_pos.y - s * 0.5), roundi(tex_pos.y + s * 0.5)):
+				var val = img.get_pixel(x, y)
+				sum += Vector3(val.r, val.g, val.b)
+				count += 1
+		
+		sum /= count
+
+		to.blit_rect(
+			Rect2i(roundi(tex_pos.x - s * 0.5), roundi(tex_pos.y - s * 0.5), s, s),
+			tex, Color(sum.x, sum.y, sum.z, 0.1)
+		)
+	else:
+		var s := maxi(1, roundi(brush_size * (1.0 + randf_range(-scale_jitter, scale_jitter))))
+		to.blit_rect(
+			Rect2i(roundi(tex_pos.x - s * 0.5), roundi(tex_pos.y - s * 0.5), s, s),
+			tex, color
+		)
 
 	if not first_stroke:
 		first_stroke = Vector4i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5), roundi(tex_pos.x + brush_size * 0.5), roundi(tex_pos.y + brush_size * 0.5))
 	last_stroke = Vector4i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5), roundi(tex_pos.x + brush_size * 0.5), roundi(tex_pos.y + brush_size * 0.5))
-
 
 func stroke(from: Vector2, to: Vector2):
 	for i in range(0, (from - to).length(), 2):
@@ -119,10 +139,14 @@ func use_tool(pos: Vector2):
 		draw_at(pos, MapData.height, Color.from_rgba8(30, 30, 30, 255), 28, "flat")
 	elif Hud.active == "Mountain":
 		draw_at(pos, MapData.height, Color.GRAY, 20, "mon")
-		draw_at(pos, MapData.val, Color.from_rgba8(162, 200, 197, 255), 35)
+		draw_at(pos, MapData.val, Color.GRAY, 20)
 	elif Hud.active == "Water":
 		draw_at(pos, MapData.height, Color.BLACK, 7)
-		draw_at(pos, MapData.val, Color.BLUE, 7, "fuzzy")
+		draw_at(pos, MapData.val, Color.WHITE, 7, "water")
+	elif Hud.active == "Dig":
+		draw_at(pos, MapData.height, Color.from_rgba8(0, 0, 0, 255), 10)
+	elif Hud.active == "Brush":
+		draw_at(pos, MapData.height, Color.BLACK, 7, "average")
 
 func _input(event):
 	if event is InputEventMouseButton:

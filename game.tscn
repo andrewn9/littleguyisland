@@ -111,14 +111,13 @@ script = ExtResource("7_iotsf")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=786883146]
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=622731514]
-visible = false
 material = SubResource("ShaderMaterial_st70h")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="Camera" type="Camera3D" parent="." unique_id=1001981088]
 unique_name_in_owner = true
