@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjm3t228dqjmq"
-path="res://.godot/imported/value.png-647dafa8956772181034419dc92d2166.ctex"
+uid="uid://biumk26axuhrg"
+path="res://.godot/imported/monke1.png-845828fa7c0322aaea8b61b688f33cee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://value.png"
-dest_files=["res://.godot/imported/value.png-647dafa8956772181034419dc92d2166.ctex"]
+source_file="res://ui/monkefolk/monke/monke1.png"
+dest_files=["res://.godot/imported/monke1.png-845828fa7c0322aaea8b61b688f33cee.ctex"]
 
 [params]
 

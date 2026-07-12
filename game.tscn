@@ -2,27 +2,26 @@
 
 [ext_resource type="Script" uid="uid://cba0w7iu3m4ge" path="res://scripts/camera.gd" id="1_80nbo"]
 [ext_resource type="Material" uid="uid://4mc4ktvjal3e" path="res://materials/ocean_water.tres" id="1_iotsf"]
-[ext_resource type="Texture2D" uid="uid://bhovtx1m8jaf3" path="res://height.png" id="2_iotsf"]
 [ext_resource type="Script" uid="uid://du7arglt47vj" path="res://scripts/model.gd" id="3_feb5d"]
-[ext_resource type="Texture2D" uid="uid://cjm3t228dqjmq" path="res://value.png" id="3_lc2xo"]
+[ext_resource type="Texture2D" uid="uid://de2c02rr7iav6" path="res://testing/height.png" id="3_iotsf"]
 [ext_resource type="Shader" uid="uid://yphip34bcg22" path="res://shaders/terrain.gdshader" id="4_fc0e3"]
 [ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://shaders/outline.gdshader" id="5_7jktm"]
 [ext_resource type="Texture2D" uid="uid://binmu0wpak5yr" path="res://testing/sample_height.png" id="5_hve3p"]
-[ext_resource type="Texture2D" uid="uid://veiok4j32p0k" path="res://pencil.jpg" id="6_eow3j"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="6_eow3j"]
+[ext_resource type="Texture2D" uid="uid://ikyxuqwdcus6" path="res://testing/value.png" id="6_iotsf"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
 [ext_resource type="PackedScene" uid="uid://b3x881tg3w600" path="res://entities/folk.res" id="7_hve3p"]
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lc2xo"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-
-[sub_resource type="Sky" id="Sky_215e1"]
-sky_material = SubResource("ProceduralSkyMaterial_lc2xo")
-
 [sub_resource type="Environment" id="Environment_7sc4i"]
-background_mode = 2
-sky = SubResource("Sky_215e1")
+background_mode = 1
+background_color = Color(0.93333334, 1, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lc2xo"]
+material = ExtResource("1_iotsf")
+top_radius = 750.0
+bottom_radius = 750.0
+rings = 1
 
 [sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
 material = ExtResource("1_iotsf")
@@ -57,7 +56,7 @@ gradient = SubResource("Gradient_mountain")
 render_priority = 0
 shader = ExtResource("4_fc0e3")
 shader_parameter/heightmap = ExtResource("5_hve3p")
-shader_parameter/valuemap = ExtResource("3_lc2xo")
+shader_parameter/valuemap = ExtResource("6_iotsf")
 shader_parameter/height_scale = 55.0
 shader_parameter/uv_scale = Vector2(1, 1)
 shader_parameter/texel_size = 0.01
@@ -106,12 +105,12 @@ directional_shadow_max_distance = 3000.0
 
 [node name="Water" type="MeshInstance3D" parent="Island" unique_id=1387438961]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2159195, 3.7860107, -0.39269257)
-mesh = SubResource("QuadMesh_feb5d")
+mesh = SubResource("CylinderMesh_lc2xo")
 
 [node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen", "map_collision")]
 script = ExtResource("3_feb5d")
-Heightmap = ExtResource("2_iotsf")
-Valuemap = ExtResource("3_lc2xo")
+Heightmap = ExtResource("3_iotsf")
+Valuemap = ExtResource("6_iotsf")
 entity_gen = NodePath("../../Entities")
 map_collision = NodePath("InteractionLayer/CollisionShape3D")
 
