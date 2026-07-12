@@ -45,7 +45,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion and (
 			event.button_mask & MOUSE_BUTTON_MASK_MIDDLE
 			or (Input.is_key_pressed(KEY_SPACE)
-				and event.button_mask & MOUSE_BUTTON_MASK_LEFT)):
+				and event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT))):
 		_pan(event.relative)
 	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_RIGHT:
 		_yaw -= event.relative.x * sensitivity
