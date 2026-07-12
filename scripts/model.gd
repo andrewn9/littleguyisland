@@ -49,6 +49,11 @@ func _ready() -> void:
 	geom_shader.set_shader_parameter("height_scale", MapData.HEIGHT_SCALE)
 	geom_shader.set_shader_parameter("texel_size", 1.0/MapData.RESOLUTION)
 
+	geom_shader.set_shader_parameter("land_key", Color.from_rgba8(91, 162, 31))
+	geom_shader.set_shader_parameter("mountain_key", Color.GRAY)
+	geom_shader.set_shader_parameter("water_key", Color.WHITE)
+	geom_shader.set_shader_parameter("base_key", Color.ANTIQUE_WHITE)
+
 	_add_mat.blend_mode = BlitMaterial.BLEND_MODE_ADD
 
 	_bake_rotations()
@@ -141,17 +146,19 @@ var prev_stroke
 func use_tool(pos: Vector2):
 	if Hud.active == "Land":
 		draw_at(pos, MapData.val, Color.from_rgba8(91, 162, 31, 255), 25, "smooth")
-		draw_at(pos, MapData.height, Color.from_rgba8(4, 4, 4, 255), 28, "flat", 0.35, true)
+		draw_at(pos, MapData.height, Color.from_rgba8(2, 2, 2, 255), 28, "flat", 0.35, true)
+		draw_at(pos, MapData.height, Color.BLACK, 40, "average")
 	elif Hud.active == "Mountain":
-		draw_at(pos, MapData.height, Color.GRAY, 20, "mon")
-		draw_at(pos, MapData.val, Color.GRAY, 20)
+		draw_at(pos, MapData.height, Color.from_rgba8(9, 9, 9, 255), 20, "harsh", 0.35, true)
+		draw_at(pos, MapData.height, Color.from_rgba8(4, 4, 4, 60), 3, "mon", 1)
+		draw_at(pos, MapData.val, Color.GRAY, 30)
 	elif Hud.active == "Water":
-		draw_at(pos, MapData.height, Color.BLACK, 7)
-		draw_at(pos, MapData.val, Color.WHITE, 7, "water")
+		draw_at(pos, MapData.height, Color.from_rgba8(0, 0, 0, 255), 10)
+		draw_at(pos, MapData.val, Color.from_rgba8(0, 0, 255, 255), 15, "default")
 	elif Hud.active == "Dig":
 		draw_at(pos, MapData.height, Color.from_rgba8(0, 0, 0, 255), 10)
 	elif Hud.active == "Brush":
-		draw_at(pos, MapData.height, Color.BLACK, 14, "average")
+		draw_at(pos, MapData.height, Color.BLACK, 30, "average")
 
 func _input(event):
 	if event is InputEventMouseButton:

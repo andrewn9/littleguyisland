@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://binmu0wpak5yr" path="res://testing/sample_height.png" id="5_hve3p"]
 [ext_resource type="Texture2D" uid="uid://veiok4j32p0k" path="res://pencil.jpg" id="6_eow3j"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
-[ext_resource type="PackedScene" uid="uid://b3x881tg3w600" path="res://entities/guy.res" id="7_hve3p"]
+[ext_resource type="PackedScene" uid="uid://b3x881tg3w600" path="res://entities/folk.res" id="7_hve3p"]
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
 
 [sub_resource type="Environment" id="env"]
@@ -28,6 +28,28 @@ shading_mode = 0
 albedo_color = Color(0.26385593, 0.8367717, 0.937542, 1)
 heightmap_enabled = true
 
+[sub_resource type="Gradient" id="Gradient_base"]
+offsets = PackedFloat32Array(0, 0.017369727, 0.148, 0.33746898, 0.424)
+colors = PackedColorArray(0.51071817, 0.4587059, 0.24597168, 1, 0.8710238, 0.81594646, 0.59188014, 1, 0.40049234, 0.31145316, 0.20225325, 1, 0.42809203, 0.35243922, 0.25331703, 1, 0.5921569, 0.59607846, 0.5568628, 1)
+
+[sub_resource type="GradientTexture1D" id="Ramp_base"]
+gradient = SubResource("Gradient_base")
+
+[sub_resource type="Gradient" id="Gradient_land"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.074666664, 0.24069479, 0.67741936, 0.99866664)
+colors = PackedColorArray(0.435, 0.682, 0.227, 1, 0.227, 0.455, 0.125, 1, 0.31, 0.565, 0.149, 1, 0.6181531, 0.59702617, 0.25069338, 1)
+
+[sub_resource type="GradientTexture1D" id="Ramp_land"]
+gradient = SubResource("Gradient_land")
+
+[sub_resource type="Gradient" id="Gradient_mountain"]
+offsets = PackedFloat32Array(0.08684864, 0.55831265, 0.728, 0.916, 1)
+colors = PackedColorArray(0.5499435, 0.5521278, 0.35686767, 1, 0.431, 0.416, 0.373, 1, 0.46920556, 0.56858575, 0.56452024, 1, 0.722, 0.71, 0.682, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="Ramp_mountain"]
+gradient = SubResource("Gradient_mountain")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eow3j"]
 render_priority = 0
 shader = ExtResource("4_fc0e3")
@@ -37,6 +59,14 @@ shader_parameter/height_scale = 55.0
 shader_parameter/uv_scale = Vector2(1, 1)
 shader_parameter/texel_size = 0.01
 shader_parameter/near_threshold = 0.5
+shader_parameter/land_ramp = SubResource("Ramp_land")
+shader_parameter/mountain_ramp = SubResource("Ramp_mountain")
+shader_parameter/base_ramp = SubResource("Ramp_base")
+shader_parameter/land_key = Color(0.357, 0.635, 0.122, 1)
+shader_parameter/mountain_key = Color(0.745, 0.745, 0.745, 1)
+shader_parameter/water_key = Color(1, 1, 1, 1)
+shader_parameter/base_key = Color(0.98, 0.92, 0.835, 1)
+shader_parameter/region_sharpness = 6.0
 shader_parameter/wobble_strength = 0.065
 shader_parameter/wobble_speed = 1.3
 shader_parameter/wobble_frequency = 21.895
