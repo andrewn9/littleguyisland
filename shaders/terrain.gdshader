@@ -11,6 +11,17 @@ uniform vec2 uv_scale = vec2(8.0);
 uniform float texel_size;
 uniform float near_threshold = 0.5;
 
+uniform sampler2D land_ramp : source_color, repeat_disable;
+uniform sampler2D mountain_ramp : source_color, repeat_disable;
+uniform sampler2D base_ramp : source_color, repeat_disable;
+
+uniform vec3 land_key : source_color = vec3(0.357, 0.635, 0.122);
+uniform vec3 mountain_key : source_color = vec3(0.745, 0.745, 0.745);
+uniform vec3 water_key : source_color = vec3(1.0, 1.0, 1.0);
+uniform vec3 base_key : source_color = vec3(0.98, 0.92, 0.835);
+
+uniform float region_sharpness : hint_range(1.0, 12.0) = 6.0;
+
 
 // Wobble controls
 uniform float wobble_strength = 0.2;
@@ -73,10 +84,19 @@ void fragment() {
 		if (!nearKept)
 			discard;
 	}
-    ALBEDO = texture(
-        valuemap,
-        UV * uv_scale
-    ).rgb;
+    vec3 v = texture(valuemap, UV * uv_scale).rgb;
+    float e = texture(heightmap, UV).r;
+
+    // pick closest region
+    float wl = 1.0 / pow(distance(v, land_key) + 0.02, region_sharpness);
+    float wm = 1.0 / pow(distance(v, mountain_key) + 0.02, region_sharpness);
+    float wb = 1.0 / pow(distance(v, base_key) + 0.02, region_sharpness);
+
+    ALBEDO = (
+        texture(land_ramp, vec2(e, 0.5)).rgb * wl +
+        texture(mountain_ramp, vec2(e, 0.5)).rgb * wm +
+        texture(base_ramp, vec2(e, 0.5)).rgb * wb
+    ) / (wl + wm + wb);
 
     ROUGHNESS = 0.95;
 }
