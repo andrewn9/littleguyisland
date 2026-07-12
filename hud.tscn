@@ -6,9 +6,54 @@
 [ext_resource type="Texture2D" uid="uid://lcitayowtkq2" path="res://sprites/land.png" id="2_8sq4i"]
 [ext_resource type="Texture2D" uid="uid://c0jlhqyfajxgg" path="res://sprites/river.png" id="3_8sq4i"]
 [ext_resource type="Texture2D" uid="uid://wapp7pqogara" path="res://sprites/shovel.png" id="7_61f8s"]
+[ext_resource type="Texture2D" uid="uid://biumk26axuhrg" path="res://ui/monkefolk/monke/monke1.png" id="8_amv7k"]
 [ext_resource type="Texture2D" uid="uid://cuietiavtp6n6" path="res://sprites/brush.png" id="8_g10ll"]
+[ext_resource type="Texture2D" uid="uid://c33bt3m1sx6x8" path="res://ui/monkefolk/monke/monke2.png" id="9_1fv7p"]
+[ext_resource type="Texture2D" uid="uid://drfvobfl543yf" path="res://ui/monkefolk/monke/monke3.png" id="10_4u2vk"]
+[ext_resource type="Texture2D" uid="uid://d83g2fkmvp2j" path="res://ui/monkefolk/monke/monke4.png" id="11_4q17s"]
+[ext_resource type="Texture2D" uid="uid://wkdlrkbmhy75" path="res://ui/ui/uiwheel.png" id="12_1fv7p"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_st70h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_amv7k")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_1fv7p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_amv7k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_4u2vk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_amv7k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_4q17s")
+}],
+"loop": 1,
+"name": &"talk1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_4q17s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_amv7k")
+}],
+"loop": 1,
+"name": &"talk2",
+"speed": 5.0
+}]
 
 [node name="Hud" type="Control" unique_id=1275586281]
 layout_mode = 3
@@ -35,12 +80,14 @@ offset_transform_enabled = true
 text = "pause/unpause"
 
 [node name="Toolbar" type="GridContainer" parent="CanvasLayer" unique_id=138849330]
-anchors_preset = 2
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 27.0
+offset_left = -319.0
 offset_top = -212.0
-offset_right = 346.0
+grow_horizontal = 0
 grow_vertical = 0
 offset_transform_position_ratio = Vector2(-0.295, 0)
 columns = 3
@@ -87,5 +134,46 @@ offset_transform_enabled = true
 texture_normal = ExtResource("8_g10ll")
 stretch_mode = 0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasLayer" unique_id=1787987901]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1648160815]
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 1.0
+anchor_right = 0.883
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.000008
+grow_horizontal = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasLayer/MarginContainer" unique_id=1787987901]
+position = Vector2(0, -50)
+scale = Vector2(1.5874997, 1.5874997)
 sprite_frames = SubResource("SpriteFrames_st70h")
+animation = &"talk2"
+frame_progress = 0.9505793
+centered = false
+offset = Vector2(0, -40)
+
+[node name="Spinny" type="Control" parent="CanvasLayer" unique_id=130635511]
+custom_minimum_size = Vector2(0, 90)
+custom_maximum_size = Vector2(-1, 720)
+layout_mode = 3
+anchor_top = 0.547
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset_ratio = Vector2(0.5, 0)
+
+[node name="ColorRect" type="TextureRect" parent="CanvasLayer/Spinny" unique_id=1529679700]
+custom_minimum_size = Vector2(-1, -1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+offset_transform_position_ratio = Vector2(0, 0.5)
+texture = ExtResource("12_1fv7p")
+expand_mode = 3
+stretch_mode = 5
