@@ -9,7 +9,7 @@ uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 group_uniforms Lines;
 
 uniform float weight = 0.07;
-uniform float line_thickness : hint_range(0.0, 6.0, 1.0) = 1.0;
+uniform float line_thickness : hint_range(0.0, 6.0) = 1.0;
 uniform vec3 color : source_color;
 uniform float opacity : hint_range(0.0, 1.0, 0.01) = 1.0;
 uniform sampler2D background_texture : hint_default_transparent;

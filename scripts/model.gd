@@ -8,6 +8,7 @@ extends Node3D
 @onready var camera: Camera3D = %Camera
 
 @export var entity_gen: EntityGen
+@export var map_collision: MapCollision
 
 var mouse_position: Vector2
 
@@ -103,8 +104,8 @@ func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: 
 		var sum = Vector3.ZERO
 		var count = 0
 
-		for x in range(roundi(tex_pos.x - s * 0.5), roundi(tex_pos.x + s * 0.5)):
-			for y in range(roundi(tex_pos.y - s * 0.5), roundi(tex_pos.y + s * 0.5)):
+		for x in range(clampi(roundi(tex_pos.x - s * 0.5), 0, MapData.RESOLUTION), clampi(roundi(tex_pos.x + s * 0.5), 0, MapData.RESOLUTION)):
+			for y in range(clampi(roundi(tex_pos.y - s * 0.5), 0, MapData.RESOLUTION), clampi(roundi(tex_pos.y + s * 0.5), 0, MapData.RESOLUTION)):
 				var val = img.get_pixel(x, y)
 				sum += Vector3(val.r, val.g, val.b)
 				count += 1
@@ -146,7 +147,7 @@ func use_tool(pos: Vector2):
 	elif Hud.active == "Dig":
 		draw_at(pos, MapData.height, Color.from_rgba8(0, 0, 0, 255), 10)
 	elif Hud.active == "Brush":
-		draw_at(pos, MapData.height, Color.BLACK, 7, "average")
+		draw_at(pos, MapData.height, Color.BLACK, 14, "average")
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -160,6 +161,7 @@ func _input(event):
 			var min_y = clamp(min(first_stroke.y, first_stroke.w, last_stroke.y, last_stroke.w), 0, MapData.RESOLUTION - 1)
 			var max_y = clamp(max(first_stroke.y, first_stroke.w, last_stroke.y, last_stroke.w), 0, MapData.RESOLUTION - 1)
 			entity_gen.generate(min_x, min_y, max_x, max_y)
+			map_collision.update()
 			first_stroke = null
 	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
 		if not prev_stroke:

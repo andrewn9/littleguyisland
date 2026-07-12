@@ -49,11 +49,11 @@ map_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_st70h"]
 shader = ExtResource("5_7jktm")
 shader_parameter/weight = 0.07
-shader_parameter/line_thickness = 1.0
+shader_parameter/line_thickness = 0.478000022705
 shader_parameter/color = Color(0, 0, 0, 1)
 shader_parameter/opacity = 0.999999977648
 shader_parameter/scale = Vector2(200, 200)
-shader_parameter/strength = 1.56
+shader_parameter/strength = 0.1
 shader_parameter/fps = 2.0
 shader_parameter/noise = ExtResource("6_eow3j")
 
@@ -73,9 +73,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2159195, 3.7860107, -0.3926
 mesh = SubResource("QuadMesh_feb5d")
 surface_material_override/0 = SubResource("StandardMaterial3D_st70h")
 
-[node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen")]
+[node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen", "map_collision")]
 script = ExtResource("3_feb5d")
 entity_gen = NodePath("../../Entities")
+map_collision = NodePath("InteractionLayer/CollisionShape3D")
 
 [node name="Geometry" type="MeshInstance3D" parent="Island/Model" unique_id=1044236274]
 unique_name_in_owner = true
@@ -89,9 +90,6 @@ unique_name_in_owner = true
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Island/Model/InteractionLayer" unique_id=854433624]
 shape = SubResource("HeightMapShape3D_215e1")
 script = ExtResource("6_mfdv2")
-
-[node name="CSGSphere3D" type="CSGCylinder3D" parent="Island" unique_id=749472182]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.446134, 26.075766)
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=2010596024]
 scale = Vector2(0.33, 0.33)
@@ -124,7 +122,7 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.9453799, 0.32597074, 0, -0.32597074, 0.9453799, 0, 79.671, 208.238)
 projection = 1
 script = ExtResource("1_80nbo")
-zoom_step = 8.0
+zoom_step = 16.0
 orthographic_size = 400.0
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera" unique_id=921282201]
