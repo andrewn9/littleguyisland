@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cba0w7iu3m4ge" path="res://scripts/camera.gd" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://bjyydtgntx0kv" path="res://game.gd" id="1_feb5d"]
+[ext_resource type="Material" uid="uid://4mc4ktvjal3e" path="res://materials/ocean_water.tres" id="2_iotsf"]
 [ext_resource type="Script" uid="uid://du7arglt47vj" path="res://scripts/model.gd" id="3_feb5d"]
 [ext_resource type="Shader" uid="uid://yphip34bcg22" path="res://shaders/terrain.gdshader" id="4_fc0e3"]
 [ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://shaders/outline.gdshader" id="5_7jktm"]
@@ -12,21 +13,23 @@
 [ext_resource type="PackedScene" uid="uid://b3x881tg3w600" path="res://entities/folk.res" id="7_hve3p"]
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
 
-[sub_resource type="Environment" id="env"]
-background_mode = 1
-background_color = Color(0.76392156, 0.8541025, 0.87759906, 1)
-background_energy_multiplier = 1.1
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lc2xo"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_215e1"]
+sky_material = SubResource("ProceduralSkyMaterial_lc2xo")
+
+[sub_resource type="Environment" id="Environment_7sc4i"]
+background_mode = 2
+sky = SubResource("Sky_215e1")
 
 [sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
+material = ExtResource("2_iotsf")
 size = Vector2(1500, 1500)
-subdivide_width = 49
-subdivide_depth = 49
+subdivide_width = 255
+subdivide_depth = 255
 orientation = 1
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_st70h"]
-shading_mode = 0
-albedo_color = Color(0.26385593, 0.8367717, 0.937542, 1)
-heightmap_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_base"]
 offsets = PackedFloat32Array(0, 0.017369727, 0.148, 0.33746898, 0.424)
@@ -90,18 +93,17 @@ shader_parameter/noise = ExtResource("6_eow3j")
 [node name="Game" type="Node3D" unique_id=556122064]
 script = ExtResource("1_feb5d")
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1294957651]
+environment = SubResource("Environment_7sc4i")
+
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=34043254]
 transform = Transform3D(0.87758255, 0.37554693, -0.2980157, 0, 0.62161, 0.7833269, 0.47942555, -0.687434, 0.54551405, 0, 0, 0)
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=145169130]
-environment = SubResource("env")
 
 [node name="Island" type="Node" parent="." unique_id=847606793]
 
 [node name="Water" type="MeshInstance3D" parent="Island" unique_id=1387438961]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2159195, 3.7860107, -0.39269257)
 mesh = SubResource("QuadMesh_feb5d")
-surface_material_override/0 = SubResource("StandardMaterial3D_st70h")
 
 [node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen", "map_collision")]
 script = ExtResource("3_feb5d")
