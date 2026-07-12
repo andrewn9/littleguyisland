@@ -72,8 +72,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2159195, -35.968384, -0.392
 mesh = SubResource("QuadMesh_feb5d")
 surface_material_override/0 = SubResource("StandardMaterial3D_st70h")
 
-[node name="Model" type="Node3D" parent="Island" unique_id=1558068165]
+[node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen")]
 script = ExtResource("3_feb5d")
+entity_gen = NodePath("../../Entities")
 
 [node name="Geometry" type="MeshInstance3D" parent="Island/Model" unique_id=1044236274]
 unique_name_in_owner = true

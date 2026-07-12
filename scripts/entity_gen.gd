@@ -1,4 +1,4 @@
-extends Node
+class_name EntityGen extends Node
 
 var tree = preload("res://entities/trees/tree.res")
 var mountain = preload("res://entities/mountains/mountain.res")
@@ -63,26 +63,23 @@ func _ready():
 	for i in range(MapData.RESOLUTION * MapData.RESOLUTION):
 		tree_noise.append(rng.randf())
 	
-	trees()
-	mountains()
+	generate(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 
-func trees():
+func trees(x1: int, y1: int, x2: int, y2: int):
+	for x in range(x1, x2):
+		for y in range(y1, y2):
+			var elevation = MapData.height.get_image().get_pixel(x, y).r
 
-
-	for x in range(MapData.RESOLUTION):
-		for y in range(MapData.RESOLUTION):
-			var height = MapData.height.get_image().get_pixel(x, y).r
-
-			if height < 0.1:
+			if elevation < 0.01:
 				continue
 
 			var color = MapData.val.get_image().get_pixel(x, y)
 			var cluster_val = tree_cluster.get_image().get_pixel(x, y).r
 			var white_val = tree_noise[x * MapData.RESOLUTION + y]
 
-			var diff = color - Color(0.1294, 0.698, 0.2902)
+			var diff = color - Color(0, 1, 0)
 
-			if white_val > 0.998 || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.16 && (white_val > 0.95 && white_val * cluster_val > 0.5):
+			if white_val > 0.995 || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.16 && (white_val > 0.95 && white_val * cluster_val > 0.5):
 				var ent = pick_random_scene("res://entities/trees/").instantiate() as Entity
 
 				ent.pos = Vector2(x, y)
@@ -91,14 +88,19 @@ func trees():
 				add_child(ent)
 				continue
 
-func mountains():
-	for x in range(MapData.RESOLUTION):
-		for y in range(MapData.RESOLUTION):
+func mountains(x1: int, y1: int, x2: int, y2: int):
+	for x in range(x1, x2):
+		for y in range(y1, y2):
+			var elevation = MapData.height.get_image().get_pixel(x, y).r
+
+			if elevation < 0.3:
+				continue
+			
 			var cluster_val = mountain_cluster.get_image().get_pixel(x, y).r
 			var white_val = mountain_noise[x * MapData.RESOLUTION + y]
 
-			if white_val * cluster_val > 0.3 && white_val > 0.998:
-				var diff = MapData.val.get_image().get_pixel(x, y) - Color(0.4941, 0.502, 0.4941)
+			if white_val * cluster_val > 0.3 && white_val > 0.995:
+				var diff = MapData.val.get_image().get_pixel(x, y) - Color.GRAY
 				if Vector3(diff.r, diff.g, diff.b).length_squared() > 0.16:
 					continue
 
@@ -112,8 +114,11 @@ func mountains():
 				add_child(ent)
 				continue
 
-
-
-
-		
-
+func generate(x1: int, y1: int, x2: int, y2: int):
+	for child: Node3D in get_children():
+		var x_pos = (child.position.x + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
+		var y_pos = (child.position.z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
+		if x_pos > x1 and y_pos > y1 and x_pos< x2 and y_pos < y2:
+			child.queue_free()
+	trees(x1, y1, x2, y2)
+	mountains(x1, y1, x2, y2)

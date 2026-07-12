@@ -7,12 +7,17 @@ extends Node3D
 @onready var raycast: RayCast3D = %RayCast3D
 @onready var camera: Camera3D = %Camera
 
+@export var entity_gen: EntityGen
+
 var mouse_position: Vector2
 
 const brushes: Dictionary[StringName, Texture2D] = {
 	"default": preload("res://testing/brush.tres"),
 	"harsh": preload("res://testing/harsher brush.tres"),
 }
+
+var first_stroke = null
+var last_stroke = null
 
 func _ready() -> void:
 	var quad = QuadMesh.new()
@@ -45,6 +50,11 @@ func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: 
 		brushes[brush_type], color
 	)
 
+	if not first_stroke:
+		first_stroke = Vector4i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5), roundi(tex_pos.x + brush_size * 0.5), roundi(tex_pos.y + brush_size * 0.5))
+	last_stroke = Vector4i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5), roundi(tex_pos.x + brush_size * 0.5), roundi(tex_pos.y + brush_size * 0.5))
+
+
 func stroke(from: Vector2, to: Vector2):
 	for i in range(0, (from - to).length(), 2):
 		use_tool(from + (to - from).limit_length(i))
@@ -69,6 +79,13 @@ func _input(event):
 			prev_stroke = project_screen_pos(event.position)
 			if prev_stroke:
 				use_tool(prev_stroke)
+		if not event.pressed and first_stroke:
+			var min_x = clamp(min(first_stroke.x, first_stroke.z, last_stroke.x, last_stroke.z), 0, MapData.RESOLUTION - 1)
+			var max_x = clamp(max(first_stroke.x, first_stroke.z, last_stroke.x, last_stroke.z), 0, MapData.RESOLUTION - 1)
+			var min_y = clamp(min(first_stroke.y, first_stroke.w, last_stroke.y, last_stroke.w), 0, MapData.RESOLUTION - 1)
+			var max_y = clamp(max(first_stroke.y, first_stroke.w, last_stroke.y, last_stroke.w), 0, MapData.RESOLUTION - 1)
+			entity_gen.generate(min_x, min_y, max_x, max_y)
+			first_stroke = null
 	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
 		if not prev_stroke:
 			prev_stroke = project_screen_pos(event.position)
