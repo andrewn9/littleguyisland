@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://wapp7pqogara" path="res://sprites/shovel.png" id="7_61f8s"]
 [ext_resource type="Texture2D" uid="uid://cuietiavtp6n6" path="res://sprites/brush.png" id="8_g10ll"]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_st70h"]
+
 [node name="Hud" type="Control" unique_id=1275586281]
 layout_mode = 3
 anchors_preset = 15
@@ -84,3 +86,6 @@ layout_mode = 2
 offset_transform_enabled = true
 texture_normal = ExtResource("8_g10ll")
 stretch_mode = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasLayer" unique_id=1787987901]
+sprite_frames = SubResource("SpriteFrames_st70h")
