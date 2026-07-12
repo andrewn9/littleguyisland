@@ -16,35 +16,44 @@
 background_mode = 1
 background_color = Color(0.76392156, 0.8541025, 0.87759906, 1)
 
-[sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
-size = Vector2(1500, 1500)
-subdivide_width = 256
-subdivide_depth = 256
-orientation = 1
+[sub_resource type="CylinderMesh" id="WaterDisc_feb5d"]
+flip_faces = true
+top_radius = 750.0
+bottom_radius = 750.0
+height = 1.0
+radial_segments = 96
+rings = 1
+cap_top = false
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_st70h"]
 shading_mode = 2
 albedo_color = Color(0.26385593, 0.8367717, 0.937542, 1)
 heightmap_enabled = true
 
+[sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
+size = Vector2(1500, 1500)
+subdivide_width = 256
+subdivide_depth = 256
+orientation = 1
+
 [sub_resource type="Gradient" id="Gradient_base"]
-offsets = PackedFloat32Array(0, 0.017369727, 0.148, 0.33746898, 0.424)
-colors = PackedColorArray(0.51071817, 0.4587059, 0.24597168, 1, 0.8710238, 0.81594646, 0.59188014, 1, 0.40049234, 0.31145316, 0.20225325, 1, 0.42809203, 0.35243922, 0.25331703, 1, 0.5921569, 0.59607846, 0.5568628, 1)
+offsets = PackedFloat32Array(0, 0.012861736, 0.148, 0.33746898, 0.424)
+colors = PackedColorArray(0.51071817, 0.4587059, 0.24597168, 1, 0.8710238, 0.81594646, 0.59188014, 1, 0.39280102, 0.311866, 0.239211, 1, 0.3033784, 0.38564712, 0.37905386, 1, 0.5921569, 0.59607846, 0.5568628, 1)
 
 [sub_resource type="GradientTexture1D" id="Ramp_base"]
 gradient = SubResource("Gradient_base")
 
 [sub_resource type="Gradient" id="Gradient_land"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0.074666664, 0.24069479, 0.67741936, 0.99866664)
+offsets = PackedFloat32Array(0.035369776, 0.24069479, 0.67741936, 0.99866664)
 colors = PackedColorArray(0.435, 0.682, 0.227, 1, 0.227, 0.455, 0.125, 1, 0.31, 0.565, 0.149, 1, 0.6181531, 0.59702617, 0.25069338, 1)
 
 [sub_resource type="GradientTexture1D" id="Ramp_land"]
 gradient = SubResource("Gradient_land")
 
 [sub_resource type="Gradient" id="Gradient_mountain"]
-offsets = PackedFloat32Array(0.08684864, 0.55831265, 0.728, 0.916, 1)
-colors = PackedColorArray(0.5499435, 0.5521278, 0.35686767, 1, 0.431, 0.416, 0.373, 1, 0.46920556, 0.56858575, 0.56452024, 1, 0.722, 0.71, 0.682, 1, 1, 1, 1, 1)
+offsets = PackedFloat32Array(0.11821086, 0.21864952, 0.55948555, 0.728, 0.916, 1)
+colors = PackedColorArray(0.734526, 0.66897655, 0.45563442, 1, 0.356075, 0.46765375, 0.38742024, 1, 0.28627452, 0.41568628, 0.37254903, 1, 0.46920556, 0.56858575, 0.56452024, 1, 0.722, 0.71, 0.682, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="Ramp_mountain"]
 gradient = SubResource("Gradient_mountain")
@@ -61,7 +70,7 @@ shader_parameter/near_threshold = 0.5
 shader_parameter/land_ramp = SubResource("Ramp_land")
 shader_parameter/mountain_ramp = SubResource("Ramp_mountain")
 shader_parameter/base_ramp = SubResource("Ramp_base")
-shader_parameter/land_key = Color(0.357, 0.635, 0.122, 1)
+shader_parameter/land_key = Color(0.25490198, 0.94509804, 0.08627451, 1)
 shader_parameter/mountain_key = Color(0.745, 0.745, 0.745, 1)
 shader_parameter/water_key = Color(1, 1, 1, 1)
 shader_parameter/base_key = Color(0.98, 0.92, 0.835, 1)
@@ -91,6 +100,9 @@ shader_parameter/noise = ExtResource("6_eow3j")
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=34043254]
 transform = Transform3D(0.87758255, 0.37554693, -0.2980157, 0, 0.62161, 0.7833269, 0.47942555, -0.687434, 0.54551405, 0, 0, 0)
 shadow_enabled = true
+shadow_blur = 0.2
+directional_shadow_mode = 0
+directional_shadow_max_distance = 3000.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=145169130]
 environment = SubResource("env")
@@ -99,7 +111,7 @@ environment = SubResource("env")
 
 [node name="Water" type="MeshInstance3D" parent="Island" unique_id=1387438961]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2159195, 3.7860107, -0.39269257)
-mesh = SubResource("QuadMesh_feb5d")
+mesh = SubResource("WaterDisc_feb5d")
 surface_material_override/0 = SubResource("StandardMaterial3D_st70h")
 
 [node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen", "map_collision")]
@@ -128,6 +140,7 @@ transform = Transform2D(0.33, 0, 0, 0.33, 0, 0)
 
 [node name="Debug" type="VFlowContainer" parent="CanvasLayer2" unique_id=1814383400]
 unique_name_in_owner = true
+visible = false
 anchors_preset = 9
 anchor_bottom = 1.0
 grow_vertical = 2
@@ -135,9 +148,14 @@ grow_vertical = 2
 [node name="Entities" type="Node" parent="." unique_id=2001399486]
 script = ExtResource("7_iotsf")
 
+[node name="Sprite3D2" parent="Entities" unique_id=455084091 instance=ExtResource("7_hve3p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 127.66028, 26.967438, 0)
+pixel_size = 0.207
+
 [node name="Sprite3D" parent="Entities" unique_id=1712821898 instance=ExtResource("7_hve3p")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=786883146]
+layer = 0
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=622731514]
 material = SubResource("ShaderMaterial_st70h")
@@ -157,6 +175,7 @@ zoom_step = 40.0
 zoom_ramp_speed = 16.045
 orthographic_size = 389.83
 max_orthographic_size = 1200
+max_angle = 1.065
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera" unique_id=921282201]
 unique_name_in_owner = true

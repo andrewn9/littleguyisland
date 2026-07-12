@@ -6,6 +6,7 @@ var state: FolkState = FolkState.IDLE
 
 func _ready() -> void:
 	state = FolkState.IDLE
+	target_pos = pos
 
 func tick():
 	print("IM HUNGRY")

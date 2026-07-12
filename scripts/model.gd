@@ -169,10 +169,10 @@ var prev_stroke
 func use_tool(pos: Vector2):
 	if Hud.active == "Land":
 		draw_at(pos, MapData.val, Color.from_rgba8(91, 162, 31, 40), 25, "smooth")
-		draw_at(pos, MapData.height, Color.from_rgba8(2, 2, 2, 255), 28, "flat", 0.35, true)
+		draw_at(pos, MapData.height, Color.from_rgba8(1, 2, 2, 255), 28, "flat", 0.35, true)
 		draw_at(pos, MapData.height, Color.BLACK, 40, "average")
 	elif Hud.active == "Mountain":
-		draw_at(pos, MapData.height, Color.from_rgba8(9, 9, 9, 255), 20, "harsh", 0.35, true)
+		draw_at(pos, MapData.height, Color.from_rgba8(9, 9, 9, 255), 22, "harsh", 0.35, true)
 		draw_at(pos, MapData.height, Color.from_rgba8(4, 4, 4, 60), 3, "mon", 1)
 		draw_at(pos, MapData.val, Color.GRAY, 30)
 	elif Hud.active == "Water":
@@ -184,6 +184,8 @@ func use_tool(pos: Vector2):
 		draw_at(pos, MapData.height, Color.BLACK, 30, "average")
 
 func _input(event):
+	if Input.is_key_pressed(KEY_SPACE):
+		return  # space = camera pan, don't paint
 	if event is InputEventMouseButton:
 		if event.button_mask & MOUSE_BUTTON_MASK_LEFT and event.pressed:
 			prev_stroke = project_screen_pos(event.position)
