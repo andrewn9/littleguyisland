@@ -1,5 +1,4 @@
 shader_type spatial;
-render_mode vertex_lighting;
 
 //#include "includes/vertex_wobble.gdshaderinc"
 
@@ -75,6 +74,10 @@ void vertex() {
 
 
 void fragment() {
+	// circular map: everything outside the inscribed circle doesn't exist
+	if (distance(UV, vec2(0.5)) > 0.5) {
+		discard;
+	}
 	if (height(UV) < near_threshold) {
 	    bool nearKept =
 	        height(UV + vec2(-texel_size, 0.0)) >= near_threshold ||

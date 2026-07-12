@@ -2,23 +2,31 @@ extends Camera3D
 
 @export var sensitivity := 0.005
 @export var zoom_step := 2.0
-
+@export var zoom_ramp_speed := 8.0  # snappiness
 @export var perspective_distance := 50.0
 @export var orthographic_size := 25.0
+@export var max_orthographic_size := 840
+@export var max_angle := 0.6
 
 var _yaw := 0.0
 var _elev := 0.5
-
+var _target_orthographic_size := orthographic_size
 const ORTHO_DISTANCE := 400.0
 var start_tween: PropertyTweener
+
+var pan_offset := Vector3.ZERO
+
 func _ready() -> void:
 	var target = orthographic_size
 	orthographic_size = 1
+	_target_orthographic_size = target
 	_update_camera()
 	near = -2000
 	start_tween = get_tree().create_tween().tween_property(self, "orthographic_size", target, 1.0).set_trans(Tween.TRANS_QUAD)
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	var t := 1.0 - pow(2.0, -zoom_ramp_speed * delta)
+	orthographic_size = lerp(orthographic_size, _target_orthographic_size, t)
 	_update_camera()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -26,22 +34,35 @@ func _unhandled_input(event: InputEvent) -> void:
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_UP:
 				if projection == PROJECTION_ORTHOGONAL:
-					orthographic_size = max(1.0, orthographic_size - zoom_step)
+					_target_orthographic_size = max(1.0, _target_orthographic_size - zoom_step)
 				else:
 					perspective_distance = max(perspective_distance - zoom_step, 8.0)
-				_update_camera()
-
 			MOUSE_BUTTON_WHEEL_DOWN:
 				if projection == PROJECTION_ORTHOGONAL:
-					orthographic_size += zoom_step
+					_target_orthographic_size = min(_target_orthographic_size + zoom_step, max_orthographic_size)
 				else:
 					perspective_distance = max(perspective_distance + zoom_step, 8.0)
-				_update_camera()
-
+	elif event is InputEventMouseMotion and (
+			event.button_mask & MOUSE_BUTTON_MASK_MIDDLE
+			or (Input.is_key_pressed(KEY_SPACE)
+				and event.button_mask & MOUSE_BUTTON_MASK_LEFT)):
+		_pan(event.relative)
 	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_RIGHT:
 		_yaw -= event.relative.x * sensitivity
-		_elev = clampf(_elev + event.relative.y * sensitivity, 0.1, 0.6)
-		_update_camera()
+		_elev = clampf(_elev + event.relative.y * sensitivity, 0.1, max_angle)
+
+
+func _pan(relative: Vector2) -> void:
+	var wpp := orthographic_size / float(get_viewport().get_visible_rect().size.y)
+	var right := global_transform.basis.x
+	var fwd := -global_transform.basis.z
+	fwd.y = 0.0
+	fwd = fwd.normalized()
+	pan_offset -= right * relative.x * wpp
+	pan_offset += fwd * relative.y * wpp / maxf(sin(_elev), 0.2)
+	var limit := MapData.WORLD_SIZE * 0.5
+	pan_offset.x = clampf(pan_offset.x, -limit, limit)
+	pan_offset.z = clampf(pan_offset.z, -limit, limit)
 
 func _update_camera() -> void:
 	var direction := Vector3(
@@ -49,9 +70,8 @@ func _update_camera() -> void:
 		sin(_elev),
 		cos(_yaw) * cos(_elev)
 	)
-
 	if projection == PROJECTION_ORTHOGONAL:
 		size = orthographic_size
-		look_at_from_position(direction * ORTHO_DISTANCE, Vector3.ZERO, Vector3.UP)
+		look_at_from_position(pan_offset + direction * ORTHO_DISTANCE, pan_offset, Vector3.UP)
 	else:
-		look_at_from_position(direction * perspective_distance, Vector3.ZERO, Vector3.UP)
+		look_at_from_position(pan_offset + direction * perspective_distance, pan_offset, Vector3.UP)

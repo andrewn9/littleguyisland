@@ -1,7 +1,10 @@
-extends Node3D
+class_name Model extends Node3D
 
-@export var threshold := 0.5
+@export_group("Initial Map")
+@export var Heightmap: Texture2D
+@export var Valuemap: Texture2D
 
+@export_group("")
 @onready var geometry = $Geometry
 
 @onready var raycast: RayCast3D = %RayCast3D
@@ -26,7 +29,6 @@ const brushes: Dictionary[StringName, Texture2D] = {
 	"average": preload("res://testing/Smooth.png"),
 }
 
-
 const ROT_VARIANTS := 12
 var _rot_pool: Dictionary = {}  # brush_type -> Array[ImageTexture]
 
@@ -38,8 +40,8 @@ var last_stroke = null
 func _ready() -> void:
 	var quad = QuadMesh.new()
 	quad.size = Vector2i(MapData.WORLD_SIZE, MapData.WORLD_SIZE)
-	quad.subdivide_width = 256
-	quad.subdivide_depth = 256
+	quad.subdivide_width = MapData.RESOLUTION
+	quad.subdivide_depth = MapData.RESOLUTION
 	quad.orientation = PlaneMesh.FACE_Y
 	geometry.mesh = quad.duplicate()
 
@@ -57,6 +59,24 @@ func _ready() -> void:
 	_add_mat.blend_mode = BlitMaterial.BLEND_MODE_ADD
 
 	_bake_rotations()
+	
+	for tex in MapData.layers.values():
+		var ui = TextureRect.new()
+		ui.texture = tex
+		%Debug.add_child(ui)
+	
+	if Heightmap:
+		MapData.height.blit_rect(
+			Rect2i(0, 0, MapData.RESOLUTION, MapData.RESOLUTION),
+			Heightmap
+		)
+	if Valuemap:
+		MapData.val.blit_rect(
+			Rect2i(0, 0, MapData.RESOLUTION, MapData.RESOLUTION),
+			Valuemap
+		)
+	
+	Game.model = self
 
 var drawing := false
 
@@ -101,6 +121,9 @@ func _rotate_tex(src: Image, angle: float) -> ImageTexture:
 	return ImageTexture.create_from_image(out)
 
 func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: int, brush_type := "default", scale_jitter := 0.35, additive := false):
+	var island_mult = 0.35
+	brush_size *= island_mult
+	
 	var tex: Texture2D = brushes[brush_type]
 	if _rot_pool.has(brush_type):
 		var variants: Array = _rot_pool[brush_type]
@@ -145,11 +168,11 @@ var prev_stroke
 
 func use_tool(pos: Vector2):
 	if Hud.active == "Land":
-		draw_at(pos, MapData.val, Color.from_rgba8(91, 162, 31, 255), 25, "smooth")
-		draw_at(pos, MapData.height, Color.from_rgba8(2, 2, 2, 255), 28, "flat", 0.35, true)
+		draw_at(pos, MapData.val, Color.from_rgba8(91, 162, 31, 40), 25, "smooth")
+		draw_at(pos, MapData.height, Color.from_rgba8(1, 2, 2, 255), 28, "flat", 0.35, true)
 		draw_at(pos, MapData.height, Color.BLACK, 40, "average")
 	elif Hud.active == "Mountain":
-		draw_at(pos, MapData.height, Color.from_rgba8(9, 9, 9, 255), 20, "harsh", 0.35, true)
+		draw_at(pos, MapData.height, Color.from_rgba8(9, 9, 9, 255), 22, "harsh", 0.35, true)
 		draw_at(pos, MapData.height, Color.from_rgba8(4, 4, 4, 60), 3, "mon", 1)
 		draw_at(pos, MapData.val, Color.GRAY, 30)
 	elif Hud.active == "Water":
@@ -161,6 +184,8 @@ func use_tool(pos: Vector2):
 		draw_at(pos, MapData.height, Color.BLACK, 30, "average")
 
 func _input(event):
+	if Input.is_key_pressed(KEY_SPACE):
+		return  # space = camera pan, don't paint
 	if event is InputEventMouseButton:
 		if event.button_mask & MOUSE_BUTTON_MASK_LEFT and event.pressed:
 			prev_stroke = project_screen_pos(event.position)
