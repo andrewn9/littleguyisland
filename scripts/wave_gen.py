@@ -6,7 +6,7 @@ a = 0.7
 f = 0.005
 s = 0.1
 
-count = 128
+count = 32
 
 os.system("cls")
 

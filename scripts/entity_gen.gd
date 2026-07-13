@@ -61,6 +61,7 @@ func _ready():
 		tree_noise.append(rng.randf())
 	
 	trees(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
+	mountains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 
 func trees(x1: int, y1: int, x2: int, y2: int):
 	var height_map = MapData.height.get_image()
@@ -86,7 +87,7 @@ func trees(x1: int, y1: int, x2: int, y2: int):
 				ent.pos = Vector2(x, y)
 				ent.scale = Vector3.ONE * rng.randf_range(0.3, 0.8)
 
-				add_child(ent)
+				
 				continue
 
 func mountains(x1: int, y1: int, x2: int, y2: int):
@@ -131,4 +132,4 @@ func spawn_person(x: int, y: int):
 	var ent = load("res://entities/folk.res").instantiate() as Entity
 	ent.pos = Vector2(x, y)
 	ent.name = "Folk"
-	add_child(ent)
+	

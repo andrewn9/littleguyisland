@@ -17,6 +17,7 @@
 [sub_resource type="Environment" id="Environment_7sc4i"]
 background_mode = 1
 background_color = Color(0.93333334, 1, 1, 1)
+glow_enabled = true
 
 [sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
 size = Vector2(1500, 1500)
@@ -90,15 +91,13 @@ environment = SubResource("Environment_7sc4i")
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=34043254]
 transform = Transform3D(0.87758255, 0.37554693, -0.2980157, 0, 0.62161, 0.7833269, 0.47942555, -0.687434, 0.54551405, 0, 0, 0)
 shadow_enabled = true
-shadow_bias = 1.0
-shadow_normal_bias = 3.0
 directional_shadow_mode = 0
 directional_shadow_max_distance = 3000.0
 
 [node name="Island" type="Node" parent="." unique_id=847606793]
 
 [node name="Water" type="MeshInstance3D" parent="Island" unique_id=1387438961]
-transform = Transform3D(750, 0, 0, 0, 750, 0, 0, 0, 750, 0, 6.235306, 0)
+transform = Transform3D(750, 0, 0, 0, 750, 0, 0, 0, 750, 0, 14.235306, 0)
 mesh = ExtResource("1_lc2xo")
 surface_material_override/0 = ExtResource("1_iotsf")
 
