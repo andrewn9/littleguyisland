@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://luhiju1jmkk6"
-path.s3tc="res://.godot/imported/1height.png-8f6e2b5f4a703eac2ee832e3f18eda83.s3tc.ctex"
+uid="uid://c5eyxiffpauss"
+path.s3tc="res://.godot/imported/clouds5.png-3fdf58e39a3ade566ffa878c019c9a49.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://testing/1height.png"
-dest_files=["res://.godot/imported/1height.png-8f6e2b5f4a703eac2ee832e3f18eda83.s3tc.ctex"]
+source_file="res://sprites/clouds/clouds5.png"
+dest_files=["res://.godot/imported/clouds5.png-3fdf58e39a3ade566ffa878c019c9a49.s3tc.ctex"]
 
 [params]
 

@@ -77,7 +77,6 @@ func _ready() -> void:
 			Rect2i(0, 0, MapData.RESOLUTION, MapData.RESOLUTION),
 			Valuemap
 		)
-	
 	Game.model = self
 
 var drawing := false
@@ -179,11 +178,11 @@ var prev_stroke
 func use_tool(pos: Vector2):
 	if Hud.active.name == "Land":
 		draw_at(pos, MapData.val, Color.from_rgba8(91, 162, 31, 40), 25, "smooth")
-		draw_at(pos, MapData.height, Color.from_rgba8(1, 2, 2, 255), 28, "flat", 0.35, true)
-		draw_at(pos, MapData.height, Color.BLACK, 40, "average")
+		draw_at(pos, MapData.height, Color.from_rgba8(1, 2, 2, 255), 28, "harsh", 0.35, true)
+		draw_at(pos, MapData.height, Color.from_rgba8(50, 50, 50, 255), 25, "average")
 	elif Hud.active.name == "Mountain":
-		draw_at(pos, MapData.height, Color.from_rgba8(9, 9, 9, 255), 22, "harsh", 0.35, true)
-		draw_at(pos, MapData.height, Color.from_rgba8(4, 4, 4, 60), 3, "mon", 1)
+		draw_at(pos, MapData.height, Color.from_rgba8(2, 2, 2, 5), 22, "harsh", 0.35, true)
+		draw_at(pos, MapData.height, Color.from_rgba8(4, 4, 4, 4), 22, "mon", 1)
 		draw_at(pos, MapData.val, Color.GRAY, 30)
 	elif Hud.active.name == "Water":
 		draw_at(pos, MapData.height, Color.from_rgba8(0, 0, 0, 255), 10)
