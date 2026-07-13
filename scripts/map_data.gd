@@ -10,7 +10,7 @@ var height : DrawableTexture2D
 var height_img : Image
 var val_img : Image
 
-var GRASS_KEY: Color = Color(0.36, 0.64, 0.12)
+var GRASS_KEY: Color = Color.from_rgba8(85, 130, 0, 255)
 var MOUNTAIN_KEY: Color = Color.GRAY
 
 var layers : Dictionary = {}
