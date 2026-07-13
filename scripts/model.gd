@@ -191,7 +191,7 @@ func use_tool(pos: Vector2):
 	elif Hud.active.name == "Brush":
 		draw_at(pos, MapData.height, Color.BLACK, 30, "average")
 
-func _input(event):
+func _unhandled_input(event):
 	if Input.is_key_pressed(KEY_SPACE):
 		return  # space = camera pan, don't paint
 	if event is InputEventMouseButton:
