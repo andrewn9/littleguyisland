@@ -90,14 +90,15 @@ environment = SubResource("Environment_7sc4i")
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=34043254]
 transform = Transform3D(0.87758255, 0.37554693, -0.2980157, 0, 0.62161, 0.7833269, 0.47942555, -0.687434, 0.54551405, 0, 0, 0)
 shadow_enabled = true
-shadow_blur = 0.2
+shadow_bias = 1.0
+shadow_normal_bias = 3.0
 directional_shadow_mode = 0
 directional_shadow_max_distance = 3000.0
 
 [node name="Island" type="Node" parent="." unique_id=847606793]
 
 [node name="Water" type="MeshInstance3D" parent="Island" unique_id=1387438961]
-transform = Transform3D(750, 0, 0, 0, 750, 0, 0, 0, 750, 0, 0, 0)
+transform = Transform3D(750, 0, 0, 0, 750, 0, 0, 0, 750, 0, 6.235306, 0)
 mesh = ExtResource("1_lc2xo")
 surface_material_override/0 = ExtResource("1_iotsf")
 
@@ -110,7 +111,7 @@ map_collision = NodePath("InteractionLayer/CollisionShape3D")
 
 [node name="Geometry" type="MeshInstance3D" parent="Island/Model" unique_id=1044236274]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10795975, 0, -0.19634628)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10795975, -5.0876846, -0.19634628)
 mesh = SubResource("QuadMesh_feb5d")
 surface_material_override/0 = SubResource("ShaderMaterial_eow3j")
 
