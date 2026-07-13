@@ -5,6 +5,7 @@ const PROP_MAT = preload("res://materials/prop.tres")
 
 
 var rng = RandomNumberGenerator.new()
+var rng2 = RandomNumberGenerator.new()
 
 var mountain_cluster := NoiseTexture2D.new()
 var mountain_noise: PackedFloat32Array = []
@@ -81,7 +82,6 @@ func _ready():
 		await mountain_cluster.changed
 
 	rng.seed = hash("mountains")
-	rng.state = 0
 
 	for i in range(MapData.RESOLUTION * MapData.RESOLUTION):
 		mountain_noise.append(rng.randf())
@@ -99,7 +99,6 @@ func _ready():
 
 
 	rng.seed = hash("tree")
-	rng.state = 0
 
 	for i in range(MapData.RESOLUTION * MapData.RESOLUTION):
 		tree_noise.append(rng.randf())
@@ -110,20 +109,20 @@ func _ready():
 	trees(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 	mountains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 
-
-
 func spawn_static_prop(pos: Vector2, textures: Array[Texture2D]):
 	if textures.is_empty():
 		return
 
 	var ent = STATIC_PROP.instantiate() as Entity
 
+	rng2.seed = hash(str(pos.x) + str(pos.y))
+
 	ent.pos = pos
-	ent.set_mesh_size(rng.randf_range(0.5, 1.2))
+	ent.set_mesh_size(rng2.randf_range(0.5, 1.2))
 
 	var mesh = ent.get_node("MeshInstance3D") as MeshInstance3D
 
-	var texture = textures.pick_random()
+	var texture = textures[rng2.randi_range(0, textures.size() - 1)]
 	var mat = get_prop_material(texture)
 	mesh.set_surface_override_material(0, mat)
 	add_child(ent)
