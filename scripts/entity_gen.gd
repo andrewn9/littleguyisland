@@ -106,6 +106,8 @@ func _ready():
 		tree_noise.append(rng.randf())
 
 
+	MapData.update()
+
 	trees(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 	mountains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 
