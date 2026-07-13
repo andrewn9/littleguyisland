@@ -13,7 +13,7 @@ func _ready():
 
 
 func _process(delta):
-	time += delta
+	time += Game.scaled_delta
 
 	var time_day = fmod(time, DAY_LENGTH) / DAY_LENGTH
 

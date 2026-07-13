@@ -27,3 +27,6 @@ func _physics_process(delta: float) -> void:
 		scaled_delta = 0
 	else:
 		scaled_delta = delta * time_scale
+	var water: MeshInstance3D = model.get_parent().get_node("Water")
+	var water_mat: ShaderMaterial = water.get_surface_override_material(0)
+	water_mat.set_shader_parameter("time_scale", time_scale if not paused else 0)

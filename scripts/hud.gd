@@ -27,7 +27,7 @@ func _ready() -> void:
 
 
 func _on_time_slider_changed(value: float) -> void:
-	Game.time_scale = pow(2.0, value - 2.0)
+	Game.time_scale = pow(2.0, value - 1.0)
 	_update_time_label()
 
 func _update_time_label() -> void:
@@ -77,3 +77,7 @@ func toggle(thing: Control):
 
 func _process(delta: float) -> void:
 	pass
+
+
+func _on_quit_pressed() -> void:
+	get_tree().quit()

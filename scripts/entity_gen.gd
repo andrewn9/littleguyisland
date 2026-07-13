@@ -16,7 +16,7 @@ var tree_noise: PackedFloat32Array = []
 var mountain_textures: Array[Texture2D] = []
 var shrub_textures: Array[Texture2D] = []
 
-var prop_materials: Dictionary[Texture2D, StandardMaterial3D] = {}
+var prop_materials: Dictionary[String, StandardMaterial3D] = {}
 
 func load_textures(path: StringName) -> Array[Texture2D]:
 	var textures: Array[Texture2D] = []
@@ -47,14 +47,9 @@ func load_textures(path: StringName) -> Array[Texture2D]:
 
 
 func get_prop_material(texture: Texture2D) -> StandardMaterial3D:
-	if prop_materials.has(texture):
-		return prop_materials[texture]
-
-	var mat = PROP_MAT.duplicate()
+	var mat = PROP_MAT.duplicate(true)
 	mat.albedo_texture = texture
-	prop_materials[texture] = mat
 	return mat
-
 
 func _ready():
 	mountain_textures = load_textures(
@@ -116,7 +111,7 @@ func spawn_static_prop(pos: Vector2, textures: Array[Texture2D], min_scale: floa
 	var mat = get_prop_material(texture)
 	ent.pos = pos
 	ent.set_prop_scale(rng2.randf_range(0.5, 1.2))
-	ent.set_prop_tex(texture)
+	ent.set_prop_mat(mat)
 	add_child(ent)
 
 func trees(x1: int, y1: int, x2: int, y2: int):

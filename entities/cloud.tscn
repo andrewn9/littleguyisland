@@ -36,7 +36,6 @@ region = Rect2(0, 0, 128, 128)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ophcw"]
 transparency = 1
-shading_mode = 0
 vertex_color_use_as_albedo = true
 albedo_texture = SubResource("AtlasTexture_bp62g")
 billboard_mode = 3
@@ -49,6 +48,8 @@ proximity_fade_distance = 482.88
 
 [sub_resource type="QuadMesh" id="QuadMesh_7522t"]
 material = SubResource("StandardMaterial3D_ophcw")
+subdivide_width = 2
+subdivide_depth = 2
 
 [node name="GPUParticles3D" type="GPUParticles3D" unique_id=1915559239]
 transform = Transform3D(1.0000001, 0, 0, 0, 0.9999997, 0, 0, 0, 1, 0, 0, 0)

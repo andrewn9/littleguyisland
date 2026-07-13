@@ -18,6 +18,9 @@ func set_prop_scale(x):
 func set_prop_tex(tex):
 	$Pivot/Sprite.texture = tex
 
+func set_prop_mat(mat):
+	$Pivot/MeshInstance3D.set_surface_override_material(0, mat)
+
 func update_height():
 	var height = MapData.height_img.get_pixelv(pos.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))).r
 

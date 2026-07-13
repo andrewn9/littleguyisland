@@ -34,7 +34,7 @@ colors = PackedColorArray(0.08235294, 0.49019608, 0.8235294, 1, 0.01810675, 0.09
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_adaop"]
 gradient = SubResource("Gradient_615i1")
-width = 22
+width = 32
 height = 32
 fill = 1
 fill_from = Vector2(0.5, 0.5)
@@ -45,7 +45,7 @@ colors = PackedColorArray(0.08235294, 0.49019608, 0.8235294, 1, 0.01810675, 0.09
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_ap7yk"]
 gradient = SubResource("Gradient_pw7dr")
-width = 22
+width = 32
 height = 32
 fill = 1
 fill_from = Vector2(0.5, 0.5)
@@ -267,10 +267,11 @@ offset_transform_position = Vector2(7.77, 0)
 offset_transform_visual_only = false
 texture = ExtResource("3_3ju8l")
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/NinePatchRect/HFlowContainer" unique_id=1060192664]
+[node name="Quit" type="TextureButton" parent="CanvasLayer/NinePatchRect/HFlowContainer" unique_id=203080206]
 custom_maximum_size = Vector2(24, 22)
 layout_mode = 2
-texture = ExtResource("4_b1px6")
+texture_normal = ExtResource("4_b1px6")
+stretch_mode = 0
 
 [node name="Label" type="Label" parent="CanvasLayer" unique_id=528747437]
 offset_right = 40.0
@@ -456,3 +457,5 @@ patch_margin_left = 18
 patch_margin_top = 16
 patch_margin_right = 47
 patch_margin_bottom = 21
+
+[connection signal="pressed" from="CanvasLayer/NinePatchRect/HFlowContainer/Quit" to="." method="_on_quit_pressed"]
