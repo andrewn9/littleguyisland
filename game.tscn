@@ -12,7 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="6_eow3j"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
-[ext_resource type="PackedScene" uid="uid://bt1fyapo46nfq" path="res://entities/cloud.tscn" id="13_lc2xo"]
 [ext_resource type="Script" uid="uid://gvyegn21kxqq" path="res://scripts/entity.gd" id="14_7sc4i"]
 [ext_resource type="Material" uid="uid://bgnhtnaoe05n2" path="res://materials/prop.tres" id="15_80cx4"]
 
@@ -189,29 +188,3 @@ unique_name_in_owner = true
 [node name="DrawDebug" type="MeshInstance3D" parent="." unique_id=292471862]
 visible = false
 mesh = SubResource("PlaneMesh_xbydb")
-
-[node name="GPUParticles3D" parent="." unique_id=1915559239 instance=ExtResource("13_lc2xo")]
-transform = Transform3D(1.0000001, 0, 0, 0, 0.9999997, 0, 0, 0, 1, 107.2487, 165.24844, 58.037136)
-
-[node name="GPUParticles3D2" parent="." unique_id=638679856 instance=ExtResource("13_lc2xo")]
-transform = Transform3D(1.0000001, 0, 0, 0, 0.9999997, 0, 0, 0, 1, 179.67621, 165.24844, 26.371729)
-
-[node name="GPUParticles3D3" parent="." unique_id=1996408458 instance=ExtResource("13_lc2xo")]
-transform = Transform3D(1.0000001, 0, 0, 0, 0.9999997, 0, 0, 0, 1, 163.43893, 241.73505, 51.539497)
-
-[node name="GPUParticles3D4" parent="." unique_id=1569644994 instance=ExtResource("13_lc2xo")]
-transform = Transform3D(1.0000001, 0, 0, 0, 0.9999997, 0, 0, 0, 1, 174.80502, 196.03317, -66.99256)
-
-[node name="GPUParticles3D5" parent="." unique_id=1985976241 instance=ExtResource("13_lc2xo")]
-transform = Transform3D(0.7044029, 0, 0.70980036, 0, 0.9999997, 0, -0.7098004, 0, 0.70440286, 41.659454, 165.24844, -153.68883)
-
-[node name="StaticProp" type="Node3D" parent="." unique_id=1724662832]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.070011, 64.13358, -21.164421)
-script = ExtResource("14_7sc4i")
-
-[node name="Pivot" type="Marker3D" parent="StaticProp" unique_id=1375679088]
-transform = Transform3D(2.19, 0, 0, 0, 2.19, 0, 0, 0, 2.19, 0, 0, 0)
-
-[node name="Sprite" type="MeshInstance3D" parent="StaticProp/Pivot" unique_id=1873585048]
-transform = Transform3D(0.9999995, 0, 0, 0, 0.9999995, 0, 0, 0, 0.9999995, 0, 27.030954, 4.7761335)
-mesh = SubResource("QuadMesh_st70h")

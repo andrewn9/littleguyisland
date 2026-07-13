@@ -3,9 +3,9 @@ class_name EntityGen extends Node
 const STATIC_PROP = preload("res://entities/static_prop.tscn")
 const PROP_MAT = preload("res://materials/prop.tres")
 
+const CLOUD = preload("res://entities/cloud.tscn")
 
 var rng = RandomNumberGenerator.new()
-var rng2 = RandomNumberGenerator.new()
 
 var mountain_cluster := NoiseTexture2D.new()
 var mountain_noise: PackedFloat32Array = []
@@ -105,12 +105,12 @@ func spawn_static_prop(pos: Vector2, textures: Array[Texture2D], min_scale: floa
 
 	var ent = STATIC_PROP.instantiate() as Entity
 
-	rng2.seed = hash(str(pos.x) + str(pos.y))
+	rng.seed = hash(str(pos.x) + str(pos.y))
 
-	var texture = textures[rng2.randi_range(0, textures.size() - 1)]
+	var texture = textures[rng.randi_range(0, textures.size() - 1)]
 	var mat = get_prop_material(texture)
 	ent.pos = pos
-	ent.set_prop_scale(rng2.randf_range(0.5, 1.2))
+	ent.set_prop_scale(rng.randf_range(min_scale, max_scale))
 	ent.set_prop_mat(mat)
 	add_child(ent)
 
@@ -136,8 +136,8 @@ func trees(x1: int, y1: int, x2: int, y2: int):
 				spawn_static_prop(
 					Vector2(x, y),
 					shrub_textures,
-					0.5,
-					1.2
+					1.0,
+					1.4
 				)
 
 
@@ -173,6 +173,18 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 					1.5 * fac
 				)
 
+				if elevation > 0.7:
+					var cloud = CLOUD.instantiate() as GPUParticles3D
+
+					cloud.position = Vector3(x, 0, y) * MapData.WORLD_SIZE / MapData.RESOLUTION - Vector3(MapData.WORLD_SIZE / 2, 0, MapData.WORLD_SIZE / 2)
+					cloud.position.y += elevation * MapData.HEIGHT_SCALE
+					cloud.position += Vector3(rng.randf_range(-100.0, 100.0), rng.randf_range(-50.0, 50.0), rng.randf_range(-100.0, 100.0))
+					cloud.rotation.y = rng.randf_range(0, 2 * PI)
+					cloud.scale *= rng.randf_range(0.3, 1.0)
+
+					add_child(cloud)
+
+
 func generate(x1: int, y1: int, x2: int, y2: int):
 	for child: Node3D in get_children():
 		var x_pos = (child.position.x + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
@@ -180,6 +192,8 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 
 		if x_pos > x1 and y_pos > y1 and x_pos < x2 and y_pos < y2:
 			if child is Entity and (child as Entity).is_static:
+				child.queue_free()
+			elif child is GPUParticles3D:
 				child.queue_free()
 
 	trees(x1, y1, x2, y2)
