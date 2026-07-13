@@ -48,8 +48,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				and event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT))):
 		_pan(event.relative)
 	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_RIGHT:
-		_yaw -= event.relative.x * sensitivity
-		_elev = clampf(_elev + event.relative.y * sensitivity, 0.1, max_angle)
+		_yaw -= event.relative.x * sensitivity * Hud.sens_slider.value
+		_elev = clampf(_elev + event.relative.y * sensitivity * Hud.sens_slider.value, 0.1, max_angle)
 
 
 func _pan(relative: Vector2) -> void:

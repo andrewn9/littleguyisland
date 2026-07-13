@@ -13,6 +13,11 @@ const PLAYING_TEX = preload("res://ui/ui/coloredbuttons/playing.png")
 
 @onready var size_slider: HSlider = %SizeSlider
 
+@onready var settings: NinePatchRect = %Settings
+@onready var sens_slider: HSlider = %SensSlider
+@onready var vol_slider: HSlider = %VolSlider
+@onready var cam_button: CheckButton = %CamButton
+
 @export var button_inactive_color := Color.from_rgba8(200, 200, 200, 255)
 @export var button_pressed_color := Color.from_rgba8(139, 139, 139, 255)
 
@@ -76,6 +81,9 @@ func toggle(thing: Control):
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property(thing, "modulate", Color.WHITE, 0.025)
 	tween.tween_property(thing, "offset_transform_scale", Vector2(1.25, 1.25), 0.06)
+
+func _on_settings_button_pressed():
+	settings.visible = not settings.visible
 
 func _process(delta: float) -> void:
 	pass
