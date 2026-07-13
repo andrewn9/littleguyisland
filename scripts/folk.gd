@@ -18,6 +18,7 @@ var _idle_left := 0.0
 func _ready() -> void:
 	super()
 	_rest()
+	is_static = false
 
 
 func tick(dt: float) -> void:

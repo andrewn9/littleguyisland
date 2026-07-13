@@ -10,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://drfvobfl543yf" path="res://ui/monkefolk/monke/monke3.png" id="8_hyw70"]
 [ext_resource type="Texture2D" uid="uid://bc2k0l0d16wrq" path="res://ui/ui/bars + box/bars.png" id="9_cxdcy"]
 [ext_resource type="Script" uid="uid://5xvmkiaujo5l" path="res://scripts/bottom_bar.gd" id="10_6y3bq"]
-[ext_resource type="Texture2D" uid="uid://ikh4qw7n0wv5" path="res://ui/ui/bars + box/box.png" id="11_4sr2e"]
 [ext_resource type="FontFile" uid="uid://bc62mk63rr4vb" path="res://ui/Comic Sans MS.ttf" id="12_vjpmv"]
 [ext_resource type="Texture2D" uid="uid://cyj3a6ab0kgo1" path="res://ui/ui/uiwheel.png" id="13_o8st7"]
 [ext_resource type="Script" uid="uid://32wl0030kqom" path="res://scripts/circular_container.gd" id="14_mgoxf"]
@@ -21,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://ckdrcycxwauth" path="res://ui/ui/coloredbuttons/shovel.png" id="19_2u3la"]
 [ext_resource type="Texture2D" uid="uid://dmym0ixp0kr8" path="res://ui/ui/coloredbuttons/land.png" id="20_g4gvt"]
 [ext_resource type="Texture2D" uid="uid://bmehp2qkvrj4o" path="res://ui/ui/coloredbuttons/playbutton.png" id="21_085mh"]
+[ext_resource type="Texture2D" uid="uid://bnv0s0boheps6" path="res://ui/goodbox.png" id="21_x3e77"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_st70h"]
 font = ExtResource("12_vjpmv")
@@ -328,26 +328,6 @@ script = ExtResource("10_6y3bq")
 height_ratio = 0.205
 tuck_ratio = 0.05099999999999999
 
-[node name="NinePatchRect2" type="NinePatchRect" parent="CanvasLayer/Bottom/ColorRect2" unique_id=983493316]
-visible = false
-self_modulate = Color(0.8729923, 0.86006004, 0.8250015, 1)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.03
-anchor_top = 0.186
-anchor_right = 0.891
-anchor_bottom = 0.909
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("11_4sr2e")
-region_rect = Rect2(15, 17, 285, 285)
-patch_margin_left = 72
-patch_margin_top = 35
-patch_margin_right = 70
-patch_margin_bottom = 28
-axis_stretch_horizontal = 2
-axis_stretch_vertical = 2
-
 [node name="ColorRect3" type="NinePatchRect" parent="CanvasLayer/Bottom" unique_id=1746489748]
 layout_mode = 0
 offset_left = 802.0
@@ -383,18 +363,18 @@ stretch_mode = 5
 
 [node name="Container2" type="Container" parent="CanvasLayer/Bottom/Wheel" unique_id=967531249]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -6.0
 offset_top = -1.0999756
-offset_right = -6.0
-offset_bottom = -1.0999756
+offset_right = 6.1049805
+offset_bottom = -1.1000061
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("14_mgoxf")
-radius_ratio = 0.758
+radius_ratio = 0.753
 item_size_ratio = 0.143
 arc_from_degrees = 195.0
 arc_to_degrees = 345.0
@@ -459,3 +439,20 @@ grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 1)
 texture_normal = ExtResource("21_085mh")
 stretch_mode = 0
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="CanvasLayer" unique_id=896978583]
+visible = false
+anchors_preset = -1
+anchor_left = -0.015
+anchor_right = 0.67800003
+anchor_bottom = 0.567
+offset_left = -325.0
+offset_top = 69.0
+offset_right = -604.4
+offset_bottom = -25.200012
+texture = ExtResource("21_x3e77")
+region_rect = Rect2(0, 0, 200, 200)
+patch_margin_left = 18
+patch_margin_top = 16
+patch_margin_right = 47
+patch_margin_bottom = 21

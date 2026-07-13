@@ -184,7 +184,8 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 		var y_pos = (child.position.z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
 
 		if x_pos > x1 and y_pos > y1 and x_pos < x2 and y_pos < y2:
-			child.queue_free()
+			if child is Entity and (child as Entity).is_static:
+				child.queue_free()
 
 	trees(x1, y1, x2, y2)
 	mountains(x1, y1, x2, y2)
