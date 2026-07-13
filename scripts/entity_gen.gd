@@ -16,6 +16,12 @@ var tree_noise: PackedFloat32Array = []
 var mountain_textures: Array[Texture2D] = []
 var shrub_textures: Array[Texture2D] = []
 
+var body_textures: Array[Texture2D]
+var shirt_textures: Array[Texture2D]
+var hair_textures: Array[Texture2D]
+
+@export var hair_colors: Gradient
+
 var prop_materials: Dictionary[String, StandardMaterial3D] = {}
 
 func load_textures(path: StringName) -> Array[Texture2D]:
@@ -59,6 +65,10 @@ func _ready():
 	shrub_textures = load_textures(
 		"res://sprites/props/shrubbery/"
 	)
+	
+	body_textures = load_textures("res://sprites/folk/body/")
+	shirt_textures = load_textures("res://sprites/folk/shirt/")
+	hair_textures = load_textures("res://sprites/folk/hair/")
 
 	mountain_cluster.width = MapData.RESOLUTION
 	mountain_cluster.height = MapData.RESOLUTION
@@ -204,5 +214,10 @@ func spawn_little_guy(x: int, y: int):
 
 	ent.pos = Vector2(x, y)
 	ent.name = "Folk"
+
+	(ent.get_node("Pivot/Sprite/SubViewport/body") as TextureRect).texture = body_textures.pick_random()
+	(ent.get_node("Pivot/Sprite/SubViewport/shirt") as TextureRect).texture = shirt_textures.pick_random()
+	(ent.get_node("Pivot/Sprite/SubViewport/hair") as TextureRect).texture = hair_textures.pick_random()
+	(ent.get_node("Pivot/Sprite/SubViewport/hair") as TextureRect).modulate = hair_colors.sample(randf())
 
 	add_child(ent)

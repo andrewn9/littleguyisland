@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bb51fkkkugptl"
-path="res://.godot/imported/hair7.png-bd8ca4187c7a248ca0c427273744c2ae.ctex"
+path="res://.godot/imported/hair7.png-f058abddc94cf49131ecedf912d6cd70.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/monkefolk/folk/hair7.png"
-dest_files=["res://.godot/imported/hair7.png-bd8ca4187c7a248ca0c427273744c2ae.ctex"]
+source_file="res://sprites/folk/hair/hair7.png"
+dest_files=["res://.godot/imported/hair7.png-f058abddc94cf49131ecedf912d6cd70.ctex"]
 
 [params]
 
