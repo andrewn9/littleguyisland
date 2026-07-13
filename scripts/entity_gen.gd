@@ -141,8 +141,8 @@ func trees(x1: int, y1: int, x2: int, y2: int):
 				spawn_static_prop(
 					Vector2(x, y),
 					shrub_textures,
-					0.5,
-					1.2
+					1.0,
+					1.4
 				)
 
 
