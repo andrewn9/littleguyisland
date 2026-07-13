@@ -11,7 +11,7 @@ extends Camera3D
 var _yaw := 0.0
 var _elev := 0.5
 var _target_orthographic_size := orthographic_size
-const ORTHO_DISTANCE := 400.0
+const ORTHO_DISTANCE := 2000.0
 var start_tween: PropertyTweener
 
 var pan_offset := Vector3.ZERO
@@ -21,13 +21,13 @@ func _ready() -> void:
 	orthographic_size = 1
 	_target_orthographic_size = target
 	_update_camera()
-	near = -2000
 	start_tween = get_tree().create_tween().tween_property(self, "orthographic_size", target, 1.0).set_trans(Tween.TRANS_QUAD)
 
 func _process(delta: float) -> void:
 	var t := 1.0 - pow(2.0, -zoom_ramp_speed * delta)
 	orthographic_size = lerp(orthographic_size, _target_orthographic_size, t)
 	_update_camera()
+	projection = PROJECTION_ORTHOGONAL if Hud.cam_button.button_pressed else PROJECTION_PERSPECTIVE
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
