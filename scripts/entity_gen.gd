@@ -190,6 +190,9 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 				)
 
 				if elevation > 0.7:
+					if height_map.get_pixel(max(x - 1, 0), y).r > elevation or height_map.get_pixel(max(x + 1, MapData.RESOLUTION - 1), y).r > elevation or height_map.get_pixel(x, max(y - 1, 0)).r > elevation or height_map.get_pixel(x, max(y + 1, MapData.RESOLUTION - 1)).r > elevation:
+						continue
+
 					var cloud = CLOUD.instantiate() as GPUParticles3D
 
 					cloud.position = Vector3(x, 0, y) * MapData.WORLD_SIZE / MapData.RESOLUTION - Vector3(MapData.WORLD_SIZE / 2, 0, MapData.WORLD_SIZE / 2)
