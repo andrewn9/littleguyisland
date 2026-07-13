@@ -3,6 +3,7 @@ class_name Entity extends Node3D
 var pos: Vector2
 var target_pos: Vector2
 var speed = 20
+var is_static := true
 
 func _ready() -> void:
 	if not pos:
@@ -24,5 +25,4 @@ func update_height():
 
 func _process(delta):
 	pos += (target_pos - pos).limit_length(speed * delta)
-
 	update_height()

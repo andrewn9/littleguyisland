@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://bkou3u1k8ki7x" path="res://testing/1value.png" id="5_lc2xo"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="6_eow3j"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
-[ext_resource type="PackedScene" uid="uid://b3x881tg3w600" path="res://entities/folk.res" id="7_hve3p"]
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
 [ext_resource type="PackedScene" uid="uid://bt1fyapo46nfq" path="res://entities/cloud.tscn" id="13_lc2xo"]
 
@@ -51,8 +50,8 @@ colors = PackedColorArray(0.73987275, 0.7445408, 0.7231291, 1, 0.775691, 0.73346
 gradient = SubResource("Gradient_land")
 
 [sub_resource type="Gradient" id="Gradient_mountain"]
-offsets = PackedFloat32Array(0.013809911, 0.21202275, 0.5580829, 0.6625387, 1)
-colors = PackedColorArray(0.5595771, 0.50568086, 0.42241976, 1, 0.28627452, 0.41568628, 0.37254903, 1, 0.46920556, 0.56858575, 0.56452024, 1, 0.722, 0.71, 0.682, 1, 1, 1, 1, 1)
+offsets = PackedFloat32Array(0, 0.051764704, 0.19058824, 0.33411765, 0.37176472, 0.5580829, 0.6625387, 1)
+colors = PackedColorArray(0.38431373, 0.31764707, 0.2509804, 1, 0.5, 0.41750002, 0.35, 1, 0.279, 0.3, 0.293, 1, 0.28627452, 0.41568628, 0.37254903, 1, 0.29882458, 0.426176, 0.38571927, 1, 0.46920556, 0.56858575, 0.56452024, 1, 0.722, 0.71, 0.682, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="Ramp_mountain"]
 gradient = SubResource("Gradient_mountain")
@@ -152,11 +151,7 @@ grow_vertical = 2
 [node name="Entities" type="Node" parent="." unique_id=2001399486]
 script = ExtResource("7_iotsf")
 
-[node name="Sprite3D2" parent="Entities" unique_id=455084091 instance=ExtResource("7_hve3p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 127.66028, 26.967438, 0)
-pixel_size = 0.207
-
-[node name="Sprite3D" parent="Entities" unique_id=1712821898 instance=ExtResource("7_hve3p")]
+[node name="little guy storage" type="Node3D" parent="Entities" unique_id=2062324649]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=786883146]
 layer = 0

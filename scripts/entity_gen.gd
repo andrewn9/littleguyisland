@@ -31,7 +31,6 @@ func load_textures(path: StringName) -> Array[Texture2D]:
 	var file = dir.get_next()
 
 	while file != "":
-		print(file)
 		
 		if !dir.current_is_dir():
 			if file.ends_with(".import"):
@@ -54,7 +53,6 @@ func get_prop_material(texture: Texture2D) -> StandardMaterial3D:
 	var mat = PROP_MAT.duplicate()
 	mat.albedo_texture = texture
 	prop_materials[texture] = mat
-	print(mat.albedo_texture)
 	return mat
 
 
@@ -66,9 +64,6 @@ func _ready():
 	shrub_textures = load_textures(
 		"res://sprites/props/shrubbery/"
 	)
-
-	print("Mountains: ", mountain_textures.size())
-	print("Shrubs: ", shrub_textures.size())
 
 	mountain_cluster.width = MapData.RESOLUTION
 	mountain_cluster.height = MapData.RESOLUTION
@@ -189,12 +184,13 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 		var y_pos = (child.position.z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
 
 		if x_pos > x1 and y_pos > y1 and x_pos < x2 and y_pos < y2:
-			child.queue_free()
+			if child is Entity and (child as Entity).is_static:
+				child.queue_free()
 
 	trees(x1, y1, x2, y2)
 	mountains(x1, y1, x2, y2)
 
-func spawn_person(x: int, y: int):
+func spawn_little_guy(x: int, y: int):
 	var ent = load("res://entities/folk.res").instantiate() as Entity
 
 	ent.pos = Vector2(x, y)

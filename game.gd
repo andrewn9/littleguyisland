@@ -20,7 +20,7 @@ func pause():
 
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("person"):
-		model.entity_gen.spawn_person(MapData.RESOLUTION/2, MapData.RESOLUTION/2)
+		model.entity_gen.spawn_little_guy(MapData.RESOLUTION/2, MapData.RESOLUTION/2)
 
 func _physics_process(delta: float) -> void:
 	if paused:
