@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://c6ex7crk5c2jl"]
 
 [ext_resource type="Script" uid="uid://gvyegn21kxqq" path="res://scripts/entity.gd" id="1_08pi3"]
-[ext_resource type="Material" uid="uid://bgnhtnaoe05n2" path="res://materials/prop.tres" id="2_08pi3"]
-
-[sub_resource type="QuadMesh" id="QuadMesh_st70h"]
-size = Vector2(50, 50)
+[ext_resource type="Texture2D" uid="uid://ppxlx0i0prcd" path="res://sprites/props/mountains/mountain1.png.PNG" id="2_08pi3"]
 
 [node name="StaticProp" type="Node3D" unique_id=1724662832]
 script = ExtResource("1_08pi3")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=918813411]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.948845, 0)
-mesh = SubResource("QuadMesh_st70h")
-surface_material_override/0 = ExtResource("2_08pi3")
+[node name="Pivot" type="Marker3D" parent="." unique_id=1375679088]
+transform = Transform3D(2.19, 0, 0, 0, 2.19, 0, 0, 0, 2.19, 0, 0, 0)
+
+[node name="Sprite" type="Sprite3D" parent="Pivot" unique_id=393700870]
+transform = Transform3D(0.9999995, 0, 0, 0, 0.9999995, 0, 0, 0, 0.9999995, 0, 4.695, 0)
+billboard = 2
+texture = ExtResource("2_08pi3")

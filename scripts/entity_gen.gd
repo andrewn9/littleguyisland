@@ -117,14 +117,11 @@ func spawn_static_prop(pos: Vector2, textures: Array[Texture2D]):
 
 	rng2.seed = hash(str(pos.x) + str(pos.y))
 
-	ent.pos = pos
-	ent.set_mesh_size(rng2.randf_range(0.5, 1.2))
-
-	var mesh = ent.get_node("MeshInstance3D") as MeshInstance3D
-
 	var texture = textures[rng2.randi_range(0, textures.size() - 1)]
 	var mat = get_prop_material(texture)
-	mesh.set_surface_override_material(0, mat)
+	ent.pos = pos
+	ent.set_prop_scale(rng2.randf_range(0.5, 1.2))
+	ent.set_prop_tex(texture)
 	add_child(ent)
 
 func trees(x1: int, y1: int, x2: int, y2: int):

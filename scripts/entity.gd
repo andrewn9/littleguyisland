@@ -11,8 +11,11 @@ func _ready() -> void:
 	else:
 		target_pos = pos
 
-func set_mesh_size(x):
-	$MeshInstance3D.scale *= x 
+func set_prop_scale(x):
+	$Pivot.scale *= x 
+
+func set_prop_tex(tex):
+	$Pivot/Sprite.texture = tex
 
 func update_height():
 	var height = MapData.height_img.get_pixelv(pos.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))).r
