@@ -7,14 +7,19 @@ const CLOUD = preload("res://entities/cloud.tscn")
 
 var rng = RandomNumberGenerator.new()
 
+@export var pixel_size := 1
+
 var mountain_cluster := NoiseTexture2D.new()
 var mountain_noise: PackedFloat32Array = []
-
+@export var mountain_cutoff = 0.965
+@export var plains_cutoff = 0.995
 var tree_cluster := NoiseTexture2D.new()
 var tree_noise: PackedFloat32Array = []
 
 var mountain_textures: Array[Texture2D] = []
-var shrub_textures: Array[Texture2D] = []
+var grass_textures: Array[Texture2D] = []
+var tree_textures: Array[Texture2D] = []
+var bush_textures: Array[Texture2D] = []
 
 var prop_materials: Dictionary[String, StandardMaterial3D] = {}
 
@@ -31,13 +36,13 @@ func load_textures(path: StringName) -> Array[Texture2D]:
 	var file = dir.get_next()
 
 	while file != "":
-		
 		if !dir.current_is_dir():
 			if file.ends_with(".import"):
-				var tex = load(path + file.replace(".import", "")) as Texture2D
-
-				if tex:
-					textures.append(tex)
+				file = file.replace(".import", "")
+			
+			var tex = load(path + file) as Texture2D
+			if tex:
+				textures.append(tex)
 
 		file = dir.get_next()
 
@@ -55,11 +60,16 @@ func _ready():
 	mountain_textures = load_textures(
 		"res://sprites/props/mountains/"
 	)
-
-	shrub_textures = load_textures(
-		"res://sprites/props/shrubbery/"
+	grass_textures = load_textures(
+		"res://sprites/props/grasses/"
 	)
-
+	bush_textures = load_textures(
+		"res://sprites/props/bushes/"
+	)
+	tree_textures = load_textures(
+		"res://sprites/props/trees/"
+	)
+	
 	mountain_cluster.width = MapData.RESOLUTION
 	mountain_cluster.height = MapData.RESOLUTION
 
@@ -96,7 +106,7 @@ func _ready():
 
 	MapData.update()
 
-	trees(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
+	plains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 	mountains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 
 func spawn_static_prop(pos: Vector2, textures: Array[Texture2D], min_scale: float, max_scale: float):
@@ -110,11 +120,14 @@ func spawn_static_prop(pos: Vector2, textures: Array[Texture2D], min_scale: floa
 	var texture = textures[rng.randi_range(0, textures.size() - 1)]
 	var mat = get_prop_material(texture)
 	ent.pos = pos
-	ent.set_prop_scale(rng.randf_range(min_scale, max_scale))
+	ent.apply_scale(rng.randf_range(min_scale, max_scale))
+	ent.apply_scale(texture.get_width() / float(pixel_size))
+	
 	ent.set_prop_mat(mat)
 	add_child(ent)
+	return ent
 
-func trees(x1: int, y1: int, x2: int, y2: int):
+func plains(x1: int, y1: int, x2: int, y2: int):
 	var height_map = MapData.height_img
 	var color_map = MapData.val_img
 	var cluster_map = tree_cluster.get_image()
@@ -122,7 +135,6 @@ func trees(x1: int, y1: int, x2: int, y2: int):
 	for x in range(x1, x2):
 		for y in range(y1, y2):
 			var elevation = height_map.get_pixel(x, y).r
-
 			if elevation < 0.1:
 				continue
 
@@ -130,17 +142,41 @@ func trees(x1: int, y1: int, x2: int, y2: int):
 			var cluster_val = cluster_map.get_pixel(x, y).r
 			var white_val = tree_noise[x * MapData.RESOLUTION + y]
 
-			var diff = color - Color(0.36, 0.64, 0.12)
+			var diff = color - MapData.GRASS_KEY
 
-			if white_val > 0.995 || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.16 && (white_val > 0.95 && white_val * cluster_val > 0.5):
-				spawn_static_prop(
-					Vector2(x, y),
-					shrub_textures,
-					1.0,
-					1.4
-				)
-
-
+			if white_val > plains_cutoff || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.16 && (white_val > 0.95 && white_val * cluster_val > 0.5):
+				
+				rng.seed = hash(str(x) + str(y))
+				var random = rng.randf_range(0, 100)
+				var ent
+				if random > 66:
+					ent = spawn_static_prop(
+						Vector2(x, y),
+						tree_textures,
+						1.0,
+						1.4
+					)
+					ent.name = "Tree"
+					ent.type = Game.EntityType.TREE
+				elif random > 33:
+					ent = spawn_static_prop(
+						Vector2(x, y),
+						bush_textures,
+						1.0,
+						1.4
+					)
+					ent.name = "Bush"
+					ent.type = Game.EntityType.DECORATIVE
+				else:
+					ent = spawn_static_prop(
+						Vector2(x, y),
+						grass_textures,
+						1.0,
+						1.4
+					)
+					ent.name = "Grass"
+					ent.type = Game.EntityType.DECORATIVE
+				
 
 func mountains(x1: int, y1: int, x2: int, y2: int):
 	var height_map = MapData.height_img
@@ -157,8 +193,8 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 			var cluster_val = cluster_map.get_pixel(x, y).r
 			var white_val = mountain_noise[x * MapData.RESOLUTION + y]
 
-			if white_val * cluster_val > 0.3 && white_val > 0.965:
-				var diff = color_map.get_pixel(x, y) - Color.GRAY
+			if white_val * cluster_val > 0.3 && white_val > mountain_cutoff:
+				var diff = color_map.get_pixel(x, y) - MapData.MOUNTAIN_KEY
 				var val = Vector3(diff.r, diff.g, diff.b).length_squared()
 
 				if val > 0.16:
@@ -196,7 +232,7 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 			elif child is GPUParticles3D:
 				child.queue_free()
 
-	trees(x1, y1, x2, y2)
+	plains(x1, y1, x2, y2)
 	mountains(x1, y1, x2, y2)
 
 func spawn_little_guy(x: int, y: int):
@@ -204,5 +240,6 @@ func spawn_little_guy(x: int, y: int):
 
 	ent.pos = Vector2(x, y)
 	ent.name = "Folk"
+	ent.type = Game.EntityType.FOLK
 
 	add_child(ent)

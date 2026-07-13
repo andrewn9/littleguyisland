@@ -149,6 +149,8 @@ grow_vertical = 2
 
 [node name="Entities" type="Node" parent="." unique_id=2001399486]
 script = ExtResource("7_iotsf")
+pixel_size = 644
+plains_cutoff = 0.935
 
 [node name="little guy storage" type="Node3D" parent="Entities" unique_id=2062324649]
 

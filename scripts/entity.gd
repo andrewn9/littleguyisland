@@ -1,5 +1,6 @@
 class_name Entity extends Node3D
 
+var type: Game.EntityType = Game.EntityType.DECORATIVE
 var pos: Vector2
 var target_pos: Vector2
 var speed = 20
@@ -12,7 +13,7 @@ func _ready() -> void:
 	else:
 		target_pos = pos
 
-func set_prop_scale(x):
+func apply_scale(x):
 	$Pivot.scale *= x 
 
 func set_prop_tex(tex):

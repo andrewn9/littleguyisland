@@ -9,6 +9,13 @@ var scaled_delta:= 0.0
 
 var model: Model
 
+enum EntityType {
+	DECORATIVE,
+	HOUSING,
+	TREE,
+	FOLK
+}
+
 func _ready() -> void:
 	pass
 
