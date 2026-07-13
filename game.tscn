@@ -33,9 +33,8 @@ colors = PackedColorArray(0.39280102, 0.311866, 0.239211, 1, 0.3033784, 0.385647
 gradient = SubResource("Gradient_base")
 
 [sub_resource type="Gradient" id="Gradient_land"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0.035369776, 0.1380991, 0.67741936, 0.99866664)
-colors = PackedColorArray(0.435, 0.682, 0.227, 1, 0.227, 0.455, 0.125, 1, 0.31, 0.565, 0.149, 1, 0.6181531, 0.59702617, 0.25069338, 1)
+offsets = PackedFloat32Array(0, 0.0068173665, 0.008252601, 0.1380991, 0.67741936, 0.99866664)
+colors = PackedColorArray(0.73987275, 0.7445408, 0.7231291, 1, 0.775691, 0.7334611, 0.46515945, 1, 0.35364, 0.56, 0.18479998, 1, 0.227, 0.455, 0.125, 1, 0.31, 0.565, 0.149, 1, 0.6181531, 0.59702617, 0.25069338, 1)
 
 [sub_resource type="GradientTexture1D" id="Ramp_land"]
 gradient = SubResource("Gradient_land")
@@ -167,7 +166,7 @@ zoom_ramp_speed = 16.045
 perspective_distance = 400.0
 orthographic_size = 389.83
 max_orthographic_size = 1200
-max_angle = 1.065
+max_angle = 1.24
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera" unique_id=921282201]
 unique_name_in_owner = true

@@ -44,6 +44,8 @@ billboard_keep_scale = true
 particles_anim_h_frames = 4
 particles_anim_v_frames = 4
 particles_anim_loop = false
+proximity_fade_enabled = true
+proximity_fade_distance = 482.88
 
 [sub_resource type="QuadMesh" id="QuadMesh_7522t"]
 material = SubResource("StandardMaterial3D_ophcw")
