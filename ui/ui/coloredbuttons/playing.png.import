@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cyj3a6ab0kgo1"
-path="res://.godot/imported/uiwheel.png-4d9356f8d8c39f12453ae40a0b9f542e.ctex"
+uid="uid://d378iqajxn6d4"
+path="res://.godot/imported/playing.png-230ffd33dc85e547cc2d4492d3376f1f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/ui/uiwheel.png"
-dest_files=["res://.godot/imported/uiwheel.png-4d9356f8d8c39f12453ae40a0b9f542e.ctex"]
+source_file="res://ui/ui/coloredbuttons/playing.png"
+dest_files=["res://.godot/imported/playing.png-230ffd33dc85e547cc2d4492d3376f1f.ctex"]
 
 [params]
 

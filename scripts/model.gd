@@ -167,20 +167,20 @@ func stroke(from: Vector2, to: Vector2):
 var prev_stroke
 
 func use_tool(pos: Vector2):
-	if Hud.active == "Land":
+	if Hud.active.name == "Land":
 		draw_at(pos, MapData.val, Color.from_rgba8(91, 162, 31, 40), 25, "smooth")
 		draw_at(pos, MapData.height, Color.from_rgba8(1, 2, 2, 255), 28, "flat", 0.35, true)
 		draw_at(pos, MapData.height, Color.BLACK, 40, "average")
-	elif Hud.active == "Mountain":
+	elif Hud.active.name == "Mountain":
 		draw_at(pos, MapData.height, Color.from_rgba8(9, 9, 9, 255), 22, "harsh", 0.35, true)
 		draw_at(pos, MapData.height, Color.from_rgba8(4, 4, 4, 60), 3, "mon", 1)
 		draw_at(pos, MapData.val, Color.GRAY, 30)
-	elif Hud.active == "Water":
+	elif Hud.active.name == "Water":
 		draw_at(pos, MapData.height, Color.from_rgba8(0, 0, 0, 255), 10)
 		draw_at(pos, MapData.val, Color.from_rgba8(0, 0, 255, 255), 15, "default")
-	elif Hud.active == "Dig":
+	elif Hud.active.name == "Dig":
 		draw_at(pos, MapData.height, Color.from_rgba8(0, 0, 0, 255), 10)
-	elif Hud.active == "Brush":
+	elif Hud.active.name == "Brush":
 		draw_at(pos, MapData.height, Color.BLACK, 30, "average")
 
 func _input(event):

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cba0w7iu3m4ge" path="res://scripts/camera.gd" id="1_80nbo"]
 [ext_resource type="Material" uid="uid://4mc4ktvjal3e" path="res://materials/ocean_water.tres" id="1_iotsf"]
 [ext_resource type="Script" uid="uid://du7arglt47vj" path="res://scripts/model.gd" id="3_feb5d"]
-[ext_resource type="Texture2D" uid="uid://cam6jf6nainpf" path="res://testing/height.png" id="3_iotsf"]
+[ext_resource type="Texture2D" uid="uid://dh80a85hy1wy7" path="res://build/index.icon.png" id="3_iotsf"]
 [ext_resource type="Shader" uid="uid://yphip34bcg22" path="res://shaders/terrain.gdshader" id="4_fc0e3"]
 [ext_resource type="Texture2D" uid="uid://vv6mvna5f5im" path="res://testing/value.png" id="4_lc2xo"]
 [ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://shaders/outline.gdshader" id="5_7jktm"]
@@ -88,7 +88,7 @@ shader_parameter/strength = 0.1
 shader_parameter/fps = 2.0
 shader_parameter/noise = ExtResource("6_eow3j")
 
-[node name="Game" type="Node3D" unique_id=556122064]
+[node name="Game2" type="Node3D" unique_id=556122064]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1294957651]
 environment = SubResource("Environment_7sc4i")

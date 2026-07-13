@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cyj3a6ab0kgo1"
-path="res://.godot/imported/uiwheel.png-4d9356f8d8c39f12453ae40a0b9f542e.ctex"
+uid="uid://ckdrcycxwauth"
+path="res://.godot/imported/shovel.png-68e76975b5e880c5a346052372c6a6e5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/ui/uiwheel.png"
-dest_files=["res://.godot/imported/uiwheel.png-4d9356f8d8c39f12453ae40a0b9f542e.ctex"]
+source_file="res://ui/ui/coloredbuttons/shovel.png"
+dest_files=["res://.godot/imported/shovel.png-68e76975b5e880c5a346052372c6a6e5.ctex"]
 
 [params]
 
