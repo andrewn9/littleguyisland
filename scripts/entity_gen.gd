@@ -218,11 +218,28 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 	trees(x1, y1, x2, y2)
 	mountains(x1, y1, x2, y2)
 
+var name_prefixes = [
+	"chud",
+	"folk"
+]
+
+var name_suffixes = [
+	"ette",
+	"ling",
+	"son",
+	"soul",
+	"sen",
+	"lette",
+	"ly",
+	"lee"
+]
+
 func spawn_little_guy(x: int, y: int):
 	var ent = load("res://entities/folk.res").instantiate() as Entity
 
 	ent.pos = Vector2(x, y)
-	ent.name = "Folk"
+
+	ent.name = name_prefixes.pick_random() + name_suffixes.pick_random()
 
 	(ent.get_node("Pivot/Sprite/SubViewport/body") as TextureRect).texture = body_textures.pick_random()
 	(ent.get_node("Pivot/Sprite/SubViewport/shirt") as TextureRect).texture = shirt_textures.pick_random()

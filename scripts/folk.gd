@@ -14,7 +14,6 @@ var _idle_left := 0.0
 
 @onready var _sprite = get_node_or_null("Pivot/Sprite")
 
-
 func _ready() -> void:
 	super()
 	_rest()
