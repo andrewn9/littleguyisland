@@ -131,6 +131,9 @@ func trees(x1: int, y1: int, x2: int, y2: int):
 
 	for x in range(x1, x2):
 		for y in range(y1, y2):
+			if Vector2(x - MapData.RESOLUTION * 0.5, y - MapData.RESOLUTION * 0.5).length() > MapData.RESOLUTION * 0.5:
+				continue
+
 			var elevation = height_map.get_pixel(x, y).r
 
 			if elevation < 0.1:
@@ -159,6 +162,9 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 
 	for x in range(x1, x2):
 		for y in range(y1, y2):
+			if Vector2(x - MapData.RESOLUTION * 0.5, y - MapData.RESOLUTION * 0.5).length() > MapData.RESOLUTION * 0.5:
+				continue
+			
 			var elevation = height_map.get_pixel(x, y).r
 
 			if elevation < 0.3:

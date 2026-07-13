@@ -11,6 +11,8 @@ const PLAYING_TEX = preload("res://ui/ui/coloredbuttons/playing.png")
 @onready var time_label: Label = %TimeSliderLabel
 @onready var play_resume: TextureButton = %PlayResume
 
+@onready var size_slider: HSlider = %SizeSlider
+
 @export var button_inactive_color := Color.from_rgba8(200, 200, 200, 255)
 @export var button_pressed_color := Color.from_rgba8(139, 139, 139, 255)
 

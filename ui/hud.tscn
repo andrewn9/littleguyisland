@@ -190,7 +190,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_behavior_recursive = 2
+mouse_filter = 1
 script = ExtResource("1_x3e77")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1081389851]
@@ -441,7 +441,8 @@ pivot_offset_ratio = Vector2(0.5, 1)
 texture_normal = ExtResource("21_085mh")
 stretch_mode = 0
 
-[node name="TimeSlider" type="HSlider" parent="CanvasLayer/Bottom" unique_id=1744459679]
+[node name="SizeSlider" type="HSlider" parent="CanvasLayer/Bottom" unique_id=1744459679]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, -1)
 custom_maximum_size = Vector2(150, -1)
 layout_mode = 1
@@ -464,8 +465,10 @@ theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_ap7yk")
 theme_override_styles/slider = SubResource("StyleBoxFlat_pw7dr")
 theme_override_styles/grabber_area = SubResource("StyleBoxFlat_615i1")
 theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_ap7yk")
-max_value = 4.0
-value = 3.0
+min_value = 0.5
+max_value = 1.5
+step = 0.0
+value = 1.0
 scrollable = false
 tick_count = 5
 ticks_on_borders = true
