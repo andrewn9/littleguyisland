@@ -1,0 +1,461 @@
+[gd_scene format=3 uid="uid://d3a07uu08qw8"]
+
+[ext_resource type="Script" uid="uid://uevxgptrumol" path="res://scripts/hud.gd" id="1_x3e77"]
+[ext_resource type="Texture2D" uid="uid://bcu3kmseq6sc6" path="res://ui/ui/window and box/miniscreen.png" id="2_exqf6"]
+[ext_resource type="Texture2D" uid="uid://dsmfl6lhkbhyf" path="res://ui/ui/window and box/windowminus.png" id="3_3ju8l"]
+[ext_resource type="Texture2D" uid="uid://csykegh1vqs4q" path="res://ui/ui/window and box/windowx.png" id="4_b1px6"]
+[ext_resource type="Texture2D" uid="uid://biumk26axuhrg" path="res://ui/monkefolk/monke/monke1.png" id="5_c3smh"]
+[ext_resource type="Texture2D" uid="uid://c33bt3m1sx6x8" path="res://ui/monkefolk/monke/monke2.png" id="6_5jwjf"]
+[ext_resource type="Texture2D" uid="uid://d83g2fkmvp2j" path="res://ui/monkefolk/monke/monke4.png" id="7_nso1x"]
+[ext_resource type="Texture2D" uid="uid://drfvobfl543yf" path="res://ui/monkefolk/monke/monke3.png" id="8_hyw70"]
+[ext_resource type="Texture2D" uid="uid://bc2k0l0d16wrq" path="res://ui/ui/bars + box/bars.png" id="9_cxdcy"]
+[ext_resource type="Script" uid="uid://5xvmkiaujo5l" path="res://scripts/bottom_bar.gd" id="10_6y3bq"]
+[ext_resource type="Texture2D" uid="uid://ikh4qw7n0wv5" path="res://ui/ui/bars + box/box.png" id="11_4sr2e"]
+[ext_resource type="FontFile" uid="uid://bc62mk63rr4vb" path="res://ui/Comic Sans MS.ttf" id="12_vjpmv"]
+[ext_resource type="Texture2D" uid="uid://cyj3a6ab0kgo1" path="res://ui/ui/uiwheel.png" id="13_o8st7"]
+[ext_resource type="Script" uid="uid://32wl0030kqom" path="res://scripts/circular_container.gd" id="14_mgoxf"]
+[ext_resource type="Texture2D" uid="uid://bekw7sxjg7q8d" path="res://ui/ui/coloredbuttons/cursor.png" id="15_0f6tk"]
+[ext_resource type="Texture2D" uid="uid://b60el3jq8012x" path="res://ui/ui/coloredbuttons/terraform.png" id="16_e4yjp"]
+[ext_resource type="Texture2D" uid="uid://b3w74d44o5vep" path="res://ui/ui/coloredbuttons/riverbutton.png" id="17_3y3rt"]
+[ext_resource type="Texture2D" uid="uid://cw1prmotkuhsd" path="res://ui/ui/coloredbuttons/mountainbutton.png" id="18_5rocq"]
+[ext_resource type="Texture2D" uid="uid://ckdrcycxwauth" path="res://ui/ui/coloredbuttons/shovel.png" id="19_2u3la"]
+[ext_resource type="Texture2D" uid="uid://dmym0ixp0kr8" path="res://ui/ui/coloredbuttons/land.png" id="20_g4gvt"]
+[ext_resource type="Texture2D" uid="uid://bmehp2qkvrj4o" path="res://ui/ui/coloredbuttons/playbutton.png" id="21_085mh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_st70h"]
+font = ExtResource("12_vjpmv")
+font_size = 15
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_615i1"]
+offsets = PackedFloat32Array(0.35460994, 0.42553192, 0.4491726)
+colors = PackedColorArray(0.08235294, 0.49019608, 0.8235294, 1, 0.01810675, 0.09480762, 0.15714341, 0.6999999, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_adaop"]
+gradient = SubResource("Gradient_615i1")
+width = 22
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_pw7dr"]
+offsets = PackedFloat32Array(0.35460994, 0.42553192, 0.4491726)
+colors = PackedColorArray(0.08235294, 0.49019608, 0.8235294, 1, 0.01810675, 0.09480762, 0.15714341, 0.6999999, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ap7yk"]
+gradient = SubResource("Gradient_pw7dr")
+width = 22
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pw7dr"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.57254905, 0.57254905, 0.57254905, 1)
+border_width_left = 10
+border_width_top = 8
+border_width_right = 10
+border_width_bottom = 14
+border_color = Color(0, 0, 0, 0.22745098)
+border_blend = true
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+expand_margin_left = 5.0
+expand_margin_top = 8.0
+expand_margin_right = 5.0
+expand_margin_bottom = 8.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_615i1"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.22352941)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ap7yk"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
+
+[sub_resource type="GDScript" id="GDScript_st70h"]
+script/source = "extends Label
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	text = \"FPS: \" + str(Engine.get_frames_per_second())
+"
+
+[sub_resource type="Animation" id="Animation_1fv7p"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_c3smh")]
+}
+
+[sub_resource type="Animation" id="Animation_4u2vk"]
+resource_name = "idle"
+length = 0.2
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.03333333),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_c3smh")]
+}
+
+[sub_resource type="Animation" id="Animation_2d608"]
+resource_name = "talk1"
+length = 0.82
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.033333335, 0.19999999, 0.35462382, 0.5290498, 0.71975553),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("6_5jwjf"), ExtResource("5_c3smh"), ExtResource("7_nso1x"), ExtResource("5_c3smh"), ExtResource("8_hyw70")]
+}
+
+[sub_resource type="Animation" id="Animation_w71nf"]
+resource_name = "talk2"
+length = 0.82
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.033333335, 0.19999999, 0.4, 0.5290498, 0.71975553),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("6_5jwjf"), ExtResource("5_c3smh"), ExtResource("6_5jwjf"), ExtResource("5_c3smh"), ExtResource("7_nso1x")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4q17s"]
+_data = {
+&"RESET": SubResource("Animation_1fv7p"),
+&"idle": SubResource("Animation_4u2vk"),
+&"talk1": SubResource("Animation_2d608"),
+&"talk2": SubResource("Animation_w71nf")
+}
+
+[node name="Hud" type="Control" unique_id=1275586281]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_x3e77")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1081389851]
+
+[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer" unique_id=745856274]
+anchors_preset = -1
+anchor_top = 0.726
+anchor_right = 1.0
+anchor_bottom = 0.943
+offset_top = -8.600006
+offset_bottom = 32.00006
+grow_horizontal = 2
+alignment = 1
+
+[node name="TimeSliderLabel" type="Label" parent="CanvasLayer/HFlowContainer" unique_id=165372778]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = " speed: 0.5x  "
+label_settings = SubResource("LabelSettings_st70h")
+vertical_alignment = 1
+
+[node name="TimeSlider" type="HSlider" parent="CanvasLayer/HFlowContainer" unique_id=1509727451]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, -1)
+custom_maximum_size = Vector2(150, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_constants/center_grabber = 1
+theme_override_icons/grabber = SubResource("GradientTexture2D_adaop")
+theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_ap7yk")
+theme_override_styles/slider = SubResource("StyleBoxFlat_pw7dr")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_615i1")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_ap7yk")
+max_value = 4.0
+value = 3.0
+scrollable = false
+tick_count = 5
+ticks_on_borders = true
+ticks_position = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer" unique_id=1030966358]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_exqf6")
+region_rect = Rect2(0, 0, 960, 540)
+patch_margin_left = 13
+patch_margin_top = 40
+patch_margin_right = 17
+patch_margin_bottom = 273
+
+[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer/NinePatchRect" unique_id=452793634]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.713
+anchor_right = 1.0
+offset_top = 8.0
+offset_right = 3.0
+offset_bottom = 40.0
+grow_horizontal = 0
+pivot_offset_ratio = Vector2(1, 0)
+alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/NinePatchRect/HFlowContainer" unique_id=388461272]
+custom_maximum_size = Vector2(24, 22)
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(7.77, 0)
+offset_transform_visual_only = false
+texture = ExtResource("3_3ju8l")
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/NinePatchRect/HFlowContainer" unique_id=1060192664]
+custom_maximum_size = Vector2(24, 22)
+layout_mode = 2
+texture = ExtResource("4_b1px6")
+
+[node name="Label" type="Label" parent="CanvasLayer" unique_id=528747437]
+offset_right = 40.0
+offset_bottom = 23.0
+script = SubResource("GDScript_st70h")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1648160815]
+anchors_preset = -1
+anchor_left = 0.032
+anchor_top = 0.777
+anchor_right = 0.171
+anchor_bottom = 0.943
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="Monkey" type="TextureRect" parent="CanvasLayer/MarginContainer" unique_id=746295296]
+custom_maximum_size = Vector2(-1, 200)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_c3smh")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/MarginContainer/Monkey" unique_id=50252484]
+libraries/ = SubResource("AnimationLibrary_4q17s")
+
+[node name="Bottom" type="Control" parent="CanvasLayer" unique_id=130635511]
+custom_minimum_size = Vector2(0, 90)
+custom_maximum_size = Vector2(-1, 720)
+propagate_maximum_size = true
+layout_mode = 3
+anchor_top = 0.547
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset_ratio = Vector2(0.5, 0)
+mouse_filter = 2
+
+[node name="ColorRect2" type="NinePatchRect" parent="CanvasLayer/Bottom" unique_id=1746489747]
+layout_mode = 0
+offset_left = -2.0
+offset_top = 216.08101
+offset_right = 570.7964
+offset_bottom = 334.17297
+scale = Vector2(0.48876318, 0.48876318)
+pivot_offset = Vector2(1.025, -1)
+texture = ExtResource("9_cxdcy")
+region_rect = Rect2(21.014252, 0, 968.9857, 114)
+patch_margin_left = 12
+patch_margin_top = 11
+patch_margin_right = 130
+script = ExtResource("10_6y3bq")
+height_ratio = 0.205
+tuck_ratio = 0.05099999999999999
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="CanvasLayer/Bottom/ColorRect2" unique_id=983493316]
+visible = false
+self_modulate = Color(0.8729923, 0.86006004, 0.8250015, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.03
+anchor_top = 0.186
+anchor_right = 0.891
+anchor_bottom = 0.909
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_4sr2e")
+region_rect = Rect2(15, 17, 285, 285)
+patch_margin_left = 72
+patch_margin_top = 35
+patch_margin_right = 70
+patch_margin_bottom = 28
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[node name="ColorRect3" type="NinePatchRect" parent="CanvasLayer/Bottom" unique_id=1746489748]
+layout_mode = 0
+offset_left = 802.0
+offset_top = 216.08101
+offset_right = 1374.7964
+offset_bottom = 334.17297
+scale = Vector2(-0.48876318, 0.48876318)
+pivot_offset = Vector2(-1, -1)
+texture = ExtResource("9_cxdcy")
+patch_margin_left = 12
+patch_margin_right = 130
+script = ExtResource("10_6y3bq")
+mirrored = true
+height_ratio = 0.205
+tuck_ratio = 0.05099999999999999
+
+[node name="Wheel" type="TextureRect" parent="CanvasLayer/Bottom" unique_id=1529679700]
+custom_minimum_size = Vector2(-1, -1)
+propagate_maximum_size = true
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+offset_transform_position_ratio = Vector2(0, 0.5)
+offset_transform_visual_only = false
+mouse_filter = 2
+texture = ExtResource("13_o8st7")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Container2" type="Container" parent="CanvasLayer/Bottom/Wheel" unique_id=967531249]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -6.0
+offset_top = -1.0999756
+offset_right = -6.0
+offset_bottom = -1.0999756
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("14_mgoxf")
+radius_ratio = 0.758
+item_size_ratio = 0.143
+arc_from_degrees = 195.0
+arc_to_degrees = 345.0
+
+[node name="Click" type="TextureButton" parent="CanvasLayer/Bottom/Wheel/Container2" unique_id=1789490234]
+layout_mode = 2
+offset_transform_enabled = true
+texture_normal = ExtResource("15_0f6tk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Land" type="TextureButton" parent="CanvasLayer/Bottom/Wheel/Container2" unique_id=1199655206]
+layout_mode = 2
+offset_transform_enabled = true
+texture_normal = ExtResource("16_e4yjp")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Water" type="TextureButton" parent="CanvasLayer/Bottom/Wheel/Container2" unique_id=226070401]
+layout_mode = 2
+offset_transform_enabled = true
+texture_normal = ExtResource("17_3y3rt")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Mountain" type="TextureButton" parent="CanvasLayer/Bottom/Wheel/Container2" unique_id=1446097784]
+layout_mode = 2
+offset_transform_enabled = true
+texture_normal = ExtResource("18_5rocq")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Dig" type="TextureButton" parent="CanvasLayer/Bottom/Wheel/Container2" unique_id=511580146]
+layout_mode = 2
+offset_transform_enabled = true
+texture_normal = ExtResource("19_2u3la")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Brush" type="TextureButton" parent="CanvasLayer/Bottom/Wheel/Container2" unique_id=166836023]
+layout_mode = 2
+offset_transform_enabled = true
+texture_normal = ExtResource("20_g4gvt")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="PlayResume" type="TextureButton" parent="CanvasLayer/Bottom/Wheel" unique_id=846836058]
+unique_name_in_owner = true
+custom_maximum_size = Vector2(72, 72)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.38
+anchor_right = 0.5
+anchor_bottom = 0.465
+offset_left = -36.0
+offset_top = -36.0
+offset_right = 36.0
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 1)
+texture_normal = ExtResource("21_085mh")
+stretch_mode = 0

@@ -1,8 +1,15 @@
 extends Control
 
+const PLAY_TEX = preload("res://ui/ui/coloredbuttons/playbutton.png")
+const PLAYING_TEX = preload("res://ui/ui/coloredbuttons/playing.png")
+
 @onready var wheel: CircularContainer = $CanvasLayer/Bottom/Wheel/Container2
 
 @onready var active = wheel.get_node("Click")
+
+@onready var time_slider: HSlider = %TimeSlider
+@onready var time_label: Label = %TimeSliderLabel
+@onready var play_resume: TextureButton = %PlayResume
 
 @export var button_inactive_color := Color.from_rgba8(200, 200, 200, 255)
 @export var button_pressed_color := Color.from_rgba8(139, 139, 139, 255)
@@ -11,11 +18,35 @@ func _ready() -> void:
 	for button: TextureButton in wheel.get_children():
 		_wire_button(button)
 
+	time_slider.value_changed.connect(_on_time_slider_changed)
+	time_slider.set_value_no_signal(log(Game.time_scale) / log(2.0) + 2.0)
+	_update_time_label()
+
+	play_resume.pressed.connect(_on_play_resume)
+	_update_play_button()
+
+
+func _on_time_slider_changed(value: float) -> void:
+	Game.time_scale = pow(2.0, value - 2.0)
+	_update_time_label()
+
+func _update_time_label() -> void:
+	time_label.text = " speed: %sx  " % str(Game.time_scale)
+
+func _on_play_resume() -> void:
+	if Game.paused:
+		Game.resume()
+	else:
+		Game.pause()
+	_update_play_button()
+
+func _update_play_button() -> void:
+	play_resume.texture_normal = PLAY_TEX if Game.paused else PLAYING_TEX
+
 func _wire_button(button: TextureButton) -> void:
 	button.modulate = button_inactive_color
 	button.pressed.connect(func():
 		var tween = create_tween()
-		print("modulating")
 		tween.tween_property(button, "modulate", button_pressed_color, 0.05)
 		tween.tween_property(button, "modulate", Color.WHITE, 0.025)
 		await tween.finished
@@ -40,7 +71,6 @@ func _return_to_normal(button: Control):
 func toggle(thing: Control):
 	_return_to_normal(active)
 	active = thing
-	print("finished, white")
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property(thing, "modulate", Color.WHITE, 0.025)
 	tween.tween_property(thing, "offset_transform_scale", Vector2(1.25, 1.25), 0.06)

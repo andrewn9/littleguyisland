@@ -37,5 +37,7 @@ func _layout() -> void:
 	var s := h / float(texture.get_height())
 	
 	scale = Vector2(-s if mirrored else s, s)
-	size = Vector2((edge_to_wheel + wheel_side * tuck_ratio) / s, texture.get_height())
-	position = Vector2(p.size.x if mirrored else 0.0, p.size.y - h)
+	const BLEED := 2.0
+	size = Vector2((edge_to_wheel + wheel_side * tuck_ratio) / s + BLEED / s,
+		texture.get_height() + BLEED / s)
+	position = Vector2(p.size.x + BLEED if mirrored else -BLEED, p.size.y - h)

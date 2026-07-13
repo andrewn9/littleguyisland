@@ -24,5 +24,4 @@ func update_height():
 
 func _process(delta):
 	pos += (target_pos - pos).limit_length(speed * delta)
-
 	update_height()
