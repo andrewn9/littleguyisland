@@ -2,22 +2,22 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bc2k0l0d16wrq"
-path="res://.godot/imported/bars.png-a437f89365f5859c1eed6c11c882d677.ctex"
+uid="uid://g2ewew2btuye"
+path="res://.godot/imported/birch1.png-3f62f6919e0d6a78d1885c5579a3ec8f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/ui/bars + box/bars.png"
-dest_files=["res://.godot/imported/bars.png-a437f89365f5859c1eed6c11c882d677.ctex"]
+source_file="res://sprites/props/shrubbery/birch1.png"
+dest_files=["res://.godot/imported/birch1.png-3f62f6919e0d6a78d1885c5579a3ec8f.ctex"]
 
 [params]
 
-compress/mode=1
+compress/mode=0
 compress/high_quality=false
-compress/lossy_quality=0.38
+compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

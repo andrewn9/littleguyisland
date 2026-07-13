@@ -3,7 +3,7 @@
 importer="wavefront_obj"
 importer_version=1
 type="Mesh"
-uid="uid://dvv1a48qq3dde"
+uid="uid://dgl7q4gabvdb0"
 path="res://.godot/imported/Untitled.obj-428649125847a96056543ea490988e24.mesh"
 
 [deps]
@@ -16,8 +16,8 @@ dest_files=["res://.godot/imported/Untitled.obj-428649125847a96056543ea490988e24
 [params]
 
 generate_tangents=true
-generate_lods=false
-generate_shadow_mesh=false
+generate_lods=true
+generate_shadow_mesh=true
 generate_lightmap_uv2=false
 generate_lightmap_uv2_texel_size=0.2
 scale_mesh=Vector3(1, 1, 1)

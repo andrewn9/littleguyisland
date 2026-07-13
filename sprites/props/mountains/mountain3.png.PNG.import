@@ -2,22 +2,22 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bc2k0l0d16wrq"
-path="res://.godot/imported/bars.png-a437f89365f5859c1eed6c11c882d677.ctex"
+uid="uid://bjp85laokj1l5"
+path="res://.godot/imported/mountain3.png.PNG-f5a2265a9320a46a77ed680a712cac89.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/ui/bars + box/bars.png"
-dest_files=["res://.godot/imported/bars.png-a437f89365f5859c1eed6c11c882d677.ctex"]
+source_file="res://sprites/props/mountains/mountain3.png.PNG"
+dest_files=["res://.godot/imported/mountain3.png.PNG-f5a2265a9320a46a77ed680a712cac89.ctex"]
 
 [params]
 
-compress/mode=1
+compress/mode=0
 compress/high_quality=false
-compress/lossy_quality=0.38
+compress/lossy_quality=0.4
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

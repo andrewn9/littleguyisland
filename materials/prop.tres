@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bgnhtnaoe05n2"]
+
+[ext_resource type="Texture2D" uid="uid://bj8x0ouj1a3hs" path="res://sprites/props/shrubbery/oak1.png.PNG" id="1_08a0c"]
+
+[resource]
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("1_08a0c")
+billboard_mode = 2

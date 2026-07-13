@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://c6ex7crk5c2jl"]
+
+[ext_resource type="Script" uid="uid://gvyegn21kxqq" path="res://scripts/entity.gd" id="1_08pi3"]
+[ext_resource type="Material" uid="uid://bgnhtnaoe05n2" path="res://materials/prop.tres" id="2_08pi3"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_st70h"]
+size = Vector2(200, 200)
+
+[node name="StaticProp" type="Node3D" unique_id=1724662832]
+script = ExtResource("1_08pi3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=918813411]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 85.5, 0)
+mesh = SubResource("QuadMesh_st70h")
+surface_material_override/0 = ExtResource("2_08pi3")

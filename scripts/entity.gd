@@ -1,4 +1,4 @@
-class_name Entity extends Sprite3D
+class_name Entity extends Node3D
 
 var pos: Vector2
 var target_pos: Vector2
@@ -10,7 +10,10 @@ func _ready() -> void:
 		target_pos = pos
 	else:
 		target_pos = pos
-	
+
+func set_mesh_size(x):
+	pass
+
 func update_height():
 	var height = MapData.height.get_image().get_pixelv(pos.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))).r
 
