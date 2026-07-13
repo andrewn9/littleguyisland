@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cba0w7iu3m4ge" path="res://scripts/camera.gd" id="1_80nbo"]
 [ext_resource type="Material" uid="uid://4mc4ktvjal3e" path="res://materials/ocean_water.tres" id="1_iotsf"]
+[ext_resource type="ArrayMesh" uid="uid://dvv1a48qq3dde" path="res://testing/Untitled.obj" id="1_lc2xo"]
 [ext_resource type="Script" uid="uid://du7arglt47vj" path="res://scripts/model.gd" id="3_feb5d"]
 [ext_resource type="Texture2D" uid="uid://dh80a85hy1wy7" path="res://build/index.icon.png" id="3_iotsf"]
 [ext_resource type="Shader" uid="uid://yphip34bcg22" path="res://shaders/terrain.gdshader" id="4_fc0e3"]
@@ -17,14 +18,7 @@
 background_mode = 1
 background_color = Color(0.93333334, 1, 1, 1)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_lc2xo"]
-material = ExtResource("1_iotsf")
-top_radius = 750.0
-bottom_radius = 750.0
-rings = 1
-
 [sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
-material = ExtResource("1_iotsf")
 size = Vector2(1500, 1500)
 subdivide_width = 256
 subdivide_depth = 256
@@ -96,15 +90,17 @@ environment = SubResource("Environment_7sc4i")
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=34043254]
 transform = Transform3D(0.87758255, 0.37554693, -0.2980157, 0, 0.62161, 0.7833269, 0.47942555, -0.687434, 0.54551405, 0, 0, 0)
 shadow_enabled = true
-shadow_blur = 0.2
+shadow_bias = 1.0
+shadow_normal_bias = 3.0
 directional_shadow_mode = 0
 directional_shadow_max_distance = 3000.0
 
 [node name="Island" type="Node" parent="." unique_id=847606793]
 
 [node name="Water" type="MeshInstance3D" parent="Island" unique_id=1387438961]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2159195, 3.7860107, -0.39269257)
-mesh = SubResource("CylinderMesh_lc2xo")
+transform = Transform3D(750, 0, 0, 0, 750, 0, 0, 0, 750, 0, 6.235306, 0)
+mesh = ExtResource("1_lc2xo")
+surface_material_override/0 = ExtResource("1_iotsf")
 
 [node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen", "map_collision")]
 script = ExtResource("3_feb5d")
@@ -115,7 +111,7 @@ map_collision = NodePath("InteractionLayer/CollisionShape3D")
 
 [node name="Geometry" type="MeshInstance3D" parent="Island/Model" unique_id=1044236274]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10795975, 0, -0.19634628)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10795975, -5.0876846, -0.19634628)
 mesh = SubResource("QuadMesh_feb5d")
 surface_material_override/0 = SubResource("ShaderMaterial_eow3j")
 
@@ -165,6 +161,7 @@ projection = 1
 script = ExtResource("1_80nbo")
 zoom_step = 40.0
 zoom_ramp_speed = 16.045
+perspective_distance = 400.0
 orthographic_size = 389.83
 max_orthographic_size = 1200
 max_angle = 1.065
