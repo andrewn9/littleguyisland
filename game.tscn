@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cbtff2g0rblin"]
 
 [ext_resource type="Script" uid="uid://cba0w7iu3m4ge" path="res://scripts/camera.gd" id="1_80nbo"]
-[ext_resource type="Script" uid="uid://cy5dtkudlsf2e" path="res://day_night_cycle.gd" id="1_215e1"]
+[ext_resource type="Script" uid="uid://cy5dtkudlsf2e" path="res://scripts/day_night_cycle.gd" id="1_215e1"]
 [ext_resource type="Material" uid="uid://4mc4ktvjal3e" path="res://materials/ocean_water.tres" id="1_iotsf"]
 [ext_resource type="ArrayMesh" uid="uid://dgl7q4gabvdb0" path="res://testing/Untitled.obj" id="1_lc2xo"]
 [ext_resource type="Script" uid="uid://du7arglt47vj" path="res://scripts/model.gd" id="3_feb5d"]
@@ -15,26 +15,20 @@
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
 [ext_resource type="PackedScene" uid="uid://bt1fyapo46nfq" path="res://entities/cloud.tscn" id="13_lc2xo"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_786rw"]
-sky_top_color = Color(0.70697314, 0.75986606, 0.83071184, 1)
-sky_horizon_color = Color(0.7058824, 0.7607843, 0.83137256, 1)
-sky_curve = 1e-05
-ground_bottom_color = Color(0.7058824, 0.7607843, 0.83137256, 1)
-ground_horizon_color = Color(0.7058824, 0.7607843, 0.83137256, 1)
-ground_curve = 1.8660623e-05
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_215e1"]
 
 [sub_resource type="Sky" id="Sky_08a0c"]
-sky_material = SubResource("ProceduralSkyMaterial_786rw")
+sky_material = SubResource("PanoramaSkyMaterial_215e1")
 
 [sub_resource type="Environment" id="Environment_7sc4i"]
-background_mode = 2
+background_mode = 1
 background_color = Color(0.93333334, 1, 1, 1)
 sky = SubResource("Sky_08a0c")
 glow_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_mhi6y"]
-offsets = PackedFloat32Array(0.20238096, 0.26785713, 0.32738096, 0.67261904, 0.70238096, 0.77380955)
-colors = PackedColorArray(0.0627451, 0.09411765, 0.23921569, 1, 1, 0.73333335, 0.3764706, 1, 0.83137256, 0.8862745, 1, 1, 0.83137256, 0.8862745, 1, 1, 1, 0.73333335, 0.3764706, 1, 0.0627451, 0.09411765, 0.23921569, 1)
+offsets = PackedFloat32Array(0.20238096, 0.26785713, 0.32738096, 0.67261904, 0.71428573, 0.77380955)
+colors = PackedColorArray(0.1854294, 0.21878016, 0.36839423, 1, 1, 0.52466667, 0.38, 1, 0.83137256, 0.8862745, 1, 1, 0.83137256, 0.8862745, 1, 1, 1, 0.5254902, 0.38039216, 1, 0.18431373, 0.21960784, 0.36862746, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
 size = Vector2(1500, 1500)

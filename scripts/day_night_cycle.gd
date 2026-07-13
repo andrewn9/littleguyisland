@@ -4,9 +4,9 @@ var sky: ProceduralSkyMaterial
 @export var environment: WorldEnvironment
 @export var gradient: Gradient
 
-var time = 0.0
+var time = 45.0
 
-var DAY_LENGTH = 10.0
+var DAY_LENGTH = 120.0
 
 func _ready():
 	sky = environment.environment.sky.sky_material as ProceduralSkyMaterial
@@ -17,15 +17,13 @@ func _process(delta):
 
 	var time_day = fmod(time, DAY_LENGTH) / DAY_LENGTH
 
+	rotation.x = fmod(time_day + 0.25, 0.5) * -2.0 * PI
+
 	var color  = gradient.sample(time_day)
 
-	rotation.x = (time_day + 0.25) * 2.0 * PI
-	sky.sky_top_color = color
-	sky.sky_horizon_color = color
-	sky.ground_bottom_color = color
-	sky.ground_horizon_color = color
+	environment.environment.background_color = color
 
 	if time_day < 0.25 || time_day > 0.75:
-		light_color = color
+		light_color = color * 1.5
 	else:
 		light_color = Color.WHITE
