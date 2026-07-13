@@ -6,7 +6,7 @@ func _ready():
 func update():
 	var heightmap = HeightMapShape3D.new()
 
-	var image = MapData.height.get_image()
+	var image = MapData.height_img
 
 	image.convert(Image.Format.FORMAT_RF)
 

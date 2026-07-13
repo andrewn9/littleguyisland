@@ -48,7 +48,6 @@ func load_textures(path: StringName) -> Array[Texture2D]:
 
 
 func get_prop_material(texture: Texture2D) -> StandardMaterial3D:
-
 	if prop_materials.has(texture):
 		return prop_materials[texture]
 
@@ -60,7 +59,6 @@ func get_prop_material(texture: Texture2D) -> StandardMaterial3D:
 
 
 func _ready():
-
 	mountain_textures = load_textures(
 		"res://sprites/props/mountains/"
 	)
@@ -69,10 +67,8 @@ func _ready():
 		"res://sprites/props/shrubbery/"
 	)
 
-
 	print("Mountains: ", mountain_textures.size())
 	print("Shrubs: ", shrub_textures.size())
-
 
 	mountain_cluster.width = MapData.RESOLUTION
 	mountain_cluster.height = MapData.RESOLUTION
@@ -85,13 +81,11 @@ func _ready():
 	if mountain_cluster.get_image() == null:
 		await mountain_cluster.changed
 
-
 	rng.seed = hash("mountains")
 	rng.state = 0
 
 	for i in range(MapData.RESOLUTION * MapData.RESOLUTION):
 		mountain_noise.append(rng.randf())
-
 
 	tree_cluster.width = MapData.RESOLUTION
 	tree_cluster.height = MapData.RESOLUTION
@@ -118,7 +112,6 @@ func _ready():
 
 
 func spawn_static_prop(pos: Vector2, textures: Array[Texture2D]):
-
 	if textures.is_empty():
 		return
 
@@ -127,30 +120,23 @@ func spawn_static_prop(pos: Vector2, textures: Array[Texture2D]):
 	ent.pos = pos
 	ent.set_mesh_size(rng.randf_range(0.5, 1.2))
 
-
 	var mesh = ent.get_node("MeshInstance3D") as MeshInstance3D
 
-	pass
 
 
 	add_child(ent)
 
-
-
 func trees(x1: int, y1: int, x2: int, y2: int):
-
-	var height_map = MapData.height.get_image()
-	var color_map = MapData.val.get_image()
+	var height_map = MapData.height_img
+	var color_map = MapData.val_img
 	var cluster_map = tree_cluster.get_image()
 
 	for x in range(x1, x2):
 		for y in range(y1, y2):
-
 			var elevation = height_map.get_pixel(x, y).r
 
 			if elevation < 0.1:
 				continue
-
 
 			var color = color_map.get_pixel(x, y)
 			var cluster_val = cluster_map.get_pixel(x, y).r
@@ -158,9 +144,7 @@ func trees(x1: int, y1: int, x2: int, y2: int):
 
 			var diff = color - Color(0.36, 0.64, 0.12)
 
-
 			if white_val > 0.995 || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.16 && (white_val > 0.95 && white_val * cluster_val > 0.5):
-
 				spawn_static_prop(
 					Vector2(x, y),
 					shrub_textures
@@ -169,57 +153,43 @@ func trees(x1: int, y1: int, x2: int, y2: int):
 
 
 func mountains(x1: int, y1: int, x2: int, y2: int):
-
-	var height_map = MapData.height.get_image()
-	var color_map = MapData.val.get_image()
+	var height_map = MapData.height_img
+	var color_map = MapData.val_img
 	var cluster_map = mountain_cluster.get_image()
 
 	for x in range(x1, x2):
 		for y in range(y1, y2):
-
 			var elevation = height_map.get_pixel(x, y).r
 
 			if elevation < 0.3:
 				continue
 
-
 			var cluster_val = cluster_map.get_pixel(x, y).r
 			var white_val = mountain_noise[x * MapData.RESOLUTION + y]
 
-
 			if white_val * cluster_val > 0.3 && white_val > 0.945:
-
 				var diff = color_map.get_pixel(x, y) - Color.GRAY
 
 				if Vector3(diff.r, diff.g, diff.b).length_squared() > 0.16:
 					continue
-
 
 				spawn_static_prop(
 					Vector2(x, y),
 					mountain_textures
 				)
 
-
-
 func generate(x1: int, y1: int, x2: int, y2: int):
-
 	for child: Node3D in get_children():
-
 		var x_pos = (child.position.x + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
 		var y_pos = (child.position.z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
 
 		if x_pos > x1 and y_pos > y1 and x_pos < x2 and y_pos < y2:
 			child.queue_free()
 
-
 	trees(x1, y1, x2, y2)
 	mountains(x1, y1, x2, y2)
 
-
-
 func spawn_person(x: int, y: int):
-
 	var ent = load("res://entities/folk.res").instantiate() as Entity
 
 	ent.pos = Vector2(x, y)

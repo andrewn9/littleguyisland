@@ -13,6 +13,8 @@ class_name Model extends Node3D
 @export var entity_gen: EntityGen
 @export var map_collision: MapCollision
 
+@export var draw_debug: MeshInstance3D
+
 var mouse_position: Vector2
 
 const brushes: Dictionary[StringName, Texture2D] = {
@@ -155,6 +157,8 @@ func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: 
 			tex, color, 0, _add_mat if additive else null
 		)
 
+	MapData.update()
+
 	if min_stroke:
 		min_stroke = min_stroke.min(Vector2i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5)))
 	else:
@@ -204,6 +208,10 @@ func _input(event):
 			var max_y = clamp(max_stroke.y, 0, MapData.RESOLUTION - 1)
 
 			print("Updating entities and map collision")
+
+			if draw_debug:
+				draw_debug.position = Vector3((min_x + max_x) * 0.5, 10.0, (min_y + max_y) * 0.5) * MapData.WORLD_SIZE / MapData.RESOLUTION - Vector3(MapData.WORLD_SIZE / 2, 0, MapData.WORLD_SIZE / 2)
+				draw_debug.scale = Vector3(max_x - min_x, 1.0, max_y - min_y) * MapData.WORLD_SIZE / MapData.RESOLUTION
 
 			entity_gen.generate(min_x, min_y, max_x, max_y)
 			map_collision.update()
