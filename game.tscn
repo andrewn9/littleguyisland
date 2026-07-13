@@ -83,6 +83,9 @@ shader_parameter/strength = 0.1
 shader_parameter/fps = 2.0
 shader_parameter/noise = ExtResource("6_eow3j")
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_xbydb"]
+size = Vector2(1, 1)
+
 [node name="Game2" type="Node3D" unique_id=556122064]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1294957651]
@@ -101,12 +104,13 @@ transform = Transform3D(750, 0, 0, 0, 750, 0, 0, 0, 750, 0, 14.235306, 0)
 mesh = ExtResource("1_lc2xo")
 surface_material_override/0 = ExtResource("1_iotsf")
 
-[node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen", "map_collision")]
+[node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen", "map_collision", "draw_debug")]
 script = ExtResource("3_feb5d")
 Heightmap = ExtResource("4_215e1")
 Valuemap = ExtResource("4_lc2xo")
 entity_gen = NodePath("../../Entities")
 map_collision = NodePath("InteractionLayer/CollisionShape3D")
+draw_debug = NodePath("../../DrawDebug")
 
 [node name="Geometry" type="MeshInstance3D" parent="Island/Model" unique_id=1044236274]
 unique_name_in_owner = true
@@ -167,3 +171,7 @@ max_angle = 1.065
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera" unique_id=921282201]
 unique_name_in_owner = true
+
+[node name="DrawDebug" type="MeshInstance3D" parent="." unique_id=292471862]
+visible = false
+mesh = SubResource("PlaneMesh_xbydb")

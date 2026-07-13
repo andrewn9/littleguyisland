@@ -34,8 +34,8 @@ var _rot_pool: Dictionary = {}  # brush_type -> Array[ImageTexture]
 
 var _add_mat := BlitMaterial.new()
 
-var first_stroke = null
-var last_stroke = null
+var min_stroke = null
+var max_stroke = null
 
 func _ready() -> void:
 	var quad = QuadMesh.new()
@@ -155,9 +155,15 @@ func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: 
 			tex, color, 0, _add_mat if additive else null
 		)
 
-	if not first_stroke:
-		first_stroke = Vector4i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5), roundi(tex_pos.x + brush_size * 0.5), roundi(tex_pos.y + brush_size * 0.5))
-	last_stroke = Vector4i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5), roundi(tex_pos.x + brush_size * 0.5), roundi(tex_pos.y + brush_size * 0.5))
+	if min_stroke:
+		min_stroke = min_stroke.min(Vector2i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5)))
+	else:
+		min_stroke = Vector2i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5))
+
+	if max_stroke:
+		max_stroke = max_stroke.max(Vector2i(roundi(tex_pos.x + brush_size * 0.5), roundi(tex_pos.y + brush_size * 0.5)))
+	else:
+		max_stroke = Vector2i(roundi(tex_pos.x + brush_size * 0.5), roundi(tex_pos.y + brush_size * 0.5))
 
 func stroke(from: Vector2, to: Vector2):
 	for i in range(0, (from - to).length(), 2):
@@ -191,14 +197,19 @@ func _input(event):
 			prev_stroke = project_screen_pos(event.position)
 			if prev_stroke:
 				use_tool(prev_stroke)
-		if not event.pressed and first_stroke:
-			var min_x = clamp(min(first_stroke.x, first_stroke.z, last_stroke.x, last_stroke.z), 0, MapData.RESOLUTION - 1)
-			var max_x = clamp(max(first_stroke.x, first_stroke.z, last_stroke.x, last_stroke.z), 0, MapData.RESOLUTION - 1)
-			var min_y = clamp(min(first_stroke.y, first_stroke.w, last_stroke.y, last_stroke.w), 0, MapData.RESOLUTION - 1)
-			var max_y = clamp(max(first_stroke.y, first_stroke.w, last_stroke.y, last_stroke.w), 0, MapData.RESOLUTION - 1)
+		if not event.pressed and min_stroke:
+			var min_x = clamp(min_stroke.x, 0, MapData.RESOLUTION - 1)
+			var max_x = clamp(max_stroke.x, 0, MapData.RESOLUTION - 1)
+			var min_y = clamp(min_stroke.y, 0, MapData.RESOLUTION - 1)
+			var max_y = clamp(max_stroke.y, 0, MapData.RESOLUTION - 1)
+
+			print("Updating entities and map collision")
+
 			entity_gen.generate(min_x, min_y, max_x, max_y)
 			map_collision.update()
-			first_stroke = null
+
+			min_stroke = null
+			max_stroke = null
 	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
 		if not prev_stroke:
 			prev_stroke = project_screen_pos(event.position)
