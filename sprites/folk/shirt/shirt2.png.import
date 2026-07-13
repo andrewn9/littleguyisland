@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c12xtx0sf4kmj"
-path="res://.godot/imported/skin4.png-a7e8a76106c063f4909b6ada35858ec4.ctex"
+uid="uid://dsmbhtwwbmcxg"
+path="res://.godot/imported/shirt2.png-68c6f60efe9d796e10e9167feb031b6c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/monkefolk/folk/skin4.png"
-dest_files=["res://.godot/imported/skin4.png-a7e8a76106c063f4909b6ada35858ec4.ctex"]
+source_file="res://sprites/folk/shirt/shirt2.png"
+dest_files=["res://.godot/imported/shirt2.png-68c6f60efe9d796e10e9167feb031b6c.ctex"]
 
 [params]
 

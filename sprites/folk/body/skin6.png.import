@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drs4qc6hiiqcv"
-path="res://.godot/imported/hair2.png-5de328d9e5fead166b241a7a0f315897.ctex"
+uid="uid://bbiwgjjr0nr02"
+path="res://.godot/imported/skin6.png-e6d866c8f451677645f88fe99e868f1d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/monkefolk/folk/hair2.png"
-dest_files=["res://.godot/imported/hair2.png-5de328d9e5fead166b241a7a0f315897.ctex"]
+source_file="res://sprites/folk/body/skin6.png"
+dest_files=["res://.godot/imported/skin6.png-e6d866c8f451677645f88fe99e868f1d.ctex"]
 
 [params]
 

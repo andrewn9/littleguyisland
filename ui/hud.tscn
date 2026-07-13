@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://drfvobfl543yf" path="res://ui/monkefolk/monke/monke3.png" id="8_hyw70"]
 [ext_resource type="Texture2D" uid="uid://bc2k0l0d16wrq" path="res://ui/ui/bars + box/bars.png" id="9_cxdcy"]
 [ext_resource type="Script" uid="uid://5xvmkiaujo5l" path="res://scripts/bottom_bar.gd" id="10_6y3bq"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="12_exqf6"]
 [ext_resource type="FontFile" uid="uid://bc62mk63rr4vb" path="res://ui/Comic Sans MS.ttf" id="12_vjpmv"]
 [ext_resource type="Texture2D" uid="uid://cyj3a6ab0kgo1" path="res://ui/ui/uiwheel.png" id="13_o8st7"]
 [ext_resource type="Script" uid="uid://32wl0030kqom" path="res://scripts/circular_container.gd" id="14_mgoxf"]
@@ -329,6 +330,12 @@ script = ExtResource("10_6y3bq")
 height_ratio = 0.205
 tuck_ratio = 0.05099999999999999
 
+[node name="SettingsButton" type="TextureButton" parent="CanvasLayer/Bottom/ColorRect2" unique_id=360644980]
+layout_mode = 0
+offset_right = 128.0
+offset_bottom = 128.0
+texture_normal = ExtResource("12_exqf6")
+
 [node name="ColorRect3" type="NinePatchRect" parent="CanvasLayer/Bottom" unique_id=1746489748]
 layout_mode = 0
 offset_left = 802.0
@@ -441,6 +448,39 @@ pivot_offset_ratio = Vector2(0.5, 1)
 texture_normal = ExtResource("21_085mh")
 stretch_mode = 0
 
+[node name="SizeSlider" type="HSlider" parent="CanvasLayer/Bottom" unique_id=1744459679]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, -1)
+custom_maximum_size = Vector2(150, -1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -42.0
+offset_right = -50.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_constants/center_grabber = 1
+theme_override_icons/grabber = SubResource("GradientTexture2D_adaop")
+theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_ap7yk")
+theme_override_styles/slider = SubResource("StyleBoxFlat_pw7dr")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_615i1")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_ap7yk")
+min_value = 0.5
+max_value = 1.5
+step = 0.0
+value = 1.0
+scrollable = false
+tick_count = 5
+ticks_on_borders = true
+ticks_position = 2
+
 [node name="NinePatchRect2" type="NinePatchRect" parent="CanvasLayer" unique_id=896978583]
 visible = false
 anchors_preset = -1
@@ -458,4 +498,106 @@ patch_margin_top = 16
 patch_margin_right = 47
 patch_margin_bottom = 21
 
+[node name="Settings" type="NinePatchRect" parent="CanvasLayer" unique_id=2001730921]
+unique_name_in_owner = true
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 200.0
+offset_top = 100.0
+offset_right = -200.0
+offset_bottom = -200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Settings" unique_id=1734470655]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sens" type="HFlowContainer" parent="CanvasLayer/Settings/VBoxContainer" unique_id=44215137]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Settings/VBoxContainer/Sens" unique_id=1052630241]
+layout_mode = 2
+size_flags_vertical = 1
+text = "senstivity: 1.0 "
+label_settings = SubResource("LabelSettings_st70h")
+vertical_alignment = 1
+
+[node name="SensSlider" type="HSlider" parent="CanvasLayer/Settings/VBoxContainer/Sens" unique_id=1125203895]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, -1)
+custom_maximum_size = Vector2(150, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_constants/center_grabber = 1
+theme_override_icons/grabber = SubResource("GradientTexture2D_adaop")
+theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_ap7yk")
+theme_override_styles/slider = SubResource("StyleBoxFlat_pw7dr")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_615i1")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_ap7yk")
+min_value = 0.5
+max_value = 1.5
+step = 0.01
+value = 1.0
+scrollable = false
+tick_count = 5
+ticks_on_borders = true
+ticks_position = 2
+
+[node name="Cam" type="HFlowContainer" parent="CanvasLayer/Settings/VBoxContainer" unique_id=322313272]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Settings/VBoxContainer/Cam" unique_id=424932717]
+layout_mode = 2
+size_flags_vertical = 1
+text = "orthographic"
+label_settings = SubResource("LabelSettings_st70h")
+vertical_alignment = 1
+
+[node name="CamButton" type="CheckButton" parent="CanvasLayer/Settings/VBoxContainer/Cam" unique_id=122473411]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+
+[node name="Vol" type="HFlowContainer" parent="CanvasLayer/Settings/VBoxContainer" unique_id=1218994644]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Settings/VBoxContainer/Vol" unique_id=1340053677]
+layout_mode = 2
+size_flags_vertical = 1
+text = "volume: 1.0 "
+label_settings = SubResource("LabelSettings_st70h")
+vertical_alignment = 1
+
+[node name="VolSlider" type="HSlider" parent="CanvasLayer/Settings/VBoxContainer/Vol" unique_id=1340680545]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, -1)
+custom_maximum_size = Vector2(150, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_constants/center_grabber = 1
+theme_override_icons/grabber = SubResource("GradientTexture2D_adaop")
+theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_ap7yk")
+theme_override_styles/slider = SubResource("StyleBoxFlat_pw7dr")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_615i1")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_ap7yk")
+max_value = 1.0
+value = 1.0
+scrollable = false
+tick_count = 5
+ticks_on_borders = true
+ticks_position = 2
+
 [connection signal="pressed" from="CanvasLayer/NinePatchRect/HFlowContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="CanvasLayer/Bottom/ColorRect2/SettingsButton" to="." method="_on_settings_button_pressed"]

@@ -28,7 +28,6 @@ var _social_timer := randf()  # staggered so folk don't all scan at once
 
 @onready var _sprite = get_node_or_null("Pivot/Sprite")
 
-
 func _ready() -> void:
 	super()
 	if randomize_personality:

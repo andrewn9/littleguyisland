@@ -21,6 +21,12 @@ var grass_textures: Array[Texture2D] = []
 var tree_textures: Array[Texture2D] = []
 var bush_textures: Array[Texture2D] = []
 
+var body_textures: Array[Texture2D]
+var shirt_textures: Array[Texture2D]
+var hair_textures: Array[Texture2D]
+
+@export var hair_colors: Gradient
+
 var prop_materials: Dictionary[String, StandardMaterial3D] = {}
 
 func load_textures(path: StringName) -> Array[Texture2D]:
@@ -70,6 +76,11 @@ func _ready():
 		"res://sprites/props/trees/"
 	)
 	
+	
+	body_textures = load_textures("res://sprites/folk/body/")
+	shirt_textures = load_textures("res://sprites/folk/shirt/")
+	hair_textures = load_textures("res://sprites/folk/hair/")
+
 	mountain_cluster.width = MapData.RESOLUTION
 	mountain_cluster.height = MapData.RESOLUTION
 
@@ -134,6 +145,9 @@ func plains(x1: int, y1: int, x2: int, y2: int):
 
 	for x in range(x1, x2):
 		for y in range(y1, y2):
+			if Vector2(x - MapData.RESOLUTION * 0.5, y - MapData.RESOLUTION * 0.5).length() > MapData.RESOLUTION * 0.5:
+				continue
+
 			var elevation = height_map.get_pixel(x, y).r
 			if elevation < 0.1:
 				continue
@@ -185,6 +199,9 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 
 	for x in range(x1, x2):
 		for y in range(y1, y2):
+			if Vector2(x - MapData.RESOLUTION * 0.5, y - MapData.RESOLUTION * 0.5).length() > MapData.RESOLUTION * 0.5:
+				continue
+			
 			var elevation = height_map.get_pixel(x, y).r
 
 			if elevation < 0.3:
@@ -210,6 +227,9 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 				)
 
 				if elevation > 0.7:
+					if height_map.get_pixel(max(x - 1, 0), y).r > elevation or height_map.get_pixel(max(x + 1, MapData.RESOLUTION - 1), y).r > elevation or height_map.get_pixel(x, max(y - 1, 0)).r > elevation or height_map.get_pixel(x, max(y + 1, MapData.RESOLUTION - 1)).r > elevation:
+						continue
+
 					var cloud = CLOUD.instantiate() as GPUParticles3D
 
 					cloud.position = Vector3(x, 0, y) * MapData.WORLD_SIZE / MapData.RESOLUTION - Vector3(MapData.WORLD_SIZE / 2, 0, MapData.WORLD_SIZE / 2)
@@ -235,11 +255,33 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 	plains(x1, y1, x2, y2)
 	mountains(x1, y1, x2, y2)
 
+var name_prefixes = [
+	"chud",
+	"folk"
+]
+
+var name_suffixes = [
+	"ette",
+	"ling",
+	"son",
+	"soul",
+	"sen",
+	"lette",
+	"ly",
+	"lee"
+]
+
 func spawn_little_guy(x: int, y: int):
 	var ent = load("res://entities/folk.res").instantiate() as Entity
 
 	ent.pos = Vector2(x, y)
-	ent.name = "Folk"
 	ent.type = Game.EntityType.FOLK
+
+	ent.name = name_prefixes.pick_random() + name_suffixes.pick_random()
+
+	(ent.get_node("Pivot/Sprite/SubViewport/body") as TextureRect).texture = body_textures.pick_random()
+	(ent.get_node("Pivot/Sprite/SubViewport/shirt") as TextureRect).texture = shirt_textures.pick_random()
+	(ent.get_node("Pivot/Sprite/SubViewport/hair") as TextureRect).texture = hair_textures.pick_random()
+	(ent.get_node("Pivot/Sprite/SubViewport/hair") as TextureRect).modulate = hair_colors.sample(randf())
 
 	add_child(ent)
