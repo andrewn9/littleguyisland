@@ -172,12 +172,12 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 
 			if white_val * cluster_val > 0.3 && white_val > 0.965:
 				var diff = color_map.get_pixel(x, y) - Color.GRAY
-				var len = Vector3(diff.r, diff.g, diff.b).length_squared()
+				var val = Vector3(diff.r, diff.g, diff.b).length_squared()
 
-				if len > 0.16:
+				if val > 0.16:
 					continue
 
-				var fac = 1.0 - sqrt(len) / 0.16
+				var fac = 1.0 - sqrt(val) / 0.16
 
 				spawn_static_prop(
 					Vector2(x, y),
