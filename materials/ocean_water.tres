@@ -10,5 +10,5 @@ shader_parameter/normal_strength = 2.0
 shader_parameter/specular = 0.3
 shader_parameter/roughness = 0.3
 shader_parameter/metallic = 0.0
-shader_parameter/wave_strength = 1.5
-shader_parameter/time_scale = 0.5
+shader_parameter/wave_strength = 0.925
+shader_parameter/time_scale = 1.0
