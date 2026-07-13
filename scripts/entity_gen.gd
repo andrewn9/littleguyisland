@@ -60,18 +60,22 @@ func _ready():
 	for i in range(MapData.RESOLUTION * MapData.RESOLUTION):
 		tree_noise.append(rng.randf())
 	
-	generate(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
+	trees(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 
 func trees(x1: int, y1: int, x2: int, y2: int):
+	var height_map = MapData.height.get_image()
+	var color_map = MapData.val.get_image()
+	var cluster_map = tree_cluster.get_image()
+
 	for x in range(x1, x2):
 		for y in range(y1, y2):
-			var elevation = MapData.height.get_image().get_pixel(x, y).r
+			var elevation = height_map.get_pixel(x, y).r
 
 			if elevation < 0.1:
 				continue
 
-			var color = MapData.val.get_image().get_pixel(x, y)
-			var cluster_val = tree_cluster.get_image().get_pixel(x, y).r
+			var color = color_map.get_pixel(x, y)
+			var cluster_val = cluster_map.get_pixel(x, y).r
 			var white_val = tree_noise[x * MapData.RESOLUTION + y]
 
 			var diff = color - Color(0.36, 0.64, 0.12)
@@ -86,18 +90,22 @@ func trees(x1: int, y1: int, x2: int, y2: int):
 				continue
 
 func mountains(x1: int, y1: int, x2: int, y2: int):
+	var height_map = MapData.height.get_image()
+	var color_map = MapData.val.get_image()
+	var cluster_map = mountain_cluster.get_image()
+
 	for x in range(x1, x2):
 		for y in range(y1, y2):
-			var elevation = MapData.height.get_image().get_pixel(x, y).r
+			var elevation = height_map.get_pixel(x, y).r
 
 			if elevation < 0.3:
 				continue
 			
-			var cluster_val = mountain_cluster.get_image().get_pixel(x, y).r
+			var cluster_val = cluster_map.get_pixel(x, y).r
 			var white_val = mountain_noise[x * MapData.RESOLUTION + y]
 
 			if white_val * cluster_val > 0.3 && white_val > 0.945:
-				var diff = MapData.val.get_image().get_pixel(x, y) - Color.GRAY
+				var diff = color_map.get_pixel(x, y) - Color.GRAY
 				if Vector3(diff.r, diff.g, diff.b).length_squared() > 0.16:
 					continue
 
@@ -108,7 +116,6 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 
 				ent.scale *= 1 - Vector3(diff.r, diff.g, diff.b).length() / 0.4
 
-				add_child(ent)
 				continue
 
 func generate(x1: int, y1: int, x2: int, y2: int):

@@ -29,7 +29,12 @@ uniform float wobble_frequency = 3.0;
 
 
 float height(vec2 uv){
+    #if CURRENT_RENDERER == RENDERER_COMPATIBILITY
     return texture(heightmap, uv).r * height_scale;
+	#else
+    return pow(texture(heightmap, uv).r, 1.0 / 2.2) * height_scale;
+    // return texture(heightmap, uv).r * height_scale;
+	#endif
 }
 
 
