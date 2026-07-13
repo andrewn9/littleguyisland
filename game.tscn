@@ -12,8 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="6_eow3j"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
-[ext_resource type="Script" uid="uid://gvyegn21kxqq" path="res://scripts/entity.gd" id="14_7sc4i"]
-[ext_resource type="Material" uid="uid://bgnhtnaoe05n2" path="res://materials/prop.tres" id="15_80cx4"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_215e1"]
 
@@ -96,10 +94,6 @@ shader_parameter/noise = ExtResource("6_eow3j")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_xbydb"]
 size = Vector2(1, 1)
-
-[sub_resource type="QuadMesh" id="QuadMesh_st70h"]
-material = ExtResource("15_80cx4")
-size = Vector2(64, 64)
 
 [node name="Game2" type="Node3D" unique_id=556122064]
 
