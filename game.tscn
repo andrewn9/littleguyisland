@@ -117,7 +117,7 @@ gradient = SubResource("Gradient_mhi6y")
 [node name="Island" type="Node" parent="." unique_id=847606793]
 
 [node name="Water" type="MeshInstance3D" parent="Island" unique_id=1387438961]
-transform = Transform3D(750, 0, 0, 0, 750, 0, 0, 0, 750, 0, 14.235306, 0)
+transform = Transform3D(830, 0, 0, 0, 830, 0, 0, 0, 830, 0, 14.235306, 0)
 mesh = ExtResource("1_lc2xo")
 surface_material_override/0 = ExtResource("1_iotsf")
 
@@ -154,7 +154,6 @@ grow_vertical = 2
 [node name="Entities" type="Node" parent="." unique_id=2001399486]
 script = ExtResource("7_iotsf")
 pixel_size = 644
-plains_cutoff = 0.935
 hair_colors = SubResource("Gradient_164tn")
 
 [node name="little guy storage" type="Node3D" parent="Entities" unique_id=2062324649]
