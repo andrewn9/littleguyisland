@@ -4,10 +4,13 @@
 [ext_resource type="Material" uid="uid://4mc4ktvjal3e" path="res://materials/ocean_water.tres" id="1_iotsf"]
 [ext_resource type="ArrayMesh" uid="uid://dgl7q4gabvdb0" path="res://testing/Untitled.obj" id="1_lc2xo"]
 [ext_resource type="Script" uid="uid://du7arglt47vj" path="res://scripts/model.gd" id="3_feb5d"]
+[ext_resource type="Texture2D" uid="uid://luhiju1jmkk6" path="res://testing/1height.png" id="4_7sc4i"]
 [ext_resource type="Texture2D" uid="uid://cam6jf6nainpf" path="res://testing/height.png" id="4_215e1"]
 [ext_resource type="Shader" uid="uid://yphip34bcg22" path="res://shaders/terrain.gdshader" id="4_fc0e3"]
 [ext_resource type="Texture2D" uid="uid://vv6mvna5f5im" path="res://testing/value.png" id="4_lc2xo"]
-[ext_resource type="Texture2D" uid="uid://binmu0wpak5yr" path="res://testing/sample_height.png" id="5_hve3p"]
+[ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://shaders/outline.gdshader" id="5_7jktm"]
+[ext_resource type="Texture2D" uid="uid://bkou3u1k8ki7x" path="res://testing/1value.png" id="5_lc2xo"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="6_eow3j"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
 [ext_resource type="PackedScene" uid="uid://b3x881tg3w600" path="res://entities/folk.res" id="7_hve3p"]
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
@@ -39,7 +42,7 @@ colors = PackedColorArray(0.435, 0.682, 0.227, 1, 0.227, 0.455, 0.125, 1, 0.31, 
 gradient = SubResource("Gradient_land")
 
 [sub_resource type="Gradient" id="Gradient_mountain"]
-offsets = PackedFloat32Array(0.11821086, 0.21864952, 0.55948555, 0.728, 0.916, 1)
+offsets = PackedFloat32Array(0.015479876, 0.071207434, 0.16099072, 0.47987616, 0.6625387, 1)
 colors = PackedColorArray(0.734526, 0.66897655, 0.45563442, 1, 0.356075, 0.46765375, 0.38742024, 1, 0.28627452, 0.41568628, 0.37254903, 1, 0.46920556, 0.56858575, 0.56452024, 1, 0.722, 0.71, 0.682, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="Ramp_mountain"]
@@ -48,8 +51,9 @@ gradient = SubResource("Gradient_mountain")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eow3j"]
 render_priority = 0
 shader = ExtResource("4_fc0e3")
-shader_parameter/heightmap = ExtResource("5_hve3p")
-shader_parameter/height_scale = 55.0
+shader_parameter/heightmap = ExtResource("4_215e1")
+shader_parameter/valuemap = ExtResource("4_lc2xo")
+shader_parameter/height_scale = 256.0
 shader_parameter/uv_scale = Vector2(1, 1)
 shader_parameter/texel_size = 0.01
 shader_parameter/near_threshold = 0.5
@@ -69,6 +73,17 @@ shader_parameter/wobble_frequency = 21.895
 map_width = 20
 map_depth = 20
 map_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yltck"]
+shader = ExtResource("5_7jktm")
+shader_parameter/weight = 0.07
+shader_parameter/line_thickness = 0.478000022705
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/opacity = 1.0
+shader_parameter/scale = Vector2(200, 200)
+shader_parameter/strength = 0.1
+shader_parameter/fps = 2.0
+shader_parameter/noise = ExtResource("6_eow3j")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_xbydb"]
 size = Vector2(1, 1)
@@ -93,15 +108,14 @@ surface_material_override/0 = ExtResource("1_iotsf")
 
 [node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen", "map_collision", "draw_debug")]
 script = ExtResource("3_feb5d")
-Heightmap = ExtResource("4_215e1")
-Valuemap = ExtResource("4_lc2xo")
+Heightmap = ExtResource("4_7sc4i")
+Valuemap = ExtResource("5_lc2xo")
 entity_gen = NodePath("../../Entities")
 map_collision = NodePath("InteractionLayer/CollisionShape3D")
 draw_debug = NodePath("../../DrawDebug")
 
 [node name="Geometry" type="MeshInstance3D" parent="Island/Model" unique_id=1044236274]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10795975, -5.0876846, -0.19634628)
 mesh = SubResource("QuadMesh_feb5d")
 surface_material_override/0 = SubResource("ShaderMaterial_eow3j")
 
@@ -136,7 +150,7 @@ pixel_size = 0.207
 layer = 0
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=622731514]
-visible = false
+material = SubResource("ShaderMaterial_yltck")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

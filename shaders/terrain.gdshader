@@ -27,12 +27,24 @@ uniform float wobble_strength = 0.2;
 uniform float wobble_speed = 1.0;
 uniform float wobble_frequency = 3.0;
 
+vec3 linear_to_srgb(vec3 linear_color) {
+    // Clamp to prevent negative values or over-saturation
+    linear_color = clamp(linear_color, vec3(0.0), vec3(1.0));
+    
+    // Apply the standard sRGB OETF formula
+    bvec3 cutoff = lessThan(linear_color, vec3(0.0031308));
+    vec3 higher = vec3(1.055) * pow(linear_color, vec3(1.0 / 2.4)) - vec3(0.055);
+    vec3 lower = linear_color * vec3(12.92);
+    
+    return mix(higher, lower, cutoff);
+}
 
 float height(vec2 uv){
     #if CURRENT_RENDERER == RENDERER_COMPATIBILITY
     return texture(heightmap, uv).r * height_scale;
 	#else
-    return pow(texture(heightmap, uv).r, 1.0 / 2.2) * height_scale;
+	return linear_to_srgb(texture(heightmap, uv).rgb).r * height_scale;
+    //return pow(texture(heightmap, uv).r, 1.0 / 2.2) * height_scale;
     // return texture(heightmap, uv).r * height_scale;
 	#endif
 }

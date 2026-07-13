@@ -123,7 +123,7 @@ func _rotate_tex(src: Image, angle: float) -> ImageTexture:
 	return ImageTexture.create_from_image(out)
 
 func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: int, brush_type := "default", scale_jitter := 0.35, additive := false):
-	var island_mult = 0.35
+	var island_mult = 0.85
 	brush_size *= island_mult
 	
 	var tex: Texture2D = brushes[brush_type]

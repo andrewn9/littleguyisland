@@ -3,7 +3,6 @@ class_name EntityGen extends Node
 const STATIC_PROP = preload("res://entities/static_prop.tscn")
 const PROP_MAT = preload("res://materials/prop.tres")
 
-const tree = preload("res://sprites/props/shrubbery/birch1.png")
 
 var rng = RandomNumberGenerator.new()
 
@@ -34,8 +33,8 @@ func load_textures(path: StringName) -> Array[Texture2D]:
 		print(file)
 		
 		if !dir.current_is_dir():
-			if file.ends_with(".png") or file.ends_with(".PNG"):
-				var tex = load(path + file) as Texture2D
+			if file.ends_with(".import"):
+				var tex = load(path + file.replace(".import", "")) as Texture2D
 
 				if tex:
 					textures.append(tex)
@@ -53,8 +52,8 @@ func get_prop_material(texture: Texture2D) -> StandardMaterial3D:
 
 	var mat = PROP_MAT.duplicate()
 	mat.albedo_texture = texture
-	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	prop_materials[texture] = mat
+	print(mat.albedo_texture)
 	return mat
 
 
@@ -124,8 +123,9 @@ func spawn_static_prop(pos: Vector2, textures: Array[Texture2D]):
 
 	var mesh = ent.get_node("MeshInstance3D") as MeshInstance3D
 
-
-
+	var texture = textures.pick_random()
+	var mat = get_prop_material(texture)
+	mesh.set_surface_override_material(0, mat)
 	add_child(ent)
 
 func trees(x1: int, y1: int, x2: int, y2: int):

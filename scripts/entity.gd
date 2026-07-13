@@ -12,7 +12,7 @@ func _ready() -> void:
 		target_pos = pos
 
 func set_mesh_size(x):
-	pass
+	$MeshInstance3D.scale *= x 
 
 func update_height():
 	var height = MapData.height_img.get_pixelv(pos.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))).r

@@ -17,6 +17,20 @@
 [ext_resource type="Texture2D" uid="uid://dmym0ixp0kr8" path="res://ui/ui/coloredbuttons/land.png" id="21_shnbk"]
 [ext_resource type="Script" uid="uid://5xvmkiaujo5l" path="res://scripts/bottom_bar.gd" id="26_bbar"]
 
+[sub_resource type="GDScript" id="GDScript_st70h"]
+script/source = "extends Label
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	text = \"FPS: \" + str(Engine.get_frames_per_second())
+"
+
 [sub_resource type="Animation" id="Animation_1fv7p"]
 length = 0.001
 tracks/0/type = "value"
@@ -100,6 +114,11 @@ mouse_filter = 1
 script = ExtResource("1_1xsix")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1081389851]
+
+[node name="Label" type="Label" parent="CanvasLayer" unique_id=528747437]
+offset_right = 40.0
+offset_bottom = 23.0
+script = SubResource("GDScript_st70h")
 
 [node name="TimeControl" type="BoxContainer" parent="CanvasLayer" unique_id=1938384403]
 offset_right = 200.0
