@@ -24,6 +24,9 @@ func _make_layer(fill: Color) -> DrawableTexture2D:
 		DrawableTexture2D.DRAWABLE_FORMAT_RGBA8, fill)
 	return tex
 
+func _process(delta):
+	update()
+
 func update():
 	height_img = height.get_image()
 	val_img = val.get_image()

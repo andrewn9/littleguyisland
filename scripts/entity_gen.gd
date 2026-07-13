@@ -109,7 +109,7 @@ func _ready():
 	trees(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 	mountains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 
-func spawn_static_prop(pos: Vector2, textures: Array[Texture2D]):
+func spawn_static_prop(pos: Vector2, textures: Array[Texture2D], min_scale: float, max_scale: float):
 	if textures.is_empty():
 		return
 
@@ -145,7 +145,9 @@ func trees(x1: int, y1: int, x2: int, y2: int):
 			if white_val > 0.995 || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.16 && (white_val > 0.95 && white_val * cluster_val > 0.5):
 				spawn_static_prop(
 					Vector2(x, y),
-					shrub_textures
+					shrub_textures,
+					0.5,
+					1.2
 				)
 
 
@@ -167,13 +169,18 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 
 			if white_val * cluster_val > 0.3 && white_val > 0.965:
 				var diff = color_map.get_pixel(x, y) - Color.GRAY
+				var val = Vector3(diff.r, diff.g, diff.b).length_squared()
 
-				if Vector3(diff.r, diff.g, diff.b).length_squared() > 0.16:
+				if val > 0.16:
 					continue
+
+				var fac = 1.0 - sqrt(val) / 0.16
 
 				spawn_static_prop(
 					Vector2(x, y),
-					mountain_textures
+					mountain_textures,
+					0.8 * fac,
+					1.5 * fac
 				)
 
 func generate(x1: int, y1: int, x2: int, y2: int):
