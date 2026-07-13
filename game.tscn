@@ -10,6 +10,7 @@
 [ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://shaders/outline.gdshader" id="5_7jktm"]
 [ext_resource type="Texture2D" uid="uid://bkou3u1k8ki7x" path="res://testing/1value.png" id="5_lc2xo"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="6_eow3j"]
+[ext_resource type="Texture2D" uid="uid://cgb7tsb8blsq0" path="res://value.png" id="6_lc2xo"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
 
@@ -26,7 +27,7 @@ glow_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_mhi6y"]
 offsets = PackedFloat32Array(0.20238096, 0.26785713, 0.32738096, 0.67261904, 0.71428573, 0.77380955)
-colors = PackedColorArray(0.1854294, 0.21878016, 0.36839423, 1, 1, 0.52466667, 0.38, 1, 0.83137256, 0.8862745, 1, 1, 0.83137256, 0.8862745, 1, 1, 1, 0.5254902, 0.38039216, 1, 0.18431373, 0.21960784, 0.36862746, 1)
+colors = PackedColorArray(0.36719733, 0.41976902, 0.6433378, 1, 1, 0.52466667, 0.38, 1, 0.83137256, 0.8862745, 1, 1, 0.83137256, 0.8862745, 1, 1, 1, 0.5254902, 0.38039216, 1, 0.36862746, 0.41960785, 0.6431373, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
 size = Vector2(1500, 1500)
@@ -123,7 +124,7 @@ surface_material_override/0 = ExtResource("1_iotsf")
 [node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen", "map_collision", "draw_debug")]
 script = ExtResource("3_feb5d")
 Heightmap = ExtResource("4_7sc4i")
-Valuemap = ExtResource("5_lc2xo")
+Valuemap = ExtResource("6_lc2xo")
 entity_gen = NodePath("../../Entities")
 map_collision = NodePath("InteractionLayer/CollisionShape3D")
 draw_debug = NodePath("../../DrawDebug")
@@ -146,7 +147,6 @@ transform = Transform2D(0.33, 0, 0, 0.33, 0, 0)
 
 [node name="Debug" type="VFlowContainer" parent="CanvasLayer2" unique_id=1814383400]
 unique_name_in_owner = true
-visible = false
 anchors_preset = 9
 anchor_bottom = 1.0
 grow_vertical = 2

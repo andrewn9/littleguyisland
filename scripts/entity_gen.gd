@@ -11,8 +11,7 @@ var rng = RandomNumberGenerator.new()
 
 var mountain_cluster := NoiseTexture2D.new()
 var mountain_noise: PackedFloat32Array = []
-@export var mountain_cutoff = 0.965
-@export var plains_cutoff = 0.995
+var mountain_cutoff = 0.965
 var tree_cluster := NoiseTexture2D.new()
 var tree_noise: PackedFloat32Array = []
 
@@ -158,8 +157,7 @@ func plains(x1: int, y1: int, x2: int, y2: int):
 
 			var diff = color - MapData.GRASS_KEY
 
-			if white_val > plains_cutoff || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.16 && (white_val > 0.95 && white_val * cluster_val > 0.5):
-				
+			if white_val > 0.990 || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.04 && (white_val > 0.8 && white_val * cluster_val > 0.4):
 				rng.seed = hash(str(x) + str(y))
 				var random = rng.randf_range(0, 100)
 				var ent
