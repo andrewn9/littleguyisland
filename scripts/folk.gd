@@ -7,7 +7,7 @@ var wander_radius := 155.0
 var idle_time_range := Vector2(1.0, 4.0)
 var water_level := 0.05
 var walk_speed := 1.0
-var swim_speed := 2.0
+var swim_speed := 0.25
 var climb_slowdown := 14.0
 
 var meander := 1.4 # width of wander cone
@@ -125,11 +125,16 @@ func _physics_process(_delta: float) -> void:
 
 
 func _decide():
-	_at_home = false
-	visible = true  # stepping out of the house -> show the folk again
 	_release_tree()  # drop any claim from a previous plan before re-planning
 	goal = _choose_goal()
 
+	if goal == Goal.GO_HOME and is_instance_valid(home) \
+			and pos.distance_to(home.pos) < 4.0:
+		_claim_home()
+		return
+
+	_at_home = false
+	visible = true
 	match goal:
 		Goal.GO_HOME:
 			_target_entity = home
