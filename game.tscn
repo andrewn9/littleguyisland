@@ -10,7 +10,6 @@
 [ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://shaders/outline.gdshader" id="5_7jktm"]
 [ext_resource type="Texture2D" uid="uid://bkou3u1k8ki7x" path="res://testing/1value.png" id="5_lc2xo"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="6_eow3j"]
-[ext_resource type="Texture2D" uid="uid://cgb7tsb8blsq0" path="res://value.png" id="6_lc2xo"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
 
@@ -123,8 +122,6 @@ surface_material_override/0 = ExtResource("1_iotsf")
 
 [node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen", "map_collision", "draw_debug")]
 script = ExtResource("3_feb5d")
-Heightmap = ExtResource("4_7sc4i")
-Valuemap = ExtResource("6_lc2xo")
 entity_gen = NodePath("../../Entities")
 map_collision = NodePath("InteractionLayer/CollisionShape3D")
 draw_debug = NodePath("../../DrawDebug")
@@ -147,14 +144,14 @@ transform = Transform2D(0.33, 0, 0, 0.33, 0, 0)
 
 [node name="Debug" type="VFlowContainer" parent="CanvasLayer2" unique_id=1814383400]
 unique_name_in_owner = true
-anchors_preset = 9
+anchors_preset = -1
+anchor_top = 0.352
 anchor_bottom = 1.0
 grow_vertical = 2
 
 [node name="Entities" type="Node" parent="." unique_id=2001399486]
 script = ExtResource("7_iotsf")
 pixel_size = 644
-plains_cutoff = 0.935
 hair_colors = SubResource("Gradient_164tn")
 
 [node name="little guy storage" type="Node3D" parent="Entities" unique_id=2062324649]
