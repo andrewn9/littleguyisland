@@ -11,6 +11,12 @@ var capacity := 3
 
 var reserved_by: Node = null
 
+var growth_stage := 0
+var plant_day_f := 0.0
+var grow_days := 4.0
+
+var last_birth_day := -1
+
 func _ready() -> void:
 	if not pos:
 		pos = Vector2(position.x + MapData.WORLD_SIZE / 2, position.z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE

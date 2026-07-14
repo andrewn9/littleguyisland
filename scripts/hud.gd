@@ -12,6 +12,7 @@ const PLAYING_TEX = preload("res://ui/ui/coloredbuttons/playing.png")
 @onready var play_resume: TextureButton = %PlayResume
 
 @onready var size_slider: HSlider = %SizeSlider
+@onready var stats_label: Label = %Stats
 
 @onready var settings: NinePatchRect = %Settings
 @onready var sens_slider: HSlider = %SensSlider
@@ -86,7 +87,13 @@ func _on_settings_button_pressed():
 	settings.visible = not settings.visible
 
 func _process(delta: float) -> void:
-	pass
+	stats_label.text = "Day %d\nPop: %d\nHappy: %d%%\nWood: %d\nFood: %d%s%s\n farms:%d" % [
+		Game.day, Game.population, roundi(Game.avg_happiness * 100.0),
+		Game.total_wood, roundi(Game.food),
+		"\n hungry" if Game.hungry() else "",
+		"\n growth+" if Game.prosperous() else "",
+		Game.farm_count
+	]
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()

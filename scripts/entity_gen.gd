@@ -21,6 +21,17 @@ var tree_textures: Array[Texture2D] = []
 var bush_textures: Array[Texture2D] = []
 var house_textures: Array[Texture2D] = []
 
+const FARM_STAGE_PATHS := [
+	"res://sprites/props/farmland/fallow.png",
+	"res://sprites/props/farmland/wheat1.png",
+	"res://sprites/props/farmland/wheat2.png",
+	"res://sprites/props/farmland/wheat3.png",
+	"res://sprites/props/farmland/wheat4.png",
+]
+var farm_textures: Array[Texture2D] = []
+var _farms: Array = []
+var crop_grow_days := Vector2(2.0, 4.0)
+
 var body_textures: Array[Texture2D]
 var shirt_textures: Array[Texture2D]
 var hair_textures: Array[Texture2D]
@@ -86,8 +97,10 @@ func _ready():
 	house_textures = load_textures(
 		"res://sprites/props/house/"
 	)
-	
-	
+	for p in FARM_STAGE_PATHS:
+		farm_textures.append(load(p))
+
+
 	body_textures = load_textures("res://sprites/folk/body/")
 	shirt_textures = load_textures("res://sprites/folk/shirt/")
 	hair_textures = load_textures("res://sprites/folk/hair/")
@@ -302,7 +315,50 @@ func spawn_home(p: Vector2, capacity := 3) -> Entity:
 	ent.name = "Home"
 	ent.type = Game.EntityType.HOUSING
 	ent.capacity = capacity
+	Game.house_capacity += capacity  # reflect at once so the build cap is tight
 	return ent
+
+func farm_is_ripe(f: Entity):
+	return is_instance_valid(f) and f.type == Game.EntityType.FARM \
+			and f.growth_stage >= farm_textures.size() - 1
+
+func spawn_farm(p: Vector2):
+	if farm_textures.is_empty():
+		return null
+
+	var ent = STATIC_PROP.instantiate() as Entity
+
+	ent.pos = p
+	ent.name = "Farm"
+	ent.type = Game.EntityType.FARM
+	ent.plant_day_f = Game.day + Game.day_fraction
+	ent.grow_days = randf_range(crop_grow_days.x, crop_grow_days.y)
+	ent.growth_stage = 0
+
+	ent.apply_scale(farm_textures[0].get_width() / float(pixel_size))
+	ent.set_prop_mat(get_prop_material(farm_textures[0]))
+
+	add_child(ent)
+	_farms.append(ent)
+	Game.farm_count += 1  # reflect at once so the passive-farm cap is tight
+
+	return ent
+
+func _process(_delta: float) -> void:
+	var now := Game.day + Game.day_fraction
+	var last := farm_textures.size() - 1
+	var alive = []
+	for f in _farms:
+		if !is_instance_valid(f):
+			continue
+		alive.append(f)
+		var elapsed = maxf(now - f.plant_day_f, 0.0)
+		var progress = clampf(elapsed / f.grow_days, 0.0, 1.0)
+		var stage := mini(int(progress * last), last)
+		if stage != f.growth_stage:
+			f.growth_stage = stage
+			f.set_prop_mat(get_prop_material(farm_textures[stage]))
+	_farms = alive
 
 func spawn_little_guy(x: int, y: int):
 	var ent = load("res://entities/folk.res").instantiate() as Entity
@@ -311,6 +367,7 @@ func spawn_little_guy(x: int, y: int):
 	ent.type = Game.EntityType.FOLK
 
 	ent.name = name_prefixes.pick_random() + name_suffixes.pick_random()
+	print(ent.name + " has joined the game")
 
 	(ent.get_node("Pivot/Sprite/SubViewport/body") as TextureRect).texture = body_textures.pick_random()
 	(ent.get_node("Pivot/Sprite/SubViewport/shirt") as TextureRect).texture = shirt_textures.pick_random()

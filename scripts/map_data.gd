@@ -15,6 +15,11 @@ var MOUNTAIN_KEY: Color = Color.GRAY
 
 const NAV_WATER_LEVEL := 0.05
 const NAV_MOUNTAIN_LEVEL := 0.5
+
+const MOUNTAIN_WEIGHT := 100.0
+const SWIM_WEIGHT := 10.0
+
+const MAX_SWIM := 18
 var astar: AStarGrid2D
 
 var layers : Dictionary = {}
@@ -54,11 +59,14 @@ func rebuild_nav() -> void:
 		astar.update()
 	for y in RESOLUTION:
 		for x in RESOLUTION:
-			astar.set_point_solid(Vector2i(x, y), not _walkable(height_img.get_pixel(x, y).r))
+			var h := height_img.get_pixel(x, y).r
+			var p := Vector2i(x, y)
+			astar.set_point_weight_scale(p, MOUNTAIN_WEIGHT if h < NAV_MOUNTAIN_LEVEL else 1.0)
+			astar.set_point_weight_scale(p, SWIM_WEIGHT if h < NAV_WATER_LEVEL else 1.0)
 
-func _nearest_walkable(p: Vector2i):
+func _nearest_land(p: Vector2i):
 	p = p.clamp(Vector2i.ZERO, Vector2i.ONE * (RESOLUTION - 1))
-	if not astar.is_point_solid(p):
+	if _walkable(height_img.get_pixelv(p).r):
 		return p
 	for r in range(1, 12):
 		for dy in range(-r, r + 1):
@@ -66,28 +74,50 @@ func _nearest_walkable(p: Vector2i):
 				if absi(dx) != r and absi(dy) != r:
 					continue  # only the ring at radius r
 				var q := (p + Vector2i(dx, dy)).clamp(Vector2i.ZERO, Vector2i.ONE * (RESOLUTION - 1))
-				if not astar.is_point_solid(q):
+				if _walkable(height_img.get_pixelv(q).r):
 					return q
 	return null
+
+func _longest_water_run(path: PackedVector2Array):
+	var run := 0
+	var mx := 0
+	for pt in path:
+		if height_img.get_pixelv(pt.clamp(Vector2.ZERO, Vector2.ONE * (RESOLUTION - 1))).r < NAV_WATER_LEVEL:
+			run += 1
+			mx = maxi(mx, run)
+		else:
+			run = 0
+	return mx
 
 func find_path(from: Vector2, to: Vector2):
 	if astar == null:
 		rebuild_nav()
 	if astar == null:
 		return PackedVector2Array()
-	var a = _nearest_walkable(Vector2i(from.round()))
-	var b = _nearest_walkable(Vector2i(to.round()))
+	var a = _nearest_land(Vector2i(from.round()))
+	var b = _nearest_land(Vector2i(to.round()))
 	if a == null or b == null:
 		return PackedVector2Array()
-	return astar.get_point_path(a, b)
+	var path = astar.get_point_path(a, b)
+	if _longest_water_run(path) > MAX_SWIM:
+		return PackedVector2Array()  # would need too long a swim -> unreachable
+	return path
 
 func clear_path(from: Vector2, to: Vector2):
 	if height_img == null:
 		return false
 	var steps := int(ceil(from.distance_to(to)))
+	var run := 0
+	var mx := 0
 	for i in steps + 1:
 		var p := from.lerp(to, float(i) / maxf(steps, 1)).round().clamp(
 			Vector2.ZERO, Vector2.ONE * (RESOLUTION - 1))
-		if not _walkable(height_img.get_pixelv(p).r):
+		var h := height_img.get_pixelv(p).r
+		if h > NAV_MOUNTAIN_LEVEL:
 			return false
-	return true
+		if h < NAV_WATER_LEVEL:
+			run += 1
+			mx = maxi(mx, run)
+		else:
+			run = 0
+	return mx <= MAX_SWIM

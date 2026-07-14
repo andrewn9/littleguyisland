@@ -279,6 +279,13 @@ offset_right = 40.0
 offset_bottom = 23.0
 script = SubResource("GDScript_st70h")
 
+[node name="Stats" type="Label" parent="CanvasLayer" unique_id=528747438]
+unique_name_in_owner = true
+offset_left = 4.0
+offset_top = 26.0
+offset_right = 220.0
+offset_bottom = 130.0
+
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1648160815]
 anchors_preset = -1
 anchor_left = 0.032
@@ -529,13 +536,14 @@ autowrap_mode = 1
 
 [node name="Settings" type="NinePatchRect" parent="CanvasLayer" unique_id=2001730921]
 unique_name_in_owner = true
+visible = false
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 200.0
 offset_top = 100.0
 offset_right = -200.0003
-offset_bottom = -200.0
+offset_bottom = -393.0
 grow_horizontal = 2
 grow_vertical = 2
 
