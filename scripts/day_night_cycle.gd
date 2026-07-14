@@ -4,9 +4,9 @@ var sky: ProceduralSkyMaterial
 @export var environment: WorldEnvironment
 @export var gradient: Gradient
 
-var time = 45.0
+var time = 90.0
 
-var DAY_LENGTH = 120.0
+var DAY_LENGTH = 240.0
 
 func _ready():
 	sky = environment.environment.sky.sky_material as ProceduralSkyMaterial

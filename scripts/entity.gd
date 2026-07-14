@@ -9,6 +9,8 @@ var is_static := true
 var residents: Array = []
 var capacity := 3
 
+var reserved_by: Node = null
+
 func _ready() -> void:
 	if not pos:
 		pos = Vector2(position.x + MapData.WORLD_SIZE / 2, position.z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE

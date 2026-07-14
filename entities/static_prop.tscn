@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://c6ex7crk5c2jl"]
 
 [ext_resource type="Script" uid="uid://gvyegn21kxqq" path="res://scripts/entity.gd" id="1_08pi3"]
-[ext_resource type="Texture2D" uid="uid://ppxlx0i0prcd" path="res://sprites/props/mountains/mountain1.png.PNG" id="2_08pi3"]
 [ext_resource type="Material" uid="uid://bgnhtnaoe05n2" path="res://materials/prop.tres" id="3_scpcv"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_7522t"]
@@ -11,13 +10,7 @@ size = Vector2(11.615, 11.415)
 script = ExtResource("1_08pi3")
 
 [node name="Pivot" type="Marker3D" parent="." unique_id=1375679088]
-transform = Transform3D(2.19, 0, 0, 0, 2.19, 0, 0, 0, 2.19, 0, 0, 0)
-
-[node name="Sprite" type="Sprite3D" parent="Pivot" unique_id=393700870]
-transform = Transform3D(0.9999995, 0, 0, 0, 0.9999995, 0, 0, 0, 0.9999995, 0, 4.695, 0)
-visible = false
-billboard = 2
-texture = ExtResource("2_08pi3")
+transform = Transform3D(2.19, 0, 0, 0, 2.19, 0, 0, 0, 2.19, 0, 1.6337824, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot" unique_id=418149708]
 transform = Transform3D(0.9999997, 0, 0, 0, 0.9999997, 0, 0, 0, 0.9999997, 0, 5.0574174, 0)

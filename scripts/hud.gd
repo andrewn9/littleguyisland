@@ -26,7 +26,7 @@ func _ready() -> void:
 		_wire_button(button)
 
 	time_slider.value_changed.connect(_on_time_slider_changed)
-	time_slider.set_value_no_signal(log(Game.time_scale) / log(2.0) + 2.0)
+	time_slider.set_value_no_signal(log(Game.time_scale) / log(2.0) + 1.0)
 	_update_time_label()
 
 	play_resume.pressed.connect(_on_play_resume)

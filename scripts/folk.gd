@@ -3,12 +3,15 @@ class_name Folk extends Entity
 enum FolkState { IDLE, WANDER, WALKING, SWIMMING, INTERACTING, DEAD }
 enum Goal { ROAM, GATHER, BUILD, GO_HOME }
 
-var wander_radius := 14.0
+var wander_radius := 155.0
 var idle_time_range := Vector2(1.0, 4.0)
 var water_level := 0.05
-var walk_speed := 10.0
+var walk_speed := 1.0
 var swim_speed := 2.0
 var climb_slowdown := 14.0
+
+var meander := 1.4 # width of wander cone
+var roam_rest_chance := 0.15
 
 var adventurousness := 0.5
 var social_radius := 24.0
@@ -28,7 +31,14 @@ var tree_search_radius := 90.0
 
 var home_group_radius := 70.0
 
-var neighbour_home_radius := 40.0
+var home_spacing := Vector2(1.0, 6.0)
+
+var night_home_range := 30.0
+var takeover_radius := 45.0
+
+var share_radius := 24.0
+
+var neighbour_home_radius := 10.0
 
 @export var viewport: SubViewport
 
@@ -45,9 +55,13 @@ var _community := 0 # neighbouring homes
 var _at_home := false
 var _social_timer := randf()
 var _roam_goal := Vector2.ZERO
+var _wander_angle := randf() * TAU  # current heading, random-walked for meander
 
 var _target_entity: Entity = null
 var _pending_tree: Entity = null
+
+var _path: PackedVector2Array = []  # remaining waypoints toward the destination
+var _path_i := 0
 
 @onready var _sprite = $Pivot/Sprite
 
@@ -70,8 +84,14 @@ func tick(dt: float):
 					else FolkState.WALKING
 			var base = swim_speed if state == FolkState.SWIMMING else walk_speed
 			speed = base * _climb_factor() * lerpf(0.85, 1.1, happiness)
-			if pos.distance_to(target_pos) < 1.5:
-				_arrive()
+			var last := _path_i >= _path.size() - 1
+			var arrive_radius = (3.5 if goal == Goal.GO_HOME else 1.5) if last else 1.5
+			if pos.distance_to(target_pos) < arrive_radius:
+				if last:
+					_arrive()
+				else:
+					_path_i += 1
+					target_pos = _path[_path_i]
 		FolkState.INTERACTING:
 			_interact_left -= dt
 			if _interact_left <= 0.0:
@@ -107,27 +127,41 @@ func _physics_process(_delta: float) -> void:
 
 func _decide():
 	_at_home = false
+	visible = true  # stepping out of the house -> show the folk again
+	_release_tree()  # drop any claim from a previous plan before re-planning
 	goal = _choose_goal()
 
 	match goal:
 		Goal.GO_HOME:
 			_target_entity = home
-			target_pos = home.pos
-			state = FolkState.WALKING
+			if not _go_to(home.pos):
+				_rest()
 		Goal.GATHER:
-			var tree = _find_nearest(Game.EntityType.TREE, tree_search_radius)
-			if tree:
-				_target_entity = tree
-				target_pos = tree.pos
-				state = FolkState.WALKING
+			if is_instance_valid(_pending_tree) and _pending_tree.reserved_by == null \
+					and _go_to(_pending_tree.pos):
+				_target_entity = _pending_tree
+				_pending_tree.reserved_by = self
 			else:
 				_roam()
 		Goal.BUILD:
 			_target_entity = null
-			target_pos = _pick_build_spot()
-			state = FolkState.WALKING
+			if not _go_to(_pick_build_spot()):
+				_rest()
 		Goal.ROAM:
 			_roam()
+
+
+func _go_to(dest: Vector2) -> bool:
+	if MapData.clear_path(pos, dest):
+		_path = PackedVector2Array([dest])  # straight shot, no detour needed
+	else:
+		_path = MapData.find_path(pos, dest)
+	if _path.is_empty():
+		return false
+	_path_i = 0
+	target_pos = _path[0]
+	state = FolkState.WALKING
+	return true
 
 func _choose_goal() -> Goal:
 	if home == null:
@@ -137,11 +171,22 @@ func _choose_goal() -> Goal:
 			joinable.residents.append(self)
 
 	if Game.is_night():
-		return Goal.GO_HOME if home else Goal.ROAM
+		if is_instance_valid(home):
+			if pos.distance_to(home.pos) > night_home_range:
+				var shelter = _find_unowned_home(takeover_radius)
+				if shelter and pos.distance_to(shelter.pos) < pos.distance_to(home.pos):
+					home.residents.erase(self)
+					home = shelter
+					shelter.residents.append(self)
+			return Goal.GO_HOME
+		return Goal.ROAM
+
+	if carried_wood < wood_to_build:
+		_share_wood()
 
 	if carried_wood >= wood_to_build:
 		return Goal.BUILD
-	_pending_tree = _find_nearest(Game.EntityType.TREE, tree_search_radius)
+	_pending_tree = _find_nearest(Game.EntityType.TREE, tree_search_radius, true)
 	if _pending_tree:
 		return Goal.GATHER
 	return Goal.ROAM
@@ -155,27 +200,38 @@ func _arrive() -> void:
 			else:
 				_rest()
 		Goal.GATHER:
-			if _target_entity and _target_entity.type == Game.EntityType.TREE:
+			if is_instance_valid(_target_entity) and _target_entity.type == Game.EntityType.TREE:
 				state = FolkState.INTERACTING
 				_interact_left = chop_time
 			else:
-				_rest() # tree already cut
+				_release_tree()  # tree already cut / gone
+				_rest()
 		Goal.BUILD:
 			state = FolkState.INTERACTING
 			_interact_left = build_time
 		Goal.ROAM:
-			_rest()
+			if randf() < roam_rest_chance:
+				_rest()
+			else:
+				_roam()
 
 func _finish_interact() -> void:
 	match goal:
 		Goal.GATHER:
-			if _target_entity:
+			if is_instance_valid(_target_entity):
 				carried_wood += wood_per_tree
-				_target_entity.queue_free()
+				_target_entity.queue_free()  # claim dies with the tree
 			_target_entity = null
 		Goal.BUILD:
 			_make_house()
 	_rest()
+
+
+func _release_tree() -> void:
+	if is_instance_valid(_target_entity) \
+			and _target_entity.type == Game.EntityType.TREE \
+			and _target_entity.reserved_by == self:
+		_target_entity.reserved_by = null
 
 func _make_house() -> void:
 	if carried_wood < wood_to_build:
@@ -190,6 +246,7 @@ func _make_house() -> void:
 
 func _claim_home() -> void:
 	_at_home = true
+	visible = false  # gone inside -> hide until they head out again
 	state = FolkState.IDLE
 	_community = _count_nearby_homes(neighbour_home_radius)
 	_idle_left = randf_range(4.0, 8.0) # rest til morn
@@ -212,11 +269,9 @@ func _update_happiness(dt: float) -> void:
 
 func _roam() -> void:
 	var target := _pick_wander_target()
-	if target.is_finite():
-		target_pos = target
-		state = FolkState.WALKING
-	else:
-		_rest()
+	if target.is_finite() and _go_to(target):
+		return
+	_rest()
 		
 func _rest() -> void:
 	state = FolkState.IDLE
@@ -225,37 +280,39 @@ func _rest() -> void:
 	_idle_left = randf_range(idle_time_range.x, idle_time_range.y) * laziness
 
 func _pick_wander_target() -> Vector2:
-	if pos.distance_to(_roam_goal) < wander_radius:
+	if not _roam_goal.is_finite() or pos.distance_to(_roam_goal) < wander_radius:
 		_roam_goal = _new_roam_goal()
 
 	var stride = wander_radius * lerpf(0.8, 1.6, adventurousness)
 	var to_goal = _roam_goal - pos
-	var heading = to_goal.normalized() if to_goal.length() > 1.0 \
-			else Vector2.from_angle(randf() * TAU)
+	var goal_dir = to_goal.normalized() if to_goal.length() > 1.0 else Vector2.ZERO
 	var here_h = _height_at(pos)
+	var scaredness = adventurousness * lerpf(0.4, 1.0, happiness)
 
 	var best = Vector2.INF
 	var best_score = -INF
+	var best_angle = _wander_angle
 	for _try in 8:
-		var dir = heading.rotated(deg_to_rad(randf_range(-55.0, 55.0)))
-		var candidate = pos + dir * randf_range(stride * 0.5, stride)
+		var angle = _wander_angle + randf_range(-meander, meander)
+		var dir = Vector2.from_angle(angle)
+		var candidate = pos + dir * randf_range(stride * 0.6, stride)
 		if not _on_map(candidate) or _height_at(candidate) < water_level:
 			continue
-		var progress = (pos.distance_to(_roam_goal) - candidate.distance_to(_roam_goal)) \
-				/ stride
-		var score = progress + randf() * 0.25
-		var scaredness = adventurousness * lerpf(0.4, 1.0, happiness)
+		var score = randf() * 0.5 + dir.dot(goal_dir) * 0.4
 		score -= absf(_height_at(candidate) - here_h) * elevation_attachment \
 				* (1.0 - scaredness * 0.9)
 		if score > best_score:
 			best_score = score
 			best = candidate
+			best_angle = angle
 
 	if best.is_finite():
+		_wander_angle = best_angle  # carry the heading forward for momentum
 		return best
 	_roam_goal = Vector2.INF
 	for _try in 4:
-		var candidate = pos + Vector2.from_angle(randf() * TAU) \
+		_wander_angle += randf_range(1.5, 3.0)
+		var candidate = pos + Vector2.from_angle(_wander_angle) \
 				* randf_range(3.0, stride)
 		if _on_map(candidate):
 			return candidate
@@ -279,11 +336,13 @@ func _new_roam_goal() -> Vector2:
 			return g
 	return pos
 
-func _find_nearest(entity_type: Game.EntityType, radius: float):
+func _find_nearest(entity_type: Game.EntityType, radius: float, skip_reserved := false):
 	var best: Entity = null
 	var best_d = radius
 	for other in get_parent().get_children():
 		if other is Entity and (other as Entity).type == entity_type:
+			if skip_reserved and is_instance_valid(other.reserved_by) and other.reserved_by != self:
+				continue
 			var d = pos.distance_to((other as Entity).pos)
 			if d < best_d:
 				best_d = d
@@ -303,6 +362,32 @@ func _find_joinable_home() -> Entity:
 					best = h
 	return best
 
+func _find_unowned_home(radius: float) -> Entity:
+	var best: Entity = null
+	var best_d = radius
+	for other in get_parent().get_children():
+		if other is Entity and (other as Entity).type == Game.EntityType.HOUSING:
+			var h = other as Entity
+			if h.residents.is_empty():
+				var d = pos.distance_to(h.pos)
+				if d < best_d:
+					best_d = d
+					best = h
+	return best
+
+func _share_wood() -> void:
+	var need = wood_to_build - carried_wood
+	for other in get_parent().get_children():
+		if need <= 0:
+			break
+		if other is Folk and other != self and pos.distance_to(other.pos) < share_radius:
+			var spare = other.carried_wood - wood_to_build  # they keep enough to build too
+			if spare > 0:
+				var give = mini(need, spare)
+				other.carried_wood -= give
+				carried_wood += give
+				need -= give
+
 func _count_nearby_homes(radius: float) -> int:
 	var c = 0
 	for other in get_parent().get_children():
@@ -317,7 +402,8 @@ func _pick_build_spot() -> Vector2:
 	if nearest:
 		anchor = nearest.pos
 	for _try in 16:
-		var spot = anchor + Vector2.from_angle(randf() * TAU) * randf_range(6.0, 16.0)
+		var spot = anchor + Vector2.from_angle(randf() * TAU) \
+				* randf_range(home_spacing.x, home_spacing.y)
 		if _on_map(spot) and _height_at(spot) >= water_level + 0.02 \
 				and _find_nearest_home_dist(spot) > 5.0:
 			return spot

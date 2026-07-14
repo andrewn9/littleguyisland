@@ -27,7 +27,7 @@ var hair_textures: Array[Texture2D]
 
 @export var hair_colors: Gradient
 
-var prop_materials: Dictionary[String, StandardMaterial3D] = {}
+var prop_materials: Dictionary[int, StandardMaterial3D] = {}
 
 func load_textures(path: StringName) -> Array[Texture2D]:
 	var textures: Array[Texture2D] = []
@@ -57,9 +57,17 @@ func load_textures(path: StringName) -> Array[Texture2D]:
 	return textures
 
 
-func get_prop_material(texture: Texture2D) -> StandardMaterial3D:
+func get_prop_material(texture: Texture2D, flipped := false) -> StandardMaterial3D:
+	var key := texture.get_instance_id() * 2 + int(flipped)
+	var cached = prop_materials.get(key)
+	if cached:
+		return cached
 	var mat = PROP_MAT.duplicate(true)
 	mat.albedo_texture = texture
+	if flipped:  # mirror the sprite horizontally (uv.x -> 1 - uv.x)
+		mat.uv1_scale = Vector3(-1, 1, 1)
+		mat.uv1_offset = Vector3(1, 0, 0)
+	prop_materials[key] = mat
 	return mat
 
 func _ready():
@@ -132,11 +140,8 @@ func spawn_static_prop(pos: Vector2, textures: Array[Texture2D], min_scale: floa
 	rng.seed = hash(str(pos.x) + str(pos.y))
 
 	var texture = textures[rng.randi_range(0, textures.size() - 1)]
-	var mat = get_prop_material(texture)
-	
-	if rng.randf() < 0.5: # random mirror
-		mat.uv1_scale = Vector3(-1, 1, 1)
-		mat.uv1_offset = Vector3(1, 0, 0)
+	var flipped := rng.randf() < 0.5  # random mirror
+	var mat = get_prop_material(texture, flipped)
 	ent.pos = pos
 	ent.apply_scale(rng.randf_range(min_scale, max_scale))
 	ent.apply_scale(texture.get_width() / float(pixel_size))
@@ -165,7 +170,7 @@ func plains(x1: int, y1: int, x2: int, y2: int):
 
 			var diff = color - MapData.GRASS_KEY
 
-			if white_val > 0.990 || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.04 && (white_val > 0.8 && white_val * cluster_val > 0.4):
+			if white_val > 0.999 || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.04 && (white_val > 0.8 && white_val * cluster_val > 0.4):
 				rng.seed = hash(str(x) + str(y))
 				var random = rng.randf_range(0, 100)
 				var ent
@@ -178,7 +183,7 @@ func plains(x1: int, y1: int, x2: int, y2: int):
 					)
 					ent.name = "Tree"
 					ent.type = Game.EntityType.TREE
-				elif random > 33:
+				elif random > 43:
 					ent = spawn_static_prop(
 						Vector2(x, y),
 						bush_textures,
@@ -187,7 +192,7 @@ func plains(x1: int, y1: int, x2: int, y2: int):
 					)
 					ent.name = "Bush"
 					ent.type = Game.EntityType.DECORATIVE
-				else:
+				elif random > 30:
 					ent = spawn_static_prop(
 						Vector2(x, y),
 						grass_textures,

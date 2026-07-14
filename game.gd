@@ -21,9 +21,6 @@ var day_fraction := 0.375
 func is_night() -> bool:
 	return day_fraction < 0.25 or day_fraction > 0.75
 
-func _ready() -> void:
-	pass
-
 func resume():
 	paused = false
 
