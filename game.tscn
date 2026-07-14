@@ -8,9 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://luhiju1jmkk6" path="res://testing/1height.png" id="4_7sc4i"]
 [ext_resource type="Shader" uid="uid://yphip34bcg22" path="res://shaders/terrain.gdshader" id="4_fc0e3"]
 [ext_resource type="Shader" uid="uid://jrnmpm4qyec" path="res://shaders/outline.gdshader" id="5_7jktm"]
-[ext_resource type="Texture2D" uid="uid://cathajsti0l30" path="res://height.png" id="5_215e1"]
 [ext_resource type="Texture2D" uid="uid://bkou3u1k8ki7x" path="res://testing/1value.png" id="5_lc2xo"]
-[ext_resource type="Texture2D" uid="uid://cgb7tsb8blsq0" path="res://value.png" id="6_215e1"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="6_eow3j"]
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
@@ -124,8 +122,6 @@ surface_material_override/0 = ExtResource("1_iotsf")
 
 [node name="Model" type="Node3D" parent="Island" unique_id=1558068165 node_paths=PackedStringArray("entity_gen", "map_collision", "draw_debug")]
 script = ExtResource("3_feb5d")
-Heightmap = ExtResource("5_215e1")
-Valuemap = ExtResource("6_215e1")
 entity_gen = NodePath("../../Entities")
 map_collision = NodePath("InteractionLayer/CollisionShape3D")
 draw_debug = NodePath("../../DrawDebug")

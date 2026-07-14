@@ -4,14 +4,14 @@ enum FolkState { IDLE, WANDER, WALKING, SWIMMING, INTERACTING, DEAD }
 enum Goal { ROAM, GATHER, BUILD, GO_HOME, FARM, HARVEST }
 
 var wander_radius := 30.0
-var idle_time_range := Vector2(1.0, 4.0)
+var idle_time_range := Vector2(0.20, 0.5)
 var water_level := 0.05
 var walk_speed := 1.0
 var swim_speed := 0.25
 var climb_slowdown := 14.0
 
 var meander := 1.4 # width of wander cone
-var roam_rest_chance := 0.15
+var roam_rest_chance := 0.5
 
 var adventurousness := 0.5
 var content_threshold := 0.7
@@ -147,7 +147,7 @@ func _decide():
 	goal = _choose_goal()
 
 	if goal == Goal.GO_HOME and is_instance_valid(home) \
-			and pos.distance_to(home.pos) < 4.0:
+			and pos.distance_to(home.pos) < 16.0:
 		_claim_home()
 		return
 
@@ -264,7 +264,7 @@ func _arrive():
 			state = FolkState.INTERACTING
 			_interact_left = plant_time
 		Goal.HARVEST:
-			if get_parent().farm_is_ripe(_target_entity):
+			if is_instance_valid(_target_entity) and get_parent().farm_is_ripe(_target_entity):
 				state = FolkState.INTERACTING
 				_interact_left = harvest_time
 			else:
@@ -372,7 +372,7 @@ func _claim_home():
 	visible = false
 	state = FolkState.IDLE
 	_community = _count_nearby_homes(neighbour_home_radius)
-	_idle_left = randf_range(4.0, 8.0) # rest til morn
+	_idle_left = randf_range(8.0, 16.0) # rest til morn
 	_maybe_birth()
 
 func _maybe_birth():
