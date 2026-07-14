@@ -503,6 +503,7 @@ ticks_position = 2
 
 [node name="Profile" type="NinePatchRect" parent="CanvasLayer" unique_id=1746369468]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(200, 200)
 custom_maximum_size = Vector2(300, 300)
 anchors_preset = -1
@@ -610,12 +611,12 @@ text = "folk pov"
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Profile/VBoxContainer" unique_id=523900283]
 layout_mode = 2
 
-[node name="Button2" type="Button" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer2" unique_id=1342678285]
+[node name="TrackButton" type="Button" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer2" unique_id=1342678285]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "track"
 
-[node name="Button" type="Button" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer2" unique_id=233829337]
+[node name="DeallocateButton" type="Button" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer2" unique_id=233829337]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "deallocate"
@@ -729,3 +730,5 @@ ticks_position = 2
 [connection signal="pressed" from="CanvasLayer/NinePatchRect/HFlowContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="CanvasLayer/Bottom/ColorRect2/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/POVButton" to="." method="_on_pov_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/HBoxContainer2/TrackButton" to="." method="_on_track_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/HBoxContainer2/DeallocateButton" to="." method="_on_deallocate_button_pressed"]

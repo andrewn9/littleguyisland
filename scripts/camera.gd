@@ -24,6 +24,9 @@ func _ready() -> void:
 	start_tween = get_tree().create_tween().tween_property(self, "orthographic_size", _target_orthographic_size, 1.0).set_trans(Tween.TRANS_QUAD)
 
 func _process(delta: float) -> void:
+	if Hud.focused_folk and Hud.tracking_folk:
+		pan_offset_target = Hud.focused_folk.global_position
+		_target_orthographic_size = 35
 
 	var t := 1.0 - pow(2.0, -zoom_ramp_speed * delta)
 	orthographic_size = lerp(orthographic_size, _target_orthographic_size, t)
