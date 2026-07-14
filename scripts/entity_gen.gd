@@ -267,7 +267,18 @@ var name_suffixes = [
 	"lette",
 	"ly",
 	"lee",
-	"let"
+	"let",
+	"wyn",
+	"wald",
+	"sky",
+	"sten",
+	"ny",
+	"lyn",
+	"lis",
+	"len",
+	"ler",
+	"elle",
+	"ton"
 ]
 
 func spawn_little_guy(x: int, y: int):
