@@ -22,6 +22,8 @@ const PLAYING_TEX = preload("res://ui/ui/coloredbuttons/playing.png")
 @export var button_inactive_color := Color.from_rgba8(200, 200, 200, 255)
 @export var button_pressed_color := Color.from_rgba8(139, 139, 139, 255)
 
+var cursor_arrow = preload("res://ui/cursors/pointer.png")
+
 func _ready() -> void:
 	for button: TextureButton in wheel.get_children():
 		_wire_button(button)
@@ -32,6 +34,8 @@ func _ready() -> void:
 
 	play_resume.pressed.connect(_on_play_resume)
 	_update_play_button()
+
+	Input.set_custom_mouse_cursor(cursor_arrow)
 
 
 func _on_time_slider_changed(value: float) -> void:
