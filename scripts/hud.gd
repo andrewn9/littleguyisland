@@ -101,12 +101,42 @@ func _on_quit_pressed() -> void:
 @onready var name_label: Label = %NameLabel
 @onready var profile: NinePatchRect = %Profile
 var focused_folk: Folk
+var tracking_folk := false
 
 func show_profile(folk: Folk):
 	profile.visible = true
 	focused_folk = folk
 	name_label.text = folk.name
-	
+
+	profile.get_node("VBoxContainer/HBoxContainer/Picture/Body").texture = folk.get_node("Pivot/Sprite/SubViewport/body").texture
+	profile.get_node("VBoxContainer/HBoxContainer/Picture/Shirt").texture = folk.get_node("Pivot/Sprite/SubViewport/shirt").texture
+	profile.get_node("VBoxContainer/HBoxContainer/Picture/Hair").texture = folk.get_node("Pivot/Sprite/SubViewport/hair").texture
+	profile.get_node("VBoxContainer/HBoxContainer/Picture/Hair").modulate = folk.get_node("Pivot/Sprite/SubViewport/hair").modulate
+
 func hide_profile():
+	tracking_folk = false
 	profile.visible = false
 	focused_folk = null
+
+var focus_cam: Camera3D = null
+
+func _on_pov_button_pressed():
+	if not focus_cam:
+		if not focused_folk:
+			return
+
+		focus_cam = Camera3D.new()
+		focused_folk.add_child(focus_cam)
+		focus_cam.make_current()
+	else:
+		focus_cam.queue_free()
+		focus_cam = null
+
+func _on_deallocate_button_pressed():
+	if focused_folk:
+		focused_folk.queue_free()
+		hide_profile()
+
+func _on_track_button_pressed():
+	if focused_folk:
+		tracking_folk = not tracking_folk

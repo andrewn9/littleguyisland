@@ -14,8 +14,6 @@ var _target_orthographic_size := orthographic_size
 const ORTHO_DISTANCE := 2000.0
 var start_tween: PropertyTweener
 
-var target: Node3D = null
-
 var pan_offset := Vector3.ZERO
 var pan_offset_target := Vector3.ZERO
 
@@ -26,8 +24,8 @@ func _ready() -> void:
 	start_tween = get_tree().create_tween().tween_property(self, "orthographic_size", _target_orthographic_size, 1.0).set_trans(Tween.TRANS_QUAD)
 
 func _process(delta: float) -> void:
-	if target:
-		pan_offset_target = target.global_position
+	if Hud.focused_folk and Hud.tracking_folk:
+		pan_offset_target = Hud.focused_folk.global_position
 		_target_orthographic_size = 35
 
 	var t := 1.0 - pow(2.0, -zoom_ramp_speed * delta)
@@ -44,19 +42,16 @@ func _unhandled_input(event: InputEvent) -> void:
 					_target_orthographic_size = max(1.0, _target_orthographic_size - zoom_step)
 				else:
 					perspective_distance = max(perspective_distance - zoom_step, 8.0)
-				target = null
 			MOUSE_BUTTON_WHEEL_DOWN:
 				if projection == PROJECTION_ORTHOGONAL:
 					_target_orthographic_size = min(_target_orthographic_size + zoom_step, max_orthographic_size)
 				else:
 					perspective_distance = max(perspective_distance + zoom_step, 8.0)
-				target = null
 	elif event is InputEventMouseMotion and (
 			event.button_mask & MOUSE_BUTTON_MASK_MIDDLE
 			or (Input.is_key_pressed(KEY_SPACE)
 				and event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT))):
 		_pan(event.relative)
-		target = null
 	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_RIGHT:
 		_yaw -= event.relative.x * sensitivity * Hud.sens_slider.value
 		_elev = clampf(_elev + event.relative.y * sensitivity * Hud.sens_slider.value, 0.1, max_angle)

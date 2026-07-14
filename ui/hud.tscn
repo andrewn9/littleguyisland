@@ -11,10 +11,9 @@
 [ext_resource type="Texture2D" uid="uid://drfvobfl543yf" path="res://ui/monkefolk/monke/monke3.png" id="8_hyw70"]
 [ext_resource type="Texture2D" uid="uid://bc2k0l0d16wrq" path="res://ui/ui/bars + box/bars.png" id="9_cxdcy"]
 [ext_resource type="Script" uid="uid://5xvmkiaujo5l" path="res://scripts/bottom_bar.gd" id="10_6y3bq"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="12_exqf6"]
+[ext_resource type="Texture2D" uid="uid://sie3s385wr4i" path="res://ui/ui/coloredbuttons/settings.png" id="12_exqf6"]
 [ext_resource type="FontFile" uid="uid://bc62mk63rr4vb" path="res://ui/Comic Sans MS.ttf" id="12_vjpmv"]
 [ext_resource type="Texture2D" uid="uid://cyj3a6ab0kgo1" path="res://ui/ui/uiwheel.png" id="13_o8st7"]
-[ext_resource type="FontFile" uid="uid://c5cq7r661efhy" path="res://ui/M 8pt.ttf" id="14_b1px6"]
 [ext_resource type="Script" uid="uid://32wl0030kqom" path="res://scripts/circular_container.gd" id="14_mgoxf"]
 [ext_resource type="Texture2D" uid="uid://bekw7sxjg7q8d" path="res://ui/ui/coloredbuttons/cursor.png" id="15_0f6tk"]
 [ext_resource type="Texture2D" uid="uid://b60el3jq8012x" path="res://ui/ui/coloredbuttons/terraform.png" id="16_e4yjp"]
@@ -24,6 +23,9 @@
 [ext_resource type="Texture2D" uid="uid://dmym0ixp0kr8" path="res://ui/ui/coloredbuttons/land.png" id="20_g4gvt"]
 [ext_resource type="Texture2D" uid="uid://bmehp2qkvrj4o" path="res://ui/ui/coloredbuttons/playbutton.png" id="21_085mh"]
 [ext_resource type="Texture2D" uid="uid://bnv0s0boheps6" path="res://ui/goodbox.png" id="21_x3e77"]
+[ext_resource type="Texture2D" uid="uid://b1t612syiu625" path="res://sprites/folk/body/skin1.png" id="23_c3smh"]
+[ext_resource type="Texture2D" uid="uid://d0qbtsipfo1he" path="res://sprites/folk/shirt/shirt1.png" id="24_5jwjf"]
+[ext_resource type="Texture2D" uid="uid://dynh0shhdb3tc" path="res://sprites/folk/hair/hair1.png" id="25_nso1x"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_st70h"]
 font = ExtResource("12_vjpmv")
@@ -186,9 +188,8 @@ _data = {
 &"talk2": SubResource("Animation_w71nf")
 }
 
-[sub_resource type="LabelSettings" id="LabelSettings_c3smh"]
-font = ExtResource("14_b1px6")
-font_size = 17
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_exqf6"]
+load_path = "res://.godot/imported/goodbox.png-49f145cd5fcaed2fef43509cb9d79cdb.ctex"
 
 [node name="Hud" type="Control" unique_id=1275586281]
 layout_mode = 3
@@ -345,11 +346,17 @@ height_ratio = 0.205
 tuck_ratio = 0.05099999999999999
 
 [node name="SettingsButton" type="TextureButton" parent="CanvasLayer/Bottom/ColorRect2" unique_id=360644980]
-visible = false
-layout_mode = 0
-offset_right = 128.0
-offset_bottom = 128.0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -50.000004
+offset_right = 100.0
+offset_bottom = 50.000004
+grow_vertical = 2
 texture_normal = ExtResource("12_exqf6")
+ignore_texture_size = true
+stretch_mode = 4
 
 [node name="Panel" type="Control" parent="CanvasLayer/Bottom/ColorRect2" unique_id=594197954]
 layout_mode = 1
@@ -371,7 +378,6 @@ offset_bottom = 16.175491
 grow_horizontal = 2
 grow_vertical = 2
 text = "Population"
-label_settings = SubResource("LabelSettings_c3smh")
 horizontal_alignment = 1
 vertical_alignment = 2
 
@@ -549,6 +555,7 @@ ticks_position = 2
 
 [node name="Profile" type="NinePatchRect" parent="CanvasLayer" unique_id=1746369468]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(200, 200)
 custom_maximum_size = Vector2(300, 300)
 anchors_preset = -1
@@ -569,29 +576,102 @@ patch_margin_top = 25
 patch_margin_right = 40
 patch_margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile" unique_id=1090316882]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile" unique_id=1203041896]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 15.0
 offset_top = 15.0
-offset_right = 7.0
-offset_bottom = -121.79999
-mouse_filter = 2
+offset_right = -15.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="HSplitContainer" type="HBoxContainer" parent="CanvasLayer/Profile/VBoxContainer" unique_id=241004390]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Profile/VBoxContainer" unique_id=317271788]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HSplitContainer" unique_id=394576686]
+[node name="Picture" type="Panel" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer" unique_id=371200410]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Body" type="TextureRect" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/Picture" unique_id=1587339137]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("23_c3smh")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Shirt" type="TextureRect" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/Picture" unique_id=1762868296]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("24_5jwjf")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Hair" type="TextureRect" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/Picture" unique_id=1901696958]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("25_nso1x")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer" unique_id=1991521506]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NameLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=394576686]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(112.52, 0)
 layout_mode = 2
 size_flags_vertical = 1
 text = "stuff"
 label_settings = SubResource("LabelSettings_st70h")
 vertical_alignment = 1
-autowrap_mode = 1
+
+[node name="AgeLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=499980360]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "age: 0"
+label_settings = SubResource("LabelSettings_st70h")
+vertical_alignment = 1
+
+[node name="WantLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1979162048]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "wants: "
+label_settings = SubResource("LabelSettings_st70h")
+vertical_alignment = 1
+
+[node name="POVButton" type="Button" parent="CanvasLayer/Profile/VBoxContainer" unique_id=50105486]
+layout_mode = 2
+text = "folk pov"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Profile/VBoxContainer" unique_id=523900283]
+layout_mode = 2
+
+[node name="TrackButton" type="Button" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer2" unique_id=1342678285]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "track"
+
+[node name="DeallocateButton" type="Button" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer2" unique_id=233829337]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "deallocate"
 
 [node name="Settings" type="NinePatchRect" parent="CanvasLayer" unique_id=2001730921]
 unique_name_in_owner = true
@@ -605,6 +685,11 @@ offset_right = -200.0003
 offset_bottom = -393.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = SubResource("CompressedTexture2D_exqf6")
+patch_margin_left = 32
+patch_margin_top = 25
+patch_margin_right = 40
+patch_margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Settings" unique_id=1734470655]
 layout_mode = 1
@@ -696,3 +781,6 @@ ticks_position = 2
 
 [connection signal="pressed" from="CanvasLayer/NinePatchRect/HFlowContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="CanvasLayer/Bottom/ColorRect2/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/POVButton" to="." method="_on_pov_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/HBoxContainer2/TrackButton" to="." method="_on_track_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/HBoxContainer2/DeallocateButton" to="." method="_on_deallocate_button_pressed"]
