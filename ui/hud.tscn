@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dsmfl6lhkbhyf" path="res://ui/ui/window and box/windowminus.png" id="3_3ju8l"]
 [ext_resource type="Texture2D" uid="uid://csykegh1vqs4q" path="res://ui/ui/window and box/windowx.png" id="4_b1px6"]
 [ext_resource type="Texture2D" uid="uid://biumk26axuhrg" path="res://ui/monkefolk/monke/monke1.png" id="5_c3smh"]
+[ext_resource type="LabelSettings" uid="uid://but5y4qk4hdrx" path="res://ui/new_label_settings.tres" id="6_3ju8l"]
 [ext_resource type="Texture2D" uid="uid://c33bt3m1sx6x8" path="res://ui/monkefolk/monke/monke2.png" id="6_5jwjf"]
 [ext_resource type="Texture2D" uid="uid://d83g2fkmvp2j" path="res://ui/monkefolk/monke/monke4.png" id="7_nso1x"]
 [ext_resource type="Texture2D" uid="uid://drfvobfl543yf" path="res://ui/monkefolk/monke/monke3.png" id="8_hyw70"]
@@ -291,6 +292,7 @@ offset_left = 4.0
 offset_top = 26.0
 offset_right = 220.0
 offset_bottom = 130.0
+label_settings = ExtResource("6_3ju8l")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1648160815]
 anchors_preset = -1
@@ -355,6 +357,56 @@ grow_vertical = 2
 texture_normal = ExtResource("12_exqf6")
 ignore_texture_size = true
 stretch_mode = 4
+
+[node name="Panel" type="Control" parent="CanvasLayer/Bottom/ColorRect2" unique_id=594197954]
+layout_mode = 1
+anchor_left = 0.062
+anchor_top = 0.167
+anchor_right = 0.358
+anchor_bottom = 0.738
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0, 0.5)
+
+[node name="Value2" type="Label" parent="CanvasLayer/Bottom/ColorRect2/Panel" unique_id=1525811266]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1.8317261
+offset_bottom = 16.175491
+grow_horizontal = 2
+grow_vertical = 2
+text = "Population"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Bottom/ColorRect2/Panel" unique_id=418779208]
+custom_minimum_size = Vector2(0, 36.47)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -18.235
+offset_bottom = 18.235
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="Value" type="Label" parent="CanvasLayer/Bottom/ColorRect2/Panel/Panel" unique_id=1154515757]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.04
+offset_bottom = -1.0400009
+grow_horizontal = 2
+grow_vertical = 2
+text = "1,200"
+label_settings = ExtResource("6_3ju8l")
+horizontal_alignment = 1
+vertical_alignment = 2
 
 [node name="ColorRect3" type="NinePatchRect" parent="CanvasLayer/Bottom" unique_id=1746489748]
 layout_mode = 0
