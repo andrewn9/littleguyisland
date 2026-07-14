@@ -518,6 +518,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="NameLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer" unique_id=394576686]
 unique_name_in_owner = true
