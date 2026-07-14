@@ -116,7 +116,7 @@ gradient = SubResource("Gradient_mhi6y")
 [node name="Island" type="Node" parent="." unique_id=847606793]
 
 [node name="Water" type="MeshInstance3D" parent="Island" unique_id=1387438961]
-transform = Transform3D(750, 0, 0, 0, 750, 0, 0, 0, 750, 0, 14.235306, 0)
+transform = Transform3D(830, 0, 0, 0, 830, 0, 0, 0, 830, 0, 14.235306, 0)
 mesh = ExtResource("1_lc2xo")
 surface_material_override/0 = ExtResource("1_iotsf")
 
@@ -175,7 +175,7 @@ projection = 1
 script = ExtResource("1_80nbo")
 zoom_step = 40.0
 zoom_ramp_speed = 16.045
-perspective_distance = 400.0
+perspective_distance = 1000.0
 orthographic_size = 389.83
 max_orthographic_size = 1200
 max_angle = 1.24

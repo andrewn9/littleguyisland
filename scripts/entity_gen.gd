@@ -275,7 +275,8 @@ var name_suffixes = [
 	"sen",
 	"lette",
 	"ly",
-	"lee"
+	"lee",
+	"let"
 ]
 
 func spawn_home(p: Vector2, capacity := 3) -> Entity:

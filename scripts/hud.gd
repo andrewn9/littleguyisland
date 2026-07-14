@@ -88,6 +88,12 @@ func _on_settings_button_pressed():
 func _process(delta: float) -> void:
 	pass
 
-
 func _on_quit_pressed() -> void:
 	get_tree().quit()
+
+@onready var name_label: Label = %NameLabel
+@onready var profile: NinePatchRect = %Profile
+
+func show_profile(folk: Folk):
+	profile.visible = true
+	name_label.text = folk.name
