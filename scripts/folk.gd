@@ -93,8 +93,7 @@ func _unhandled_input(event):
 
 		if event.position.x > min.x and event.position.x < max.x and event.position.y > min.y and event.position.y < max.y:
 			Hud.show_profile(self)
-			camera._target_orthographic_size = 35.0
-			camera.pan_offset = self.global_position
+			camera.target = self
 		
 		viewport.push_input(event)
 
