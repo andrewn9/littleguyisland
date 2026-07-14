@@ -14,6 +14,7 @@ uniform sampler2D depth_texture : hint_depth_texture;
 uniform sampler2D screen_texture : hint_screen_texture;
 
 uniform vec3 color : source_color = vec3(0.2, 0.3, 0.6);
+uniform vec3 shoreline_color : source_color = vec3(1.0, 1.0, 1.0);
 uniform float normal_strength = 1.0;
 uniform float specular = 0.3;
 uniform float roughness = 0.3;
@@ -179,7 +180,7 @@ void fragment() {
 	world.xyz /= world.w;
 
 	if (world_pos.y - world.y < 15.0) {
-		ALBEDO = mix(vec3(1.0), ALBEDO, clamp(pow((world_pos.y - world.y) / 15.0, 0.2), 0.0, 1.0));
+		ALBEDO = mix(shoreline_color, ALBEDO, clamp(pow((world_pos.y - world.y) / 15.0, 0.2), 0.0, 1.0));
 	}
 
 	// vec3 surface_view_position 	= get_view_position_from_uv(SCREEN_UV, FRAGCOORD.z, INV_PROJECTION_MATRIX);
