@@ -170,7 +170,7 @@ func plains(x1: int, y1: int, x2: int, y2: int):
 
 			var diff = color - MapData.GRASS_KEY
 
-			if white_val > 0.999 || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.04 && (white_val > 0.8 && white_val * cluster_val > 0.4):
+			if white_val > 0.95 || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.04 && (white_val > 0.8 && white_val * cluster_val > 0.4):
 				rng.seed = hash(str(x) + str(y))
 				var random = rng.randf_range(0, 100)
 				var ent
