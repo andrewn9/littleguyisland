@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://drfvobfl543yf" path="res://ui/monkefolk/monke/monke3.png" id="8_hyw70"]
 [ext_resource type="Texture2D" uid="uid://bc2k0l0d16wrq" path="res://ui/ui/bars + box/bars.png" id="9_cxdcy"]
 [ext_resource type="Script" uid="uid://5xvmkiaujo5l" path="res://scripts/bottom_bar.gd" id="10_6y3bq"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="12_exqf6"]
+[ext_resource type="Texture2D" uid="uid://sie3s385wr4i" path="res://ui/ui/coloredbuttons/settings.png" id="12_exqf6"]
 [ext_resource type="FontFile" uid="uid://bc62mk63rr4vb" path="res://ui/Comic Sans MS.ttf" id="12_vjpmv"]
 [ext_resource type="Texture2D" uid="uid://cyj3a6ab0kgo1" path="res://ui/ui/uiwheel.png" id="13_o8st7"]
 [ext_resource type="Script" uid="uid://32wl0030kqom" path="res://scripts/circular_container.gd" id="14_mgoxf"]
@@ -341,10 +341,17 @@ height_ratio = 0.205
 tuck_ratio = 0.05099999999999999
 
 [node name="SettingsButton" type="TextureButton" parent="CanvasLayer/Bottom/ColorRect2" unique_id=360644980]
-layout_mode = 0
-offset_right = 128.0
-offset_bottom = 128.0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -50.000004
+offset_right = 100.0
+offset_bottom = 50.000004
+grow_vertical = 2
 texture_normal = ExtResource("12_exqf6")
+ignore_texture_size = true
+stretch_mode = 4
 
 [node name="ColorRect3" type="NinePatchRect" parent="CanvasLayer/Bottom" unique_id=1746489748]
 layout_mode = 0
