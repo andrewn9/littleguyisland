@@ -6,8 +6,8 @@ enum Goal { ROAM, GATHER, BUILD, GO_HOME }
 var wander_radius := 14.0
 var idle_time_range := Vector2(1.0, 4.0)
 var water_level := 0.05
-var walk_speed := 20.0
-var swim_speed := 8.0
+var walk_speed := 10.0
+var swim_speed := 2.0
 var climb_slowdown := 14.0
 
 var adventurousness := 0.5
