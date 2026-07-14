@@ -22,6 +22,9 @@
 [ext_resource type="Texture2D" uid="uid://dmym0ixp0kr8" path="res://ui/ui/coloredbuttons/land.png" id="20_g4gvt"]
 [ext_resource type="Texture2D" uid="uid://bmehp2qkvrj4o" path="res://ui/ui/coloredbuttons/playbutton.png" id="21_085mh"]
 [ext_resource type="Texture2D" uid="uid://bnv0s0boheps6" path="res://ui/goodbox.png" id="21_x3e77"]
+[ext_resource type="Texture2D" uid="uid://b1t612syiu625" path="res://sprites/folk/body/skin1.png" id="23_c3smh"]
+[ext_resource type="Texture2D" uid="uid://d0qbtsipfo1he" path="res://sprites/folk/shirt/shirt1.png" id="24_5jwjf"]
+[ext_resource type="Texture2D" uid="uid://dynh0shhdb3tc" path="res://sprites/folk/hair/hair1.png" id="25_nso1x"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_st70h"]
 font = ExtResource("12_vjpmv")
@@ -520,29 +523,82 @@ patch_margin_top = 25
 patch_margin_right = 40
 patch_margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile" unique_id=1090316882]
+[node name="FlowContainer" type="FlowContainer" parent="CanvasLayer/Profile" unique_id=465558714]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 15.0
 offset_top = 15.0
-offset_right = 7.0
-offset_bottom = -121.79999
-mouse_filter = 2
+offset_right = -15.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="HSplitContainer" type="HBoxContainer" parent="CanvasLayer/Profile/VBoxContainer" unique_id=241004390]
+[node name="Picture" type="Panel" parent="CanvasLayer/Profile/FlowContainer" unique_id=371200410]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="NameLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HSplitContainer" unique_id=394576686]
+[node name="Body" type="TextureRect" parent="CanvasLayer/Profile/FlowContainer/Picture" unique_id=1587339137]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("23_c3smh")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Shirt" type="TextureRect" parent="CanvasLayer/Profile/FlowContainer/Picture" unique_id=1762868296]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("24_5jwjf")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Hair" type="TextureRect" parent="CanvasLayer/Profile/FlowContainer/Picture" unique_id=1901696958]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("25_nso1x")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile/FlowContainer" unique_id=1991521506]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NameLabel" type="Label" parent="CanvasLayer/Profile/FlowContainer/VBoxContainer" unique_id=394576686]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(112.52, 0)
 layout_mode = 2
 size_flags_vertical = 1
 text = "stuff"
 label_settings = SubResource("LabelSettings_st70h")
 vertical_alignment = 1
-autowrap_mode = 1
+
+[node name="AgeLabel" type="Label" parent="CanvasLayer/Profile/FlowContainer/VBoxContainer" unique_id=499980360]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "age: 0"
+label_settings = SubResource("LabelSettings_st70h")
+vertical_alignment = 1
+
+[node name="WantLabel" type="Label" parent="CanvasLayer/Profile/FlowContainer/VBoxContainer" unique_id=1979162048]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "wants: "
+label_settings = SubResource("LabelSettings_st70h")
+vertical_alignment = 1
 
 [node name="Settings" type="NinePatchRect" parent="CanvasLayer" unique_id=2001730921]
 unique_name_in_owner = true
