@@ -107,10 +107,10 @@ func show_profile(folk: Folk):
 	focused_folk = folk
 	name_label.text = folk.name
 
-	profile.get_node("FlowContainer/Picture/Body").texture = folk.get_node("Pivot/Sprite/SubViewport/body").texture
-	profile.get_node("FlowContainer/Picture/Shirt").texture = folk.get_node("Pivot/Sprite/SubViewport/shirt").texture
-	profile.get_node("FlowContainer/Picture/Hair").texture = folk.get_node("Pivot/Sprite/SubViewport/hair").texture
-	profile.get_node("FlowContainer/Picture/Hair").modulate = folk.get_node("Pivot/Sprite/SubViewport/hair").modulate
+	profile.get_node("VBoxContainer/HBoxContainer/Picture/Body").texture = folk.get_node("Pivot/Sprite/SubViewport/body").texture
+	profile.get_node("VBoxContainer/HBoxContainer/Picture/Shirt").texture = folk.get_node("Pivot/Sprite/SubViewport/shirt").texture
+	profile.get_node("VBoxContainer/HBoxContainer/Picture/Hair").texture = folk.get_node("Pivot/Sprite/SubViewport/hair").texture
+	profile.get_node("VBoxContainer/HBoxContainer/Picture/Hair").modulate = folk.get_node("Pivot/Sprite/SubViewport/hair").modulate
 
 func hide_profile():
 	profile.visible = false

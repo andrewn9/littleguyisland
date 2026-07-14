@@ -523,7 +523,7 @@ patch_margin_top = 25
 patch_margin_right = 40
 patch_margin_bottom = 20
 
-[node name="FlowContainer" type="FlowContainer" parent="CanvasLayer/Profile" unique_id=465558714]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile" unique_id=1203041896]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -535,11 +535,14 @@ offset_bottom = -15.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Picture" type="Panel" parent="CanvasLayer/Profile/FlowContainer" unique_id=371200410]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Profile/VBoxContainer" unique_id=317271788]
+layout_mode = 2
+
+[node name="Picture" type="Panel" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer" unique_id=371200410]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Body" type="TextureRect" parent="CanvasLayer/Profile/FlowContainer/Picture" unique_id=1587339137]
+[node name="Body" type="TextureRect" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/Picture" unique_id=1587339137]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -550,7 +553,7 @@ texture = ExtResource("23_c3smh")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Shirt" type="TextureRect" parent="CanvasLayer/Profile/FlowContainer/Picture" unique_id=1762868296]
+[node name="Shirt" type="TextureRect" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/Picture" unique_id=1762868296]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -561,7 +564,7 @@ texture = ExtResource("24_5jwjf")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Hair" type="TextureRect" parent="CanvasLayer/Profile/FlowContainer/Picture" unique_id=1901696958]
+[node name="Hair" type="TextureRect" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/Picture" unique_id=1901696958]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -572,11 +575,11 @@ texture = ExtResource("25_nso1x")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile/FlowContainer" unique_id=1991521506]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer" unique_id=1991521506]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="NameLabel" type="Label" parent="CanvasLayer/Profile/FlowContainer/VBoxContainer" unique_id=394576686]
+[node name="NameLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=394576686]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
@@ -584,7 +587,7 @@ text = "stuff"
 label_settings = SubResource("LabelSettings_st70h")
 vertical_alignment = 1
 
-[node name="AgeLabel" type="Label" parent="CanvasLayer/Profile/FlowContainer/VBoxContainer" unique_id=499980360]
+[node name="AgeLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=499980360]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
@@ -592,13 +595,30 @@ text = "age: 0"
 label_settings = SubResource("LabelSettings_st70h")
 vertical_alignment = 1
 
-[node name="WantLabel" type="Label" parent="CanvasLayer/Profile/FlowContainer/VBoxContainer" unique_id=1979162048]
+[node name="WantLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1979162048]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 text = "wants: "
 label_settings = SubResource("LabelSettings_st70h")
 vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer/Profile/VBoxContainer" unique_id=50105486]
+layout_mode = 2
+text = "folk pov"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Profile/VBoxContainer" unique_id=523900283]
+layout_mode = 2
+
+[node name="Button2" type="Button" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer2" unique_id=1342678285]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "track"
+
+[node name="Button" type="Button" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer2" unique_id=233829337]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "deallocate"
 
 [node name="Settings" type="NinePatchRect" parent="CanvasLayer" unique_id=2001730921]
 unique_name_in_owner = true
