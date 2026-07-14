@@ -19,6 +19,7 @@ var mountain_textures: Array[Texture2D] = []
 var grass_textures: Array[Texture2D] = []
 var tree_textures: Array[Texture2D] = []
 var bush_textures: Array[Texture2D] = []
+var house_textures: Array[Texture2D] = []
 
 var body_textures: Array[Texture2D]
 var shirt_textures: Array[Texture2D]
@@ -73,6 +74,9 @@ func _ready():
 	)
 	tree_textures = load_textures(
 		"res://sprites/props/trees/"
+	)
+	house_textures = load_textures(
+		"res://sprites/props/house/"
 	)
 	
 	
@@ -129,6 +133,10 @@ func spawn_static_prop(pos: Vector2, textures: Array[Texture2D], min_scale: floa
 
 	var texture = textures[rng.randi_range(0, textures.size() - 1)]
 	var mat = get_prop_material(texture)
+	
+	if rng.randf() < 0.5: # random mirror
+		mat.uv1_scale = Vector3(-1, 1, 1)
+		mat.uv1_offset = Vector3(1, 0, 0)
 	ent.pos = pos
 	ent.apply_scale(rng.randf_range(min_scale, max_scale))
 	ent.apply_scale(texture.get_width() / float(pixel_size))
@@ -245,8 +253,9 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 		var y_pos = (child.position.z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
 
 		if x_pos > x1 and y_pos > y1 and x_pos < x2 and y_pos < y2:
-			if child is Entity and (child as Entity).is_static:
-				child.queue_free()
+			if child is Entity and (child as Entity).is_static \
+					and (child as Entity).type != Game.EntityType.HOUSING:
+				child.queue_free()  # regenerate trees/props, but keep homes
 			elif child is GPUParticles3D:
 				child.queue_free()
 
@@ -280,6 +289,15 @@ var name_suffixes = [
 	"elle",
 	"ton"
 ]
+
+func spawn_home(p: Vector2, capacity := 3) -> Entity:
+	var ent = spawn_static_prop(p, house_textures, 1.7, 2.1)
+	if ent == null:
+		return null
+	ent.name = "Home"
+	ent.type = Game.EntityType.HOUSING
+	ent.capacity = capacity
+	return ent
 
 func spawn_little_guy(x: int, y: int):
 	var ent = load("res://entities/folk.res").instantiate() as Entity

@@ -6,6 +6,9 @@ var target_pos: Vector2
 var speed = 20
 var is_static := true
 
+var residents: Array = []
+var capacity := 3
+
 func _ready() -> void:
 	if not pos:
 		pos = Vector2(position.x + MapData.WORLD_SIZE / 2, position.z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
@@ -24,9 +27,12 @@ func set_prop_mat(mat):
 
 func update_height():
 	var height = MapData.height_img.get_pixelv(pos.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))).r
-
+	
 	position = Vector3(pos.x * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2, height * MapData.HEIGHT_SCALE, pos.y * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2)
 
 func _process(delta):
-	pos += (target_pos - pos).limit_length(speed * delta)
+	var dt: float = Game.scaled_delta
+	if not is_static:
+		if dt > 0.0:
+			pos += (target_pos - pos).limit_length(speed * dt)
 	update_height()
