@@ -184,6 +184,9 @@ _data = {
 &"talk2": SubResource("Animation_w71nf")
 }
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_exqf6"]
+load_path = "res://.godot/imported/goodbox.png-49f145cd5fcaed2fef43509cb9d79cdb.ctex"
+
 [node name="Hud" type="Control" unique_id=1275586281]
 layout_mode = 3
 anchors_preset = 15
@@ -546,6 +549,11 @@ offset_right = -200.0003
 offset_bottom = -393.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = SubResource("CompressedTexture2D_exqf6")
+patch_margin_left = 32
+patch_margin_top = 25
+patch_margin_right = 40
+patch_margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Settings" unique_id=1734470655]
 layout_mode = 1

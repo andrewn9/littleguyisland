@@ -45,18 +45,21 @@ func _unhandled_input(event: InputEvent) -> void:
 				else:
 					perspective_distance = max(perspective_distance - zoom_step, 8.0)
 				target = null
+				Hud.close_profile()
 			MOUSE_BUTTON_WHEEL_DOWN:
 				if projection == PROJECTION_ORTHOGONAL:
 					_target_orthographic_size = min(_target_orthographic_size + zoom_step, max_orthographic_size)
 				else:
 					perspective_distance = max(perspective_distance + zoom_step, 8.0)
 				target = null
+				Hud.close_profile()
 	elif event is InputEventMouseMotion and (
 			event.button_mask & MOUSE_BUTTON_MASK_MIDDLE
 			or (Input.is_key_pressed(KEY_SPACE)
 				and event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT))):
 		_pan(event.relative)
 		target = null
+		Hud.close_profile()
 	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_RIGHT:
 		_yaw -= event.relative.x * sensitivity * Hud.sens_slider.value
 		_elev = clampf(_elev + event.relative.y * sensitivity * Hud.sens_slider.value, 0.1, max_angle)

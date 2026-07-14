@@ -104,3 +104,6 @@ func _on_quit_pressed() -> void:
 func show_profile(folk: Folk):
 	profile.visible = true
 	name_label.text = folk.name
+
+func close_profile():
+	profile.visible = false
