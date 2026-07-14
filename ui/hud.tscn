@@ -490,7 +490,6 @@ ticks_position = 2
 
 [node name="Profile" type="NinePatchRect" parent="CanvasLayer" unique_id=1746369468]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(200, 200)
 custom_maximum_size = Vector2(300, 300)
 anchors_preset = -1
@@ -503,6 +502,7 @@ offset_bottom = -110.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
+mouse_filter = 0
 texture = ExtResource("21_x3e77")
 region_rect = Rect2(0, 0, 200, 200)
 patch_margin_left = 32
