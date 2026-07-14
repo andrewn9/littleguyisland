@@ -1,4 +1,4 @@
-extends Camera3D
+class_name CameraController extends Camera3D
 
 @export var sensitivity := 0.005
 @export var zoom_step := 2.0
