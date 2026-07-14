@@ -100,10 +100,13 @@ func _on_quit_pressed() -> void:
 
 @onready var name_label: Label = %NameLabel
 @onready var profile: NinePatchRect = %Profile
+var focused_folk: Folk
 
 func show_profile(folk: Folk):
 	profile.visible = true
+	focused_folk = folk
 	name_label.text = folk.name
 
-func close_profile():
+func hide_profile():
 	profile.visible = false
+	focused_folk = null

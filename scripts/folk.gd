@@ -131,7 +131,8 @@ func _unhandled_input(event):
 
 		if event.position.x > min.x and event.position.x < max.x and event.position.y > min.y and event.position.y < max.y:
 			Hud.show_profile(self)
-			camera.target = self
+		elif Hud.focused_folk == self:
+			Hud.hide_profile()
 		
 		viewport.push_input(event)
 
