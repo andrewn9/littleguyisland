@@ -498,6 +498,34 @@ patch_margin_top = 16
 patch_margin_right = 47
 patch_margin_bottom = 21
 
+[node name="Profile" type="NinePatchRect" parent="CanvasLayer" unique_id=1746369468]
+unique_name_in_owner = true
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 200.0
+offset_top = 100.0
+offset_right = -200.0
+offset_bottom = -200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile" unique_id=1090316882]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NameLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer" unique_id=394576686]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+label_settings = SubResource("LabelSettings_st70h")
+vertical_alignment = 1
+
 [node name="Settings" type="NinePatchRect" parent="CanvasLayer" unique_id=2001730921]
 unique_name_in_owner = true
 visible = false

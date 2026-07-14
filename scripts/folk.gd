@@ -21,6 +21,8 @@ enum FolkState { IDLE, WANDER, WALKING, SWIMMING, INTERACTING, DEAD }
 
 @export var happiness := 0.6
 
+@export var viewport: SubViewport
+
 var state: FolkState = FolkState.IDLE
 
 var _idle_left := 0.0
@@ -68,6 +70,22 @@ func tick(dt: float) -> void:
 		FolkState.DEAD:
 			target_pos = pos
 
+
+func _unhandled_input(event):
+	if event is InputEventMouseButton and event.pressed and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
+		var camera = get_viewport().get_camera_3d()
+		
+		var min = camera.unproject_position(global_position + Vector3(0, 14, 0))
+		var max = camera.unproject_position(global_position)
+
+		var h = max.y - min.y
+		min.x -= h * 2 / 7
+		max.x += h * 2 / 7
+
+		if event.position.x > min.x and event.position.x < max.x and event.position.y > min.y and event.position.y < max.y:
+			Hud.show_profile(self)
+		
+		viewport.push_input(event)
 
 func _physics_process(_delta: float) -> void:
 	var dt = Game.scaled_delta
