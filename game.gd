@@ -30,10 +30,10 @@ var farm_count := 0
 
 
 var food_per_person := 4.0 # stockpile buffer target per folk
-var food_consumption := 0.007 # eaten per folk per second
-var crop_yield := 10.0
+var food_consumption := 0.012 # eaten per folk per second
+var crop_yield := 5.0
 
-var housing_slack := 3 # extra home multiplier to prepare
+var housing_slack := 5 # extra home multiplier to prepare
 var birth_food_ratio := 1.15 # how much food to make new children
 var birth_happiness := 0.5
 

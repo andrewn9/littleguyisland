@@ -1,0 +1,7 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://but5y4qk4hdrx"]
+
+[ext_resource type="FontFile" uid="uid://c5cq7r661efhy" path="res://ui/M 8pt.ttf" id="1_waim7"]
+
+[resource]
+font = ExtResource("1_waim7")
+font_size = 18

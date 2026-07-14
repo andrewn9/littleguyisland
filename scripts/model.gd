@@ -177,8 +177,8 @@ var prev_stroke
 func use_tool(pos: Vector2):
 	if Hud.active.name == "Land":
 		draw_at(pos, MapData.val, Color.from_rgba8(91, 162, 31, 10), 25, "smooth")
-		draw_at(pos, MapData.height, Color.from_rgba8(1, 1, 1, 1), 20, "smooth", 0.35, true)
-		draw_at(pos, MapData.height, Color.from_rgba8(50, 50, 50, 255), 15, "average")
+		draw_at(pos, MapData.height, Color.from_rgba8(1, 1, 1, 1), 20, "flat", 0.35, true)
+		draw_at(pos, MapData.height, Color.from_rgba8(30, 30, 30, 255), 15, "average")
 	elif Hud.active.name == "Mountain":
 		draw_at(pos, MapData.height, Color.from_rgba8(4, 4, 4, 15), 25, "harsh", 0.35, true)
 		draw_at(pos, MapData.height, Color.from_rgba8(4, 4, 4, 7), 15, "mon", 1)
