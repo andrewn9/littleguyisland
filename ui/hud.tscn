@@ -603,7 +603,7 @@ text = "wants: "
 label_settings = SubResource("LabelSettings_st70h")
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="CanvasLayer/Profile/VBoxContainer" unique_id=50105486]
+[node name="POVButton" type="Button" parent="CanvasLayer/Profile/VBoxContainer" unique_id=50105486]
 layout_mode = 2
 text = "folk pov"
 
@@ -728,3 +728,4 @@ ticks_position = 2
 
 [connection signal="pressed" from="CanvasLayer/NinePatchRect/HFlowContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="CanvasLayer/Bottom/ColorRect2/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/POVButton" to="." method="_on_pov_button_pressed"]

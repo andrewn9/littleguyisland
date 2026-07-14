@@ -115,3 +115,17 @@ func show_profile(folk: Folk):
 func hide_profile():
 	profile.visible = false
 	focused_folk = null
+
+var focus_cam: Camera3D = null
+
+func _on_pov_button_pressed():
+	if not focus_cam:
+		if not focused_folk:
+			return
+
+		focus_cam = Camera3D.new()
+		focused_folk.add_child(focus_cam)
+		focus_cam.make_current()
+	else:
+		focus_cam.queue_free()
+		focus_cam = null
