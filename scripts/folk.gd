@@ -129,7 +129,7 @@ func _unhandled_input(event):
 		min.x -= h * 2 / 7
 		max.x += h * 2 / 7
 
-		if event.position.x > min.x and event.position.x < max.x and event.position.y > min.y and event.position.y < max.y and Hud.active == "Click":
+		if event.position.x > min.x and event.position.x < max.x and event.position.y > min.y and event.position.y < max.y and Hud.active.name == "Click":
 			Hud.show_profile(self)
 		elif Hud.focused_folk == self:
 			Hud.hide_profile()
