@@ -382,8 +382,10 @@ anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_top = -18.235
-offset_bottom = 18.235
+offset_left = -2.432499
+offset_top = -27.497993
+offset_right = 2.432495
+offset_bottom = 30.862007
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
@@ -406,7 +408,8 @@ text = "day"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="Value" type="Label" parent="CanvasLayer/Bottom/Left/HBoxContainer/Panel/Panel" unique_id=1154515757]
+[node name="DayCountLabel" type="Label" parent="CanvasLayer/Bottom/Left/HBoxContainer/Panel/Panel" unique_id=1154515757]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -455,7 +458,8 @@ text = "time"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="Value" type="Label" parent="CanvasLayer/Bottom/Left/HBoxContainer/Panel2/Panel" unique_id=1500935946]
+[node name="DayTimeLabel" type="Label" parent="CanvasLayer/Bottom/Left/HBoxContainer/Panel2/Panel" unique_id=1500935946]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1025,6 +1029,15 @@ scrollable = false
 tick_count = 5
 ticks_on_borders = true
 ticks_position = 2
+
+[node name="Notifications" type="VBoxContainer" parent="CanvasLayer" unique_id=185400638]
+unique_name_in_owner = true
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
 
 [connection signal="pressed" from="CanvasLayer/NinePatchRect/HFlowContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="CanvasLayer/Bottom/Right/SettingsButton" to="." method="_on_settings_button_pressed"]

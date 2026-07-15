@@ -282,7 +282,8 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 
 var name_prefixes = [
 	"chud",
-	"folk"
+	"folk",
+	"son"
 ]
 
 var name_suffixes = [
@@ -305,7 +306,11 @@ var name_suffixes = [
 	"len",
 	"ler",
 	"elle",
-	"ton"
+	"ton",
+	"sy",
+	"ski",
+	"liet",
+	"ston"
 ]
 
 func spawn_home(p: Vector2, capacity := 3) -> Entity:
@@ -367,7 +372,7 @@ func spawn_little_guy(x: int, y: int):
 	ent.type = Game.EntityType.FOLK
 
 	ent.name = name_prefixes.pick_random() + name_suffixes.pick_random()
-	print(ent.name + " has joined the game")
+	Hud.push_notification(ent.name + " has joined the game")
 
 	(ent.get_node("Pivot/Sprite/SubViewport/body") as TextureRect).texture = body_textures.pick_random()
 	(ent.get_node("Pivot/Sprite/SubViewport/shirt") as TextureRect).texture = shirt_textures.pick_random()
