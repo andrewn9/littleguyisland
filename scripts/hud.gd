@@ -104,18 +104,21 @@ func toggle(thing: Control):
 
 	match active.name:
 		"Land":
-			Input.set_custom_mouse_cursor(cursor_terrain)
+			Input.set_custom_mouse_cursor(cursor_terrain, Input.CURSOR_ARROW, Vector2(0, 32))
 		"Brush":
-			Input.set_custom_mouse_cursor(cursor_smooth)
+			Input.set_custom_mouse_cursor(cursor_smooth, Input.CURSOR_ARROW, Vector2(0, 32))
 		"Mountain":
-			Input.set_custom_mouse_cursor(cursor_mountain)
+			Input.set_custom_mouse_cursor(cursor_mountain, Input.CURSOR_ARROW, Vector2(0, 32))
 		"Dig":
-			Input.set_custom_mouse_cursor(cursor_shovel)
+			Input.set_custom_mouse_cursor(cursor_shovel, Input.CURSOR_ARROW, Vector2(0, 32))
 		"Click":
-			Input.set_custom_mouse_cursor(cursor_arrow)
+			Input.set_custom_mouse_cursor(cursor_arrow, Input.CURSOR_ARROW, Vector2(0, 0))
 
 func _on_settings_button_pressed():
 	settings.visible = not settings.visible
+
+@onready var day_count_label: Label = %DayCountLabel
+@onready var day_time_label: Label = %DayTimeLabel
 
 func _process(delta: float) -> void:
 	stats_label.text = "Day %d\nPop: %d\nHappy: %d%%\nWood: %d\nFood: %d%s%s\n farms:%d" % [
@@ -125,6 +128,13 @@ func _process(delta: float) -> void:
 		"\n growth+" if Game.prosperous() else "",
 		Game.farm_count
 	]
+
+	day_count_label.text = str(Game.day)
+	var hr = fmod(Game.day_fraction * 24, 12)
+	if hr < 1:
+		hr = 12
+	day_time_label.text = "%02d:%02d " % [hr, fmod(Game.day_fraction * 24 * 60, 60)]
+	day_time_label.text += "AM" if Game.day_fraction < 0.5 else "PM"
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()

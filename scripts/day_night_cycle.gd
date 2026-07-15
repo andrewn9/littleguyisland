@@ -11,7 +11,6 @@ var DAY_LENGTH = 240.0
 func _ready():
 	sky = environment.environment.sky.sky_material as ProceduralSkyMaterial
 
-
 func _process(delta):
 	time += Game.scaled_delta
 
