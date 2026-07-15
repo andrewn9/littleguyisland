@@ -22,6 +22,12 @@ const PLAYING_TEX = preload("res://ui/ui/coloredbuttons/playing.png")
 @export var button_inactive_color := Color.from_rgba8(200, 200, 200, 255)
 @export var button_pressed_color := Color.from_rgba8(139, 139, 139, 255)
 
+const cursor_arrow = preload("res://ui/cursors/pointer.png")
+const cursor_mountain = preload("res://ui/cursors/cursormountain.png")
+const cursor_smooth = preload("res://ui/cursors/cursorsmooth.png")
+const cursor_shovel = preload("res://ui/cursors/cursorshovel.png")
+const cursor_terrain = preload("res://ui/cursors/cursorterrain.png")
+
 func _ready() -> void:
 	for button: TextureButton in wheel.get_children():
 		_wire_button(button)
@@ -43,6 +49,7 @@ func _ready() -> void:
 	
 	_update_play_button()
 
+	Input.set_custom_mouse_cursor(cursor_arrow)
 
 func _on_time_slider_changed(value: float) -> void:
 	Game.time_scale = pow(2.0, value - 1.0)
@@ -94,6 +101,18 @@ func toggle(thing: Control):
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property(thing, "modulate", Color.WHITE, 0.025)
 	tween.tween_property(thing, "offset_transform_scale", Vector2(1.25, 1.25), 0.06)
+
+	match active.name:
+		"Land":
+			Input.set_custom_mouse_cursor(cursor_terrain)
+		"Brush":
+			Input.set_custom_mouse_cursor(cursor_smooth)
+		"Mountain":
+			Input.set_custom_mouse_cursor(cursor_mountain)
+		"Dig":
+			Input.set_custom_mouse_cursor(cursor_shovel)
+		"Click":
+			Input.set_custom_mouse_cursor(cursor_arrow)
 
 func _on_settings_button_pressed():
 	settings.visible = not settings.visible
