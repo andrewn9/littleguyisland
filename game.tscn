@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://cbtff2g0rblin"]
 
-[ext_resource type="CompressedCubemap" uid="uid://c2olwpiupceb8" path="res://skybox/cubemap.png" id="1_7sc4i"]
 [ext_resource type="Script" uid="uid://cba0w7iu3m4ge" path="res://scripts/camera.gd" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://cy5dtkudlsf2e" path="res://scripts/day_night_cycle.gd" id="1_215e1"]
 [ext_resource type="Material" uid="uid://4mc4ktvjal3e" path="res://materials/ocean_water.tres" id="1_iotsf"]
@@ -14,31 +13,15 @@
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
 
-[sub_resource type="Shader" id="Shader_iotsf"]
-code = "shader_type sky;
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wa3wn"]
 
-uniform samplerCube source_panorama : filter_linear, source_color, hint_default_black;
-uniform float exposure : hint_range(0, 128) = 1.0;
-
-void sky() {
-    // If importing a cubemap from another engine, you may need to flip one of the `EYEDIR` components below
-    // by replacing it with `-EYEDIR`.
-    vec3 eyedir = vec3(EYEDIR.x, EYEDIR.y, EYEDIR.z);
-    COLOR = texture(source_panorama, eyedir).rgb * exposure;
-}"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lc2xo"]
-shader = SubResource("Shader_iotsf")
-shader_parameter/source_panorama = ExtResource("1_7sc4i")
-shader_parameter/exposure = 1.0
-
-[sub_resource type="Sky" id="Sky_08a0c"]
-sky_material = SubResource("ShaderMaterial_lc2xo")
+[sub_resource type="Sky" id="Sky_2vuil"]
+sky_material = SubResource("ProceduralSkyMaterial_wa3wn")
 
 [sub_resource type="Environment" id="Environment_7sc4i"]
 background_mode = 1
 background_color = Color(0.93333334, 1, 1, 1)
-sky = SubResource("Sky_08a0c")
+sky = SubResource("Sky_2vuil")
 tonemap_mode = 2
 tonemap_exposure = 0.98
 glow_enabled = true
