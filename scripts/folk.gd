@@ -312,7 +312,7 @@ func _finish_interact():
 		Goal.FARM:
 			get_parent().spawn_farm(_farm_spot if _farm_spot.is_finite() else pos)
 		Goal.HARVEST:
-			if get_parent().farm_is_ripe(_target_entity):
+			if get_parent().farm_is_ripe(is_instance_valid(_target_entity)):
 				Game.food += Game.crop_yield
 				_target_entity.queue_free()  # reaped; claim dies with it
 			_target_entity = null

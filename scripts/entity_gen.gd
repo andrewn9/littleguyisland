@@ -283,10 +283,15 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 var name_prefixes = [
 	"chud",
 	"folk",
-	"son"
+	"son",
+	"larp"
 ]
 
 var name_suffixes = [
+	"ington",
+	"tholomew",
+	"weld",
+	"wold",
 	"ette",
 	"ling",
 	"son",
@@ -310,7 +315,26 @@ var name_suffixes = [
 	"sy",
 	"ski",
 	"liet",
-	"ston"
+	"ston",
+	"liah",
+	"wig",
+	"land",
+	"man"
+]
+
+var special_eggs = [
+	"cliff",
+	" quixote",
+	"ihide",
+	"sang",
+	"enheim",
+	"einburg",
+	"company"
+]
+
+var special_whole_eggs = [
+	"John",
+	"jera",
 ]
 
 func spawn_home(p: Vector2, capacity := 3) -> Entity:
@@ -371,7 +395,13 @@ func spawn_little_guy(x: int, y: int):
 	ent.pos = Vector2(x, y)
 	ent.type = Game.EntityType.FOLK
 
-	ent.name = name_prefixes.pick_random() + name_suffixes.pick_random()
+	if randf() < 0.05:
+		ent.name = name_prefixes.pick_random() + special_eggs.pick_random()
+	elif randf() < 0.03:
+		ent.name = special_whole_eggs.pick_random()
+	else:
+		ent.name = name_prefixes.pick_random() + name_suffixes.pick_random()
+		
 	Hud.push_notification(ent.name + " has joined the game")
 
 	(ent.get_node("Pivot/Sprite/SubViewport/body") as TextureRect).texture = body_textures.pick_random()
