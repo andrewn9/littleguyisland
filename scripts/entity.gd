@@ -33,10 +33,25 @@ func set_prop_tex(tex):
 func set_prop_mat(mat):
 	$Pivot/MeshInstance3D.set_surface_override_material(0, mat)
 
+func _height_from_map() -> float:
+	return MapData.height_img.get_pixelv(pos.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))).r * MapData.HEIGHT_SCALE
+
 func update_height():
-	var height = MapData.height_img.get_pixelv(pos.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))).r
-	
-	position = Vector3(pos.x * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2, height * MapData.HEIGHT_SCALE, pos.y * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2)
+	var wx := pos.x * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2
+	var wz := pos.y * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2
+	var wy := _height_from_map()
+
+	if not is_static and is_inside_tree():
+		var space := get_world_3d().direct_space_state
+		var from := Vector3(wx, MapData.HEIGHT_SCALE + 100.0, wz)
+		var to := Vector3(wx, -100.0, wz)
+		var q := PhysicsRayQueryParameters3D.create(from, to)
+		q.collision_mask = 1
+		var hit := space.intersect_ray(q)
+		if hit:
+			wy = hit.position.y
+
+	position = Vector3(wx, wy, wz)
 
 func _process(delta):
 	var dt: float = Game.scaled_delta
