@@ -178,6 +178,12 @@ func plains(x1: int, y1: int, x2: int, y2: int):
 				continue
 
 			var color = color_map.get_pixel(x, y)
+
+			rng.seed = hash(str(x) + str(y))
+			var mdiff = color - MapData.MOUNTAIN_KEY
+			if rng.randf() < 0.9 and Vector3(mdiff.r, mdiff.g, mdiff.b).length_squared() < 0.16:
+				continue
+
 			var cluster_val = cluster_map.get_pixel(x, y).r
 			var white_val = tree_noise[x * MapData.RESOLUTION + y]
 
