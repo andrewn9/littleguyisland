@@ -192,3 +192,10 @@ func push_notification(msg: String):
 
 	notifications.add_child(label)
 	notifications.move_child(label, 0)
+
+	await get_tree().create_timer(3.0).timeout
+
+	var tween = get_tree().create_tween()
+
+	tween.tween_property(label, "modulate", Color(1, 1, 1, 0), 1.0)
+	tween.tween_callback(label.queue_free)
