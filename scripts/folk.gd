@@ -6,8 +6,8 @@ enum Goal { ROAM, GATHER, BUILD, GO_HOME, FARM, HARVEST }
 var wander_radius := 30.0
 var idle_time_range := Vector2(0.20, 0.5)
 var water_level := 0.05
-var walk_speed := 1.0
-var swim_speed := 0.25
+var walk_speed := 2.1
+var swim_speed := 0.55
 var climb_slowdown := 14.0
 
 var meander := 1.4 # width of wander cone
@@ -22,12 +22,12 @@ var elevation_attachment := 6.0
 
 var happiness := 0.6
 
-var wood_per_tree := 2
+var wood_per_tree := 3
 var wood_to_build := 4
 var home_capacity := 3
 
-var chop_time := 3.0
-var build_time := 4.0
+var chop_time := 1.5
+var build_time := 2.0
 
 var farm_search_radius := 120.0 # harvest
 var farm_reach := 40.0 # start farming x distance from home
@@ -35,8 +35,8 @@ var farm_water_radius := 5.0 # radius from water
 var farm_max_elevation := 0.16 # only low-lying coastal ground is farmable
 var farm_field_radius := 40.0 # grouping for big farm
 var farm_spacing := 2.5 # min gap
-var plant_time := 5.0
-var harvest_time := 2.5
+var plant_time := 2.0
+var harvest_time := 1.2
 
 var farm_target_per_person := 1.5
 var hungry_roam_radius := 18.0
@@ -47,10 +47,17 @@ var home_group_radius := 70.0
 
 var home_spacing := Vector2(1.0, 6.0)
 
+var new_village_dist := Vector2(55.0, 130.0) # how far out a settler looks
+var new_village_clearance := 40.0 # dist from other homes
+
 var night_home_range := 30.0
 var takeover_radius := 45.0
 
-var birth_chance := 0.75
+var birth_chance := 0.9
+
+var adulthood_age := 3
+var child_scale := 0.45
+var breed_radius := 30.0
 
 var share_radius := 24.0
 
@@ -64,6 +71,11 @@ var age := 0
 
 var home: Entity = null
 var carried_wood := 0
+
+var _grown := true
+var _seeking_new_village := false
+var _birth_home_pos := Vector2.INF
+var _base_pivot_scale := Vector3.ONE
 
 var _idle_left := 0.0
 var _interact_left := 0.0
@@ -86,12 +98,44 @@ var _path_i := 0
 
 func _ready():
 	super()
+	_base_pivot_scale = $Pivot.scale
 	adventurousness = randf()
+	_apply_growth()
 	_decide()
 	is_static = false
-	Game.day_changed.connect(func():
-		age +=1
-	)
+	Game.day_changed.connect(_on_new_day)
+
+func _on_new_day():
+	age += 1
+	_apply_growth()
+	if not _grown and age >= adulthood_age:
+		_grown = true
+		_become_adult()
+
+func _apply_growth():
+	var t := clampf(float(age) / float(adulthood_age), 0.0, 1.0)
+	$Pivot.scale = _base_pivot_scale * lerpf(child_scale, 1.0, t)
+
+func make_child(birth_home: Entity):
+	home = birth_home
+	_grown = false
+	age = 0
+	_birth_home_pos = birth_home.pos
+
+func _become_adult():
+	if is_instance_valid(home):
+		home.residents.erase(self)
+	home = null
+	adventurousness = maxf(adventurousness, randf_range(0.6, 1.0))
+	_seeking_new_village = true
+
+func _count_adults_near(r: float) -> int:
+	var c := 0
+	for other in get_parent().get_children():
+		if other is Folk and other.state != FolkState.DEAD and other._grown \
+				and pos.distance_to(other.pos) < r:
+			c += 1
+	return c
 
 func tick(dt: float):
 	_update_happiness(dt)
@@ -126,14 +170,14 @@ func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
 		var camera = get_viewport().get_camera_3d() as CameraController
 		 
-		var min = camera.unproject_position(global_position + Vector3(0, 14, 0))
-		var max = camera.unproject_position(global_position)
+		var c_min = camera.unproject_position(global_position + Vector3(0, 14, 0))
+		var c_max = camera.unproject_position(global_position)
 
-		var h = max.y - min.y
-		min.x -= h * 2 / 7
-		max.x += h * 2 / 7
+		var h = c_max.y - c_min.y
+		c_min.x -= h * 2 / 7
+		c_max.x += h * 2 / 7
 
-		if event.position.x > min.x and event.position.x < max.x and event.position.y > min.y and event.position.y < max.y and Hud.active.name == "Click":
+		if event.position.x > c_min.x and event.position.x < c_max.x and event.position.y > c_min.y and event.position.y < c_max.y and Hud.active.name == "Click":
 			Hud.show_profile(self)
 		elif Hud.focused_folk == self:
 			Hud.hide_profile()
@@ -147,6 +191,7 @@ func _physics_process(_delta: float):
 	tick(dt)
 	
 	if Hud.focused_folk == self:
+		Hud.name_label.text = name
 		Hud.happiness_bar.value = happiness * 100
 		Hud.homeless_label.text = "homeless? nah" if is_instance_valid(home) else "homeless? yeah"
 		var doing = ""
@@ -158,7 +203,7 @@ func _physics_process(_delta: float):
 			FolkState.WALKING:
 				doing = "travelling"
 			FolkState.SWIMMING:
-				doing = "sailing the high seas"
+				doing = "swimming"
 			FolkState.INTERACTING:
 				doing = "tasking"
 			FolkState.DEAD:
@@ -220,12 +265,18 @@ func _go_to(dest: Vector2):
 	return true
 
 func _choose_goal() -> Goal:
+	if not _grown:
+		if Game.is_night() and is_instance_valid(home):
+			return Goal.GO_HOME
+		return Goal.ROAM
+
 	if not is_instance_valid(home):
 		home = null
 		var joinable = _find_joinable_home()
 		if joinable:
 			home = joinable
 			joinable.residents.append(self)
+			_seeking_new_village = false
 
 	if Game.is_night():
 		if is_instance_valid(home):
@@ -270,8 +321,9 @@ func _arrive():
 	target_pos = pos
 	match goal:
 		Goal.GO_HOME:
-			if home and pos.distance_to(home.pos) < 4.0:
+			if home and pos.distance_to(home.pos) < 2.0:
 				_claim_home()
+				pos = home.pos
 			else:
 				_rest()
 		Goal.GATHER:
@@ -387,9 +439,15 @@ func _make_house():
 	if built == null:
 		return
 	carried_wood -= wood_to_build
-	if not home:
+	if not is_instance_valid(home):
 		home = built
 		built.residents.append(self)
+		_seeking_new_village = false
+	elif pos.distance_to(home.pos) > new_village_clearance:
+		home.residents.erase(self)
+		home = built
+		built.residents.append(self)
+		_seeking_new_village = false
 
 func _claim_home():
 	_at_home = true
@@ -400,15 +458,17 @@ func _claim_home():
 	_maybe_birth()
 
 func _maybe_birth():
-	if not (Game.is_night() and is_instance_valid(home)):
+	if not (Game.is_night() and is_instance_valid(home) and _grown):
 		return
-	if home.residents.size() < 2 or home.last_birth_day == Game.day:
+	if home.last_birth_day == Game.day:
 		return
 	if not Game.prosperous():
 		return
+	if _count_adults_near(breed_radius) < 2:
+		return
 	if randf() < birth_chance:
 		home.last_birth_day = Game.day
-		get_parent().spawn_little_guy(int(home.pos.x), int(home.pos.y))
+		get_parent().spawn_little_guy(int(home.pos.x), int(home.pos.y), home)
 
 func _update_happiness(dt: float):
 	_social_timer -= dt
@@ -485,6 +545,14 @@ func _pick_wander_target() -> Vector2:
 	return Vector2.INF
 
 func _new_roam_goal() -> Vector2:
+	if not _grown and _birth_home_pos.is_finite(): # children stay in da crib
+		for _try in 12:
+			var g = _birth_home_pos + Vector2.from_angle(randf() * TAU) \
+					* randf_range(0.0, hungry_roam_radius)
+			if _on_map(g) and _height_at(g) >= water_level:
+				return g
+		return _birth_home_pos
+
 	if Game.hungry() and is_instance_valid(home):
 		for _try in 12:
 			var g = home.pos + Vector2.from_angle(randf() * TAU) * randf_range(0.0, hungry_roam_radius)
@@ -529,6 +597,9 @@ func _find_joinable_home() -> Entity:
 		if other is Entity and (other as Entity).type == Game.EntityType.HOUSING:
 			var h = other as Entity
 			if h.residents.size() < h.capacity:
+				if _seeking_new_village and _birth_home_pos.is_finite() \
+						and h.pos.distance_to(_birth_home_pos) < new_village_clearance:
+					continue
 				var d = pos.distance_to(h.pos)
 				if d < best_d:
 					best_d = d
@@ -570,6 +641,11 @@ func _count_nearby_homes(radius: float) -> int:
 	return c
 
 func _pick_build_spot() -> Vector2:
+	if adventurousness > 0.5 and randf() < adventurousness:
+		var frontier = _pick_frontier_spot()
+		if frontier.is_finite():
+			return frontier
+
 	var anchor = pos
 	var nearest = _find_nearest(Game.EntityType.HOUSING, 120.0)
 	if nearest:
@@ -581,6 +657,15 @@ func _pick_build_spot() -> Vector2:
 				and _find_nearest_home_dist(spot) > 5.0:
 			return spot
 	return pos
+
+func _pick_frontier_spot() -> Vector2:
+	for _try in 40:
+		var g = pos + Vector2.from_angle(randf() * TAU) \
+				* randf_range(new_village_dist.x, new_village_dist.y)
+		if _on_map(g) and _height_at(g) >= water_level + 0.02 \
+				and _find_nearest_home_dist(g) > new_village_clearance:
+			return g
+	return Vector2.INF
 
 func _find_nearest_home_dist(p: Vector2) -> float:
 	var d = 9999.0

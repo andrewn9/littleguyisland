@@ -23,10 +23,16 @@ func _ready() -> void:
 	_update_camera()
 	start_tween = get_tree().create_tween().tween_property(self, "orthographic_size", _target_orthographic_size, 1.0).set_trans(Tween.TRANS_QUAD)
 
+var _was_tracking := false
+
 func _process(delta: float) -> void:
 	if Hud.focused_folk and Hud.tracking_folk:
 		pan_offset_target = Hud.focused_folk.global_position
-		_target_orthographic_size = 35
+		if not _was_tracking:
+			_target_orthographic_size = 35
+		_was_tracking = true
+	else:
+		_was_tracking = false
 
 	var t := 1.0 - pow(2.0, -zoom_ramp_speed * delta)
 	orthographic_size = lerp(orthographic_size, _target_orthographic_size, t)

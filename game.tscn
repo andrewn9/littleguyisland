@@ -25,10 +25,17 @@ sky = SubResource("Sky_2vuil")
 tonemap_mode = 2
 tonemap_exposure = 0.98
 glow_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.1477629, 0.16016375, 0.180113, 1)
+fog_density = 1.0
+fog_height_density = 0.665
+fog_depth_curve = 1.4142134
+fog_depth_begin = 1544.8
+fog_depth_end = 2488.9
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.02
 volumetric_fog_gi_inject = 0.0
-volumetric_fog_length = 4.35
+volumetric_fog_length = 3.1
 adjustment_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_mhi6y"]
@@ -49,14 +56,14 @@ colors = PackedColorArray(0.39280102, 0.311866, 0.239211, 1, 0.3033784, 0.385647
 gradient = SubResource("Gradient_base")
 
 [sub_resource type="Gradient" id="Gradient_land"]
-offsets = PackedFloat32Array(0, 0.0068173665, 0.008252601, 0.038240917, 0.06676558, 0.1398844, 0.17919075, 0.8353116, 1)
-colors = PackedColorArray(0.73987275, 0.7445408, 0.7231291, 1, 0.775691, 0.7334611, 0.46515945, 1, 0.35364, 0.56, 0.18479998, 1, 0.227, 0.455, 0.125, 1, 0.2556349, 0.4413237, 0.15674585, 1, 0.40784314, 0.36862746, 0.3254902, 1, 0.2784314, 0.3019608, 0.29411766, 1, 0.43, 0.43, 0.43, 1, 1, 1, 1, 1)
+offsets = PackedFloat32Array(0, 0.0068173665, 0.008252601, 0.038240917, 0.18694362, 0.38724035, 0.8353116, 1)
+colors = PackedColorArray(0.73987275, 0.7445408, 0.7231291, 1, 0.775691, 0.7334611, 0.46515945, 1, 0.35364, 0.56, 0.18479998, 1, 0.227, 0.455, 0.125, 1, 0.2556349, 0.4413237, 0.15674585, 1, 0.2784314, 0.3019608, 0.29411766, 1, 0.43, 0.43, 0.43, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="Ramp_land"]
 gradient = SubResource("Gradient_land")
 
 [sub_resource type="Gradient" id="Gradient_mountain"]
-offsets = PackedFloat32Array(0.003468208, 0.051764704, 0.19058824, 0.33411765, 0.37176472, 0.5580829, 0.6625387, 1)
+offsets = PackedFloat32Array(0.003468208, 0.01039501, 0.19058824, 0.33411765, 0.37176472, 0.5580829, 0.6625387, 1)
 colors = PackedColorArray(0.62, 0.54270667, 0.3472, 1, 0.5, 0.41750002, 0.35, 1, 0.279, 0.3, 0.293, 1, 0.28627452, 0.41568628, 0.37254903, 1, 0.29882458, 0.426176, 0.38571927, 1, 0.46920556, 0.56858575, 0.56452024, 1, 0.722, 0.71, 0.682, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="Ramp_mountain"]
@@ -74,7 +81,7 @@ shader_parameter/near_threshold = 0.5
 shader_parameter/land_ramp = SubResource("Ramp_land")
 shader_parameter/mountain_ramp = SubResource("Ramp_mountain")
 shader_parameter/base_ramp = SubResource("Ramp_base")
-shader_parameter/land_key = Color(0.25490198, 0.94509804, 0.08627451, 1)
+shader_parameter/land_key = Color(0.59976, 0.84, 0.4032, 1)
 shader_parameter/mountain_key = Color(0.745, 0.745, 0.745, 1)
 shader_parameter/water_key = Color(1, 1, 1, 1)
 shader_parameter/base_key = Color(0.98, 0.92, 0.835, 1)
@@ -145,11 +152,11 @@ shader = SubResource("Shader_nso1x")
 shader_parameter/scanline_color = Color(0, 0, 0, 1)
 shader_parameter/flicker_color = Color(0, 0, 0, 1)
 shader_parameter/scanlines_count = 10.0
-shader_parameter/scanlines_intensity = 0.12
-shader_parameter/flicker_speed = 0.665
-shader_parameter/flicker_intensity = 0.0150000007125
-shader_parameter/color_offset = 1.5
-shader_parameter/blur = 0.065
+shader_parameter/scanlines_intensity = 0.015
+shader_parameter/flicker_speed = 20.78
+shader_parameter/flicker_intensity = 0.006000000285
+shader_parameter/color_offset = 0.16
+shader_parameter/blur = 0.0
 
 [node name="Game2" type="Node3D" unique_id=556122064]
 

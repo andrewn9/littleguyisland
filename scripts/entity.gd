@@ -41,6 +41,11 @@ func update_height():
 	var wz := pos.y * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2
 	var wy := _height_from_map()
 
+	if type == Game.EntityType.HOUSING \
+			and wy <= MapData.NAV_WATER_LEVEL * MapData.HEIGHT_SCALE:
+		queue_free()
+		return
+
 	if not is_static and is_inside_tree():
 		var space := get_world_3d().direct_space_state
 		var from := Vector3(wx, MapData.HEIGHT_SCALE + 100.0, wz)

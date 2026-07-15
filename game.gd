@@ -26,14 +26,17 @@ var population := 0
 var avg_happiness := 0.0
 var total_wood := 0
 var house_capacity := 0 # total capacity
+var home_count := 0
 var farm_count := 0
+var tree_count := 0
 
 
 var food_per_person := 4.0 # stockpile buffer target per folk
 var food_consumption := 0.012 # eaten per folk per second
 var crop_yield := 5.0
 
-var housing_slack := 5 # extra home multiplier to prepare
+var housing_slack := 4 # extra home multiplier to prepare
+var wood_per_house := 4
 var birth_food_ratio := 1.15 # how much food to make new children
 var birth_happiness := 0.5
 
@@ -48,6 +51,15 @@ func hungry():
 
 func needs_housing():
 	return house_capacity < housing_slack * maxi(population, 1)
+
+func out_of_resources() -> bool:
+	return tree_count == 0
+
+func cant_build() -> bool:
+	return needs_housing() and tree_count == 0 and total_wood < wood_per_house
+
+func cant_farm() -> bool:
+	return population > 0 and hungry() and farm_count == 0 and not MapData.has_farmland
 
 func prosperous():
 	return population > 0 \
@@ -88,7 +100,9 @@ func _refresh_stats() -> void:
 	population = 0
 	total_wood = 0
 	house_capacity = 0
+	home_count = 0
 	farm_count = 0
+	tree_count = 0
 	var happy_sum := 0.0
 	for e in model.entity_gen.get_children():
 		if e is Folk:
@@ -97,6 +111,10 @@ func _refresh_stats() -> void:
 			happy_sum += e.happiness
 		elif e is Entity and e.type == EntityType.HOUSING:
 			house_capacity += e.capacity
+			home_count += 1
 		elif e is Entity and e.type == EntityType.FARM:
 			farm_count += 1
+		elif e is Entity and e.type == EntityType.TREE:
+			tree_count += 1
+	MapData._scan_farmland()
 	avg_happiness = happy_sum / population if population > 0 else 0.0

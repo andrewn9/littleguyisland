@@ -2,6 +2,7 @@ extends Control
 
 const PLAY_TEX = preload("res://ui/ui/coloredbuttons/playbutton.png")
 const PLAYING_TEX = preload("res://ui/ui/coloredbuttons/playing.png")
+const NOTIFICATION = preload("res://ui/notification.tscn")
 
 @onready var wheel: CircularContainer = $CanvasLayer/Bottom/Wheel/Container2
 
@@ -12,7 +13,6 @@ const PLAYING_TEX = preload("res://ui/ui/coloredbuttons/playing.png")
 @onready var play_resume: TextureButton = %PlayResume
 
 @onready var size_slider: HSlider = %SizeSlider
-@onready var stats_label: Label = %Stats
 
 @onready var settings: NinePatchRect = %Settings
 @onready var sens_slider: HSlider = %SensSlider
@@ -122,14 +122,17 @@ func _on_settings_button_pressed():
 @onready var day_count_label: Label = %DayCountLabel
 @onready var day_time_label: Label = %DayTimeLabel
 
+@onready var island_pop: Label = $"%IslandStats/VBoxContainer2/HBoxContainer3/PopulationCount"
+@onready var island_happy: ProgressBar = $"%IslandStats/VBoxContainer2/HBoxContainer/HappinessProgressBar"
+@onready var island_homes: Label = $"%IslandStats/VBoxContainer2/HBoxContainer4/HomeCount"
+@onready var island_farms: Label = $"%IslandStats/VBoxContainer2/HBoxContainer6/FarmCount"
+@onready var island_flags: Label = $"%IslandStats/VBoxContainer2/HBoxContainer5/Flags"
+
+@onready var wood_value: Label = %WoodValue
+@onready var food_value: Label = %FoodValue
+
 func _process(delta: float) -> void:
-	stats_label.text = "Day %d\nPop: %d\nHappy: %d%%\nWood: %d\nFood: %d%s%s\n farms:%d" % [
-		Game.day, Game.population, roundi(Game.avg_happiness * 100.0),
-		Game.total_wood, roundi(Game.food),
-		"\n hungry" if Game.hungry() else "",
-		"\n growth+" if Game.prosperous() else "",
-		Game.farm_count
-	]
+	_update_island_stats()
 
 	day_count_label.text = str(Game.day)
 	var hr = fmod(Game.day_fraction * 24, 12)
@@ -138,6 +141,41 @@ func _process(delta: float) -> void:
 	day_time_label.text = "%02d:%02d " % [hr, fmod(Game.day_fraction * 24 * 60, 60)]
 	day_time_label.text += "AM" if Game.day_fraction < 0.5 else "PM"
 
+	if focus_cam:
+		if is_instance_valid(focused_folk):
+			var heading := _folk_heading(focused_folk)
+			_pov_dir = _pov_dir.slerp(heading, 1.0 - pow(0.002, delta))
+			_place_pov_cam()
+		else:
+			_exit_pov()
+
+func _update_island_stats() -> void:
+	island_pop.text = str(Game.population)
+	island_happy.value = Game.avg_happiness * 100.0
+	island_homes.text = str(Game.home_count)
+	island_farms.text = str(Game.farm_count)
+
+	wood_value.text = str(Game.total_wood)
+	food_value.text = str(roundi(Game.food))
+
+	var flags := PackedStringArray()
+	if Game.food <= 0.0 and Game.population > 0:
+		flags.append("!starving")
+	elif Game.hungry():
+		flags.append("!hungry")
+	if Game.prosperous():
+		flags.append("+growth")
+		
+	if Game.cant_build():
+		flags.append("[cant_build]")
+	elif Game.needs_housing():
+		flags.append("+building")
+		
+	if Game.out_of_resources():
+		flags.append("[no_trees]")
+	if Game.cant_farm():
+		flags.append("[cant_farm]")
+	island_flags.text = " ".join(flags)
 func _on_quit_pressed() -> void:
 	get_tree().quit()
 
@@ -153,7 +191,6 @@ var tracking_folk := false
 func show_profile(folk: Folk):
 	profile.visible = true
 	focused_folk = folk
-	name_label.text = folk.name
 
 	profile.get_node("VBoxContainer/HBoxContainer/Picture/Body").texture = folk.get_node("Pivot/Sprite/SubViewport/body").texture
 	profile.get_node("VBoxContainer/HBoxContainer/Picture/Shirt").texture = folk.get_node("Pivot/Sprite/SubViewport/shirt").texture
@@ -166,21 +203,47 @@ func hide_profile():
 	focused_folk = null
 
 var focus_cam: Camera3D = null
+var _prev_cam: Camera3D = null
+var _pov_dir := Vector3.FORWARD
+
+const POV_EYE_HEIGHT := 8.0
 
 func _on_pov_button_pressed():
 	if not focus_cam:
 		if not focused_folk:
 			return
 
+		_prev_cam = get_viewport().get_camera_3d()
 		focus_cam = Camera3D.new()
+		focus_cam.top_level = true
 		focused_folk.add_child(focus_cam)
+		_pov_dir = _folk_heading(focused_folk)
+		_place_pov_cam()
 		focus_cam.make_current()
 	else:
+		_exit_pov()
+
+func _exit_pov():
+	if is_instance_valid(focus_cam):
 		focus_cam.queue_free()
-		focus_cam = null
+	focus_cam = null
+	if is_instance_valid(_prev_cam):
+		_prev_cam.make_current()
+	_prev_cam = null
+
+func _folk_heading(folk: Folk) -> Vector3:
+	var d := folk.target_pos - folk.pos
+	var flat := Vector3(d.x, 0.0, d.y)
+	return flat.normalized() if flat.length() > 0.01 else _pov_dir
+
+func _place_pov_cam() -> void:
+	var eye := focused_folk.global_position + Vector3.UP * POV_EYE_HEIGHT * focused_folk.scale.y
+	focus_cam.global_position = eye
+	focus_cam.look_at(eye + _pov_dir, Vector3.UP)
 
 func _on_deallocate_button_pressed():
 	if focused_folk:
+		push_notification(focused_folk.name + " was deallocated")
 		focused_folk.queue_free()
 		hide_profile()
 
@@ -189,15 +252,13 @@ func _on_track_button_pressed():
 		tracking_folk = not tracking_folk
 
 func push_notification(msg: String):
-	var label = Label.new()
+	var label = NOTIFICATION.instantiate(0)
 
 	label.text = msg
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-
 	notifications.add_child(label)
 	notifications.move_child(label, 0)
 
-	await get_tree().create_timer(3.0).timeout
+	await get_tree().create_timer(5.0).timeout
 
 	var tween = get_tree().create_tween()
 

@@ -14,13 +14,16 @@ var GRASS_KEY: Color = Color.from_rgba8(85, 130, 0, 255)
 var MOUNTAIN_KEY: Color = Color.GRAY
 
 const NAV_WATER_LEVEL := 0.05
-const NAV_MOUNTAIN_LEVEL := 0.5
+const NAV_MOUNTAIN_LEVEL := 0.10
 
-const MOUNTAIN_WEIGHT := 100.0
+const MOUNTAIN_WEIGHT := 9999.0
 const SWIM_WEIGHT := 10.0
 
 const MAX_SWIM := 18
 var astar: AStarGrid2D
+
+const FARM_MAX_ELEVATION := 0.16
+var has_farmland := true
 
 var layers : Dictionary = {}
 
@@ -63,6 +66,34 @@ func rebuild_nav() -> void:
 			var p := Vector2i(x, y)
 			astar.set_point_weight_scale(p, MOUNTAIN_WEIGHT if h < NAV_MOUNTAIN_LEVEL else 1.0)
 			astar.set_point_weight_scale(p, SWIM_WEIGHT if h < NAV_WATER_LEVEL else 1.0)
+	_scan_farmland()
+
+func _scan_farmland() -> void:
+	has_farmland = false
+	if height_img == null or val_img == null:
+		return
+	for y in range(0, RESOLUTION, 2):
+		for x in range(0, RESOLUTION, 2):
+			var h := height_img.get_pixel(x, y).r
+			if h < NAV_WATER_LEVEL + 0.01 or h > FARM_MAX_ELEVATION:
+				continue
+			var c := val_img.get_pixel(x, y)
+			var dm := Vector3(c.r - MOUNTAIN_KEY.r, c.g - MOUNTAIN_KEY.g,
+					c.b - MOUNTAIN_KEY.b).length_squared()
+			if dm <= 0.0125:
+				continue
+			if _has_water_neighbor(x, y):
+				has_farmland = true
+				return
+
+func _has_water_neighbor(x: int, y: int) -> bool:
+	for dy in range(-5, 6, 2):
+		for dx in range(-5, 6, 2):
+			var nx := clampi(x + dx, 0, RESOLUTION - 1)
+			var ny := clampi(y + dy, 0, RESOLUTION - 1)
+			if height_img.get_pixel(nx, ny).r < NAV_WATER_LEVEL:
+				return true
+	return false
 
 func _nearest_land(p: Vector2i):
 	p = p.clamp(Vector2i.ZERO, Vector2i.ONE * (RESOLUTION - 1))

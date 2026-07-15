@@ -121,7 +121,7 @@ func _rotate_tex(src: Image, angle: float) -> ImageTexture:
 				out.set_pixel(x, y, src.get_pixel(su, sv))
 	return ImageTexture.create_from_image(out)
 
-func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: int, brush_type := "default", scale_jitter := 0.35, additive := false):
+func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: float, brush_type := "default", scale_jitter := 0.35, additive := false):
 	var island_mult = Hud.size_slider.value
 	brush_size *= island_mult
 	
@@ -176,11 +176,11 @@ var prev_stroke
 
 func use_tool(pos: Vector2):
 	if Hud.active.name == "Land":
-		draw_at(pos, MapData.val, Color.from_rgba8(91, 162, 31, 10), 20, "smooth")
+		draw_at(pos, MapData.val, Color.from_rgba8(91, 162, 31, 70), 20, "smooth")
 		draw_at(pos, MapData.height, Color.from_rgba8(1, 1, 1, 1), 20, "flat", 0.35, true)
 		draw_at(pos, MapData.height, Color.from_rgba8(30, 30, 30, 255), 19, "average")
 	elif Hud.active.name == "Mountain":
-		draw_at(pos, MapData.height, Color.from_rgba8(4, 4, 4, 15), 24, "harsh", 0.35, true)
+		draw_at(pos, MapData.height, Color.from_rgba8(4, 4, 4, 2), 24, "harsh", 0.35, true)
 		draw_at(pos, MapData.height, Color.from_rgba8(4, 4, 4, 7), 11, "mon", 1)
 		draw_at(pos, MapData.val, Color.GRAY, 30)
 	elif Hud.active.name == "Water":
@@ -192,8 +192,11 @@ func use_tool(pos: Vector2):
 		draw_at(pos, MapData.height, Color.BLACK, 30, "average")
 
 func _unhandled_input(event):
+	if Hud.focus_cam:
+		return
 	if Input.is_key_pressed(KEY_SPACE):
 		return  # space = camera pan, don't paint
+	
 	if event is InputEventMouseButton:
 		if event.button_mask & MOUSE_BUTTON_MASK_LEFT and event.pressed:
 			prev_stroke = project_screen_pos(event.position)

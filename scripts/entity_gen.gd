@@ -30,7 +30,7 @@ const FARM_STAGE_PATHS := [
 ]
 var farm_textures: Array[Texture2D] = []
 var _farms: Array = []
-var crop_grow_days := Vector2(2.0, 4.0)
+var crop_grow_days := Vector2(1.0, 2.5)
 
 var body_textures: Array[Texture2D]
 var shirt_textures: Array[Texture2D]
@@ -395,20 +395,22 @@ func _process(_delta: float) -> void:
 			f.set_prop_mat(get_prop_material(farm_textures[stage]))
 	_farms = alive
 
-func spawn_little_guy(x: int, y: int):
+func spawn_little_guy(x: int, y: int, birth_home: Entity = null):
 	var ent = load("res://entities/folk.res").instantiate() as Entity
 
 	ent.pos = Vector2(x, y)
 	ent.type = Game.EntityType.FOLK
 
+	if birth_home != null:
+		(ent as Folk).make_child(birth_home)
+
+	var folk_name: String
 	if randf() < 0.05:
-		ent.name = name_prefixes.pick_random() + special_eggs.pick_random()
+		folk_name = name_prefixes.pick_random() + special_eggs.pick_random()
 	elif randf() < 0.03:
-		ent.name = special_whole_eggs.pick_random()
+		folk_name = special_whole_eggs.pick_random()
 	else:
-		ent.name = name_prefixes.pick_random() + name_suffixes.pick_random()
-		
-	Hud.push_notification(ent.name + " has joined the game")
+		folk_name = name_prefixes.pick_random() + name_suffixes.pick_random()
 
 	(ent.get_node("Pivot/Sprite/SubViewport/body") as TextureRect).texture = body_textures.pick_random()
 	(ent.get_node("Pivot/Sprite/SubViewport/shirt") as TextureRect).texture = shirt_textures.pick_random()
@@ -416,3 +418,10 @@ func spawn_little_guy(x: int, y: int):
 	(ent.get_node("Pivot/Sprite/SubViewport/hair") as TextureRect).modulate = hair_colors.sample(randf())
 
 	add_child(ent)
+	ent.name = folk_name
+
+	Hud.push_notification("[i]" + folk_name + " has joined the game [/i]")
+	if Game.population == 0:
+		Hud.push_notification("the first folk have arrived")
+	elif Game.population % 50 == 0:
+		Hud.push_notification("the population has grown to " + str(Game.population) + " folk!")
