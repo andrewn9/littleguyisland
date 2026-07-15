@@ -725,38 +725,39 @@ stretch_mode = 0
 
 [node name="Profile" type="Panel" parent="CanvasLayer" unique_id=1713301352]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(215.975, 200)
-custom_maximum_size = Vector2(212.255, 271.96)
+custom_maximum_size = Vector2(212.255, 225.41)
 anchors_preset = -1
 anchor_left = 0.105
 anchor_right = 0.658
 anchor_bottom = 0.868
-offset_left = 25.0
-offset_top = 190.0
-offset_right = -301.40002
-offset_bottom = -110.0
+offset_left = -17.0
+offset_top = 136.0
+offset_right = -247.14502
+offset_bottom = -136.79999
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile" unique_id=1203041896]
+clip_contents = true
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 15.0
-offset_top = 15.0
-offset_right = -15.0
+offset_left = 16.0
+offset_top = 24.0
+offset_right = -16.0
 offset_bottom = -15.0
 grow_horizontal = 2
-grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Profile/VBoxContainer" unique_id=317271788]
 custom_minimum_size = Vector2(0, 83.065)
 layout_mode = 2
+size_flags_horizontal = 0
 
 [node name="Picture" type="Panel" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer" unique_id=371200410]
+custom_minimum_size = Vector2(90, 0)
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -769,7 +770,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -15.0
 offset_top = 41.0
-offset_right = 15.0
+offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("23_c3smh")
@@ -783,7 +784,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -15.0
 offset_top = 41.0
-offset_right = 15.0
+offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("24_5jwjf")
@@ -797,7 +798,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -15.0
 offset_top = 41.0
-offset_right = 15.0
+offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("25_nso1x")
@@ -806,34 +807,82 @@ stretch_mode = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer" unique_id=1991521506]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 
 [node name="NameLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=36321778]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 25.475)
+custom_minimum_size = Vector2(87.665, 25.475)
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 11
 theme_override_styles/normal = SubResource("StyleBoxFlat_7522t")
-text = "chudlet"
+text = "bartholomew"
+autowrap_mode = 1
 
 [node name="AgeLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=499980360]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 1
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme_override_font_sizes/font_size = 9
 text = "age: 0"
+vertical_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=843014586]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 9
+text = "status:"
 vertical_alignment = 1
 
 [node name="WantLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1979162048]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 1
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme_override_font_sizes/font_size = 9
 text = "wants: "
 vertical_alignment = 1
 
-[node name="POVButton" type="Button" parent="CanvasLayer/Profile/VBoxContainer" unique_id=50105486]
+[node name="VSeparator" type="HSeparator" parent="CanvasLayer/Profile/VBoxContainer" unique_id=1239742557]
 layout_mode = 2
-text = "folk pov"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Profile/VBoxContainer" unique_id=2098171221]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Profile/VBoxContainer/VBoxContainer2" unique_id=1387024151]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Profile/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=915046160]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 9
+text = "happiness"
+vertical_alignment = 1
+
+[node name="HappinessProgressBar" type="ProgressBar" parent="CanvasLayer/Profile/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=734158698]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(121.125, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 7
+value = 33.22
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/Profile/VBoxContainer/VBoxContainer2" unique_id=1625769259]
+layout_mode = 2
+
+[node name="HomelessLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/VBoxContainer2/HBoxContainer3" unique_id=934789751]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 9
+text = "homeless? yeah"
+vertical_alignment = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Profile/VBoxContainer" unique_id=523900283]
 layout_mode = 2
@@ -841,11 +890,19 @@ layout_mode = 2
 [node name="TrackButton" type="Button" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer2" unique_id=1342678285]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "track"
+theme_override_font_sizes/font_size = 7
+text = "follow"
+
+[node name="POVButton" type="Button" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer2" unique_id=50105486]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 7
+text = "pov"
 
 [node name="DeallocateButton" type="Button" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer2" unique_id=233829337]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 7
 text = "deallocate"
 
 [node name="Panel" type="NinePatchRect" parent="CanvasLayer/Profile" unique_id=1850378183]
@@ -971,6 +1028,6 @@ ticks_position = 2
 
 [connection signal="pressed" from="CanvasLayer/NinePatchRect/HFlowContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="CanvasLayer/Bottom/Right/SettingsButton" to="." method="_on_settings_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/POVButton" to="." method="_on_pov_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/HBoxContainer2/TrackButton" to="." method="_on_track_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/HBoxContainer2/POVButton" to="." method="_on_pov_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/HBoxContainer2/DeallocateButton" to="." method="_on_deallocate_button_pressed"]

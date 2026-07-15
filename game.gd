@@ -37,6 +37,8 @@ var housing_slack := 5 # extra home multiplier to prepare
 var birth_food_ratio := 1.15 # how much food to make new children
 var birth_happiness := 0.5
 
+signal day_changed
+
 var _stats_timer := 0.0
 func is_night():
 	return day_fraction < 0.25 or day_fraction > 0.75

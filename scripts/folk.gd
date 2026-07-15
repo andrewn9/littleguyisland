@@ -60,6 +60,7 @@ var neighbour_home_radius := 10.0
 
 var state: FolkState = FolkState.IDLE
 var goal: Goal = Goal.ROAM
+var age := 0
 
 var home: Entity = null
 var carried_wood := 0
@@ -88,6 +89,9 @@ func _ready():
 	adventurousness = randf()
 	_decide()
 	is_static = false
+	Game.day_changed.connect(func():
+		age +=1
+	)
 
 func tick(dt: float):
 	_update_happiness(dt)
@@ -141,7 +145,26 @@ func _physics_process(_delta: float):
 	if dt == 0:
 		return
 	tick(dt)
-
+	
+	if Hud.focused_folk == self:
+		Hud.happiness_bar.value = happiness * 100
+		Hud.homeless_label.text = "homeless? nah" if is_instance_valid(home) else "homeless? yeah"
+		var doing = ""
+		match state:
+			FolkState.IDLE:
+				doing = "resting"
+			FolkState.WANDER:
+				doing = "folking around"
+			FolkState.WALKING:
+				doing = "travelling"
+			FolkState.SWIMMING:
+				doing = "sailing the high seas"
+			FolkState.INTERACTING:
+				doing = "tasking"
+			FolkState.DEAD:
+				doing = "decomissioned"
+		Hud.status_label.text = "status: %s" % doing
+		Hud.age_label.text = "age: %d%s" % [age, " days old" if age != 1 else " day old"]
 
 func _decide():
 	_release_claim()  # drop any tree/crop claim from a previous plan

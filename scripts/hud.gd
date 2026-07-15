@@ -130,7 +130,11 @@ func _on_quit_pressed() -> void:
 	get_tree().quit()
 
 @onready var name_label: Label = %NameLabel
+@onready var homeless_label: Label = %HomelessLabel
+@onready var status_label: Label = %StatusLabel
+@onready var happiness_bar: ProgressBar = %HappinessProgressBar
 @onready var profile: Control = %Profile
+@onready var age_label: Label = %AgeLabel
 var focused_folk: Folk
 var tracking_folk := false
 
