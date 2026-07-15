@@ -19,6 +19,8 @@ const PLAYING_TEX = preload("res://ui/ui/coloredbuttons/playing.png")
 @onready var vol_slider: HSlider = %VolSlider
 @onready var cam_button: CheckButton = %CamButton
 
+@onready var notifications = %Notifications
+
 @export var button_inactive_color := Color.from_rgba8(200, 200, 200, 255)
 @export var button_pressed_color := Color.from_rgba8(139, 139, 139, 255)
 
@@ -181,3 +183,12 @@ func _on_deallocate_button_pressed():
 func _on_track_button_pressed():
 	if focused_folk:
 		tracking_folk = not tracking_folk
+
+func push_notification(msg: String):
+	var label = Label.new()
+
+	label.text = msg
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+
+	notifications.add_child(label)
+	notifications.move_child(label, 0)

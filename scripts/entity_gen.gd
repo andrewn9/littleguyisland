@@ -372,7 +372,7 @@ func spawn_little_guy(x: int, y: int):
 	ent.type = Game.EntityType.FOLK
 
 	ent.name = name_prefixes.pick_random() + name_suffixes.pick_random()
-	print(ent.name + " has joined the game")
+	Hud.push_notification(ent.name + " has joined the game")
 
 	(ent.get_node("Pivot/Sprite/SubViewport/body") as TextureRect).texture = body_textures.pick_random()
 	(ent.get_node("Pivot/Sprite/SubViewport/shirt") as TextureRect).texture = shirt_textures.pick_random()
