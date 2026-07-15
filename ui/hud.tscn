@@ -5,12 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://dsmfl6lhkbhyf" path="res://ui/ui/window and box/windowminus.png" id="3_3ju8l"]
 [ext_resource type="Texture2D" uid="uid://csykegh1vqs4q" path="res://ui/ui/window and box/windowx.png" id="4_b1px6"]
 [ext_resource type="Texture2D" uid="uid://biumk26axuhrg" path="res://ui/monkefolk/monke/monke1.png" id="5_c3smh"]
-[ext_resource type="LabelSettings" uid="uid://but5y4qk4hdrx" path="res://ui/new_label_settings.tres" id="6_3ju8l"]
 [ext_resource type="Texture2D" uid="uid://c33bt3m1sx6x8" path="res://ui/monkefolk/monke/monke2.png" id="6_5jwjf"]
 [ext_resource type="Texture2D" uid="uid://d83g2fkmvp2j" path="res://ui/monkefolk/monke/monke4.png" id="7_nso1x"]
 [ext_resource type="Texture2D" uid="uid://drfvobfl543yf" path="res://ui/monkefolk/monke/monke3.png" id="8_hyw70"]
 [ext_resource type="Texture2D" uid="uid://bc2k0l0d16wrq" path="res://ui/ui/bars + box/bars.png" id="9_cxdcy"]
 [ext_resource type="Script" uid="uid://5xvmkiaujo5l" path="res://scripts/bottom_bar.gd" id="10_6y3bq"]
+[ext_resource type="Texture2D" uid="uid://cujcgx2wus85x" path="res://ui/ui/bars + box/bars - Copy.png" id="11_5jwjf"]
 [ext_resource type="Texture2D" uid="uid://sie3s385wr4i" path="res://ui/ui/coloredbuttons/settings.png" id="12_exqf6"]
 [ext_resource type="FontFile" uid="uid://bc62mk63rr4vb" path="res://ui/Comic Sans MS.ttf" id="12_vjpmv"]
 [ext_resource type="Texture2D" uid="uid://cyj3a6ab0kgo1" path="res://ui/ui/uiwheel.png" id="13_o8st7"]
@@ -26,12 +26,6 @@
 [ext_resource type="Texture2D" uid="uid://b1t612syiu625" path="res://sprites/folk/body/skin1.png" id="23_c3smh"]
 [ext_resource type="Texture2D" uid="uid://d0qbtsipfo1he" path="res://sprites/folk/shirt/shirt1.png" id="24_5jwjf"]
 [ext_resource type="Texture2D" uid="uid://dynh0shhdb3tc" path="res://sprites/folk/hair/hair1.png" id="25_nso1x"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_st70h"]
-font = ExtResource("12_vjpmv")
-font_size = 15
-outline_size = 7
-outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_615i1"]
 offsets = PackedFloat32Array(0.35460994, 0.42553192, 0.4491726)
@@ -61,10 +55,10 @@ content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0.57254905, 0.57254905, 0.57254905, 1)
-border_width_left = 10
+border_width_left = 8
 border_width_top = 8
-border_width_right = 10
-border_width_bottom = 14
+border_width_right = 8
+border_width_bottom = 8
 border_color = Color(0, 0, 0, 0.22745098)
 border_blend = true
 corner_radius_top_left = 4
@@ -72,10 +66,6 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 corner_detail = 1
-expand_margin_left = 5.0
-expand_margin_top = 8.0
-expand_margin_right = 5.0
-expand_margin_bottom = 8.0
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_615i1"]
@@ -188,8 +178,17 @@ _data = {
 &"talk2": SubResource("Animation_w71nf")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7522t"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_exqf6"]
 load_path = "res://.godot/imported/goodbox.png-49f145cd5fcaed2fef43509cb9d79cdb.ctex"
+
+[sub_resource type="LabelSettings" id="LabelSettings_st70h"]
+font = ExtResource("12_vjpmv")
+font_size = 15
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Hud" type="Control" unique_id=1275586281]
 layout_mode = 3
@@ -203,29 +202,20 @@ script = ExtResource("1_x3e77")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1081389851]
 
-[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer" unique_id=745856274]
-anchors_preset = -1
-anchor_top = 0.726
-anchor_right = 1.0
-anchor_bottom = 0.943
-offset_top = -8.600006
-offset_bottom = 32.00006
-grow_horizontal = 2
-alignment = 1
-
-[node name="TimeSliderLabel" type="Label" parent="CanvasLayer/HFlowContainer" unique_id=165372778]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 1
-text = " speed: 0.5x  "
-label_settings = SubResource("LabelSettings_st70h")
-vertical_alignment = 1
-
-[node name="TimeSlider" type="HSlider" parent="CanvasLayer/HFlowContainer" unique_id=1509727451]
+[node name="SizeSlider" type="HSlider" parent="CanvasLayer" unique_id=1744459679]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, -1)
 custom_maximum_size = Vector2(150, -1)
-layout_mode = 2
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.761
+anchor_right = 0.5
+anchor_bottom = 0.761
+offset_left = -75.0
+offset_top = -32.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme_override_constants/center_grabber = 1
@@ -234,10 +224,11 @@ theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_ap7yk")
 theme_override_styles/slider = SubResource("StyleBoxFlat_pw7dr")
 theme_override_styles/grabber_area = SubResource("StyleBoxFlat_615i1")
 theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_ap7yk")
-max_value = 5.0
+min_value = 0.5
+max_value = 1.5
+step = 0.0
 value = 1.0
 scrollable = false
-tick_count = 6
 ticks_on_borders = true
 ticks_position = 2
 
@@ -292,49 +283,72 @@ offset_left = 4.0
 offset_top = 26.0
 offset_right = 220.0
 offset_bottom = 130.0
-label_settings = ExtResource("6_3ju8l")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1648160815]
 anchors_preset = -1
-anchor_left = 0.032
-anchor_top = 0.777
-anchor_right = 0.171
-anchor_bottom = 0.943
-grow_horizontal = 0
+anchor_left = 0.69
+anchor_top = 0.74
+anchor_right = 1.0
+anchor_bottom = 0.937
 grow_vertical = 0
 mouse_filter = 2
 
 [node name="Monkey" type="TextureRect" parent="CanvasLayer/MarginContainer" unique_id=746295296]
-custom_maximum_size = Vector2(-1, 200)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("5_c3smh")
 expand_mode = 3
-stretch_mode = 4
+stretch_mode = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/MarginContainer/Monkey" unique_id=50252484]
 libraries/ = SubResource("AnimationLibrary_4q17s")
+
+[node name="IslandStats" type="Panel" parent="CanvasLayer" unique_id=217151074]
+unique_name_in_owner = true
+anchors_preset = -1
+anchor_top = 0.725
+anchor_right = 0.3
+anchor_bottom = 0.97
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset_ratio = Vector2(1, 1)
+size_flags_vertical = 3
+
+[node name="Panel" type="NinePatchRect" parent="CanvasLayer/IslandStats" unique_id=1347543917]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_x3e77")
+draw_center = false
+region_rect = Rect2(0, 0, 200, 200)
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 10
 
 [node name="Bottom" type="Control" parent="CanvasLayer" unique_id=130635511]
 custom_minimum_size = Vector2(0, 90)
 custom_maximum_size = Vector2(-1, 720)
 propagate_maximum_size = true
 layout_mode = 3
-anchor_top = 0.547
+anchor_top = 0.647
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
+grow_horizontal = 0
+grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0)
 mouse_filter = 2
 
-[node name="ColorRect2" type="NinePatchRect" parent="CanvasLayer/Bottom" unique_id=1746489747]
+[node name="Left" type="NinePatchRect" parent="CanvasLayer/Bottom" unique_id=1746489747]
 layout_mode = 0
 offset_left = -2.0
-offset_top = 216.08101
-offset_right = 570.7964
-offset_bottom = 334.17297
-scale = Vector2(0.48876318, 0.48876318)
+offset_top = 144.02399
+offset_right = 533.4498
+offset_bottom = 261.388
+scale = Vector2(0.5945263, 0.5945263)
 pivot_offset = Vector2(1.025, -1)
 texture = ExtResource("9_cxdcy")
 region_rect = Rect2(21.014252, 0, 968.9857, 114)
@@ -342,47 +356,27 @@ patch_margin_left = 12
 patch_margin_top = 11
 patch_margin_right = 130
 script = ExtResource("10_6y3bq")
-height_ratio = 0.205
-tuck_ratio = 0.05099999999999999
+height_ratio = 0.32
+tuck_ratio = 0.10499999999999998
 
-[node name="SettingsButton" type="TextureButton" parent="CanvasLayer/Bottom/ColorRect2" unique_id=360644980]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -50.000004
-offset_right = 100.0
-offset_bottom = 50.000004
-grow_vertical = 2
-texture_normal = ExtResource("12_exqf6")
-ignore_texture_size = true
-stretch_mode = 4
-
-[node name="Panel" type="Control" parent="CanvasLayer/Bottom/ColorRect2" unique_id=594197954]
-layout_mode = 1
-anchor_left = 0.062
-anchor_top = 0.167
-anchor_right = 0.358
-anchor_bottom = 0.738
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset_ratio = Vector2(0, 0.5)
-
-[node name="Value2" type="Label" parent="CanvasLayer/Bottom/ColorRect2/Panel" unique_id=1525811266]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Bottom/Left" unique_id=1654785863]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.0
+anchor_left = 0.065
+anchor_right = 0.869
 anchor_bottom = 1.0
-offset_right = -1.8317261
-offset_bottom = 16.175491
+offset_right = -0.40020752
 grow_horizontal = 2
 grow_vertical = 2
-text = "Population"
-horizontal_alignment = 1
-vertical_alignment = 2
+theme_override_constants/separation = 11
+alignment = 1
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Bottom/ColorRect2/Panel" unique_id=418779208]
-custom_minimum_size = Vector2(0, 36.47)
+[node name="Panel" type="Control" parent="CanvasLayer/Bottom/Left/HBoxContainer" unique_id=594197954]
+custom_minimum_size = Vector2(66.115, 0)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Bottom/Left/HBoxContainer/Panel" unique_id=418779208]
+custom_minimum_size = Vector2(71.865, 58.36)
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -394,7 +388,25 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
-[node name="Value" type="Label" parent="CanvasLayer/Bottom/ColorRect2/Panel/Panel" unique_id=1154515757]
+[node name="Label" type="Label" parent="CanvasLayer/Bottom/Left/HBoxContainer/Panel/Panel" unique_id=1525811266]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.832
+anchor_right = 0.5
+anchor_bottom = 0.832
+offset_left = -22.5
+offset_top = -10.213161
+offset_right = 22.5
+offset_bottom = 22.786839
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "day"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Value" type="Label" parent="CanvasLayer/Bottom/Left/HBoxContainer/Panel/Panel" unique_id=1154515757]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -403,26 +415,216 @@ offset_top = -1.04
 offset_bottom = -1.0400009
 grow_horizontal = 2
 grow_vertical = 2
-text = "1,200"
-label_settings = ExtResource("6_3ju8l")
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel2" type="Control" parent="CanvasLayer/Bottom/Left/HBoxContainer" unique_id=1193387618]
+custom_minimum_size = Vector2(155.415, 0)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Bottom/Left/HBoxContainer/Panel2" unique_id=1266018271]
+custom_minimum_size = Vector2(71.865, 58.36)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -18.235
+offset_bottom = 18.235
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="Label" type="Label" parent="CanvasLayer/Bottom/Left/HBoxContainer/Panel2/Panel" unique_id=74377928]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.832
+anchor_right = 0.5
+anchor_bottom = 0.832
+offset_left = -24.0
+offset_top = -10.213161
+offset_right = 24.0
+offset_bottom = 22.786839
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "time"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="ColorRect3" type="NinePatchRect" parent="CanvasLayer/Bottom" unique_id=1746489748]
-layout_mode = 0
-offset_left = 802.0
-offset_top = 216.08101
-offset_right = 1374.7964
-offset_bottom = 334.17297
-scale = Vector2(-0.48876318, 0.48876318)
+[node name="Value" type="Label" parent="CanvasLayer/Bottom/Left/HBoxContainer/Panel2/Panel" unique_id=1500935946]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.04
+offset_bottom = -1.0400009
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "03:30 AM"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel3" type="Control" parent="CanvasLayer/Bottom/Left/HBoxContainer" unique_id=476871410]
+custom_minimum_size = Vector2(203.775, 0)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Bottom/Left/HBoxContainer/Panel3" unique_id=1769814060]
+custom_minimum_size = Vector2(71.865, 58.36)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -18.235
+offset_bottom = 18.235
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="TimeSlider" type="HSlider" parent="CanvasLayer/Bottom/Left/HBoxContainer/Panel3/Panel" unique_id=1509727451]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_right = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 5.0
+value = 1.0
+scrollable = false
+tick_count = 6
+ticks_on_borders = true
+ticks_position = 2
+
+[node name="TimeSliderLabel" type="Label" parent="CanvasLayer/Bottom/Left/HBoxContainer/Panel3/Panel" unique_id=165372778]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.832
+anchor_right = 0.5
+anchor_bottom = 0.832
+offset_left = -65.0
+offset_top = -10.213161
+offset_right = 65.0
+offset_bottom = 22.786839
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 20
+text = "speed: 1.0x"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Right" type="NinePatchRect" parent="CanvasLayer/Bottom" unique_id=1746489748]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -316.33902
+offset_top = -67.776
+offset_right = 219.11084
+offset_bottom = 49.588013
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.5945263, 0.5945263)
 pivot_offset = Vector2(-1, -1)
-texture = ExtResource("9_cxdcy")
+texture = ExtResource("11_5jwjf")
 patch_margin_left = 12
 patch_margin_right = 130
 script = ExtResource("10_6y3bq")
 mirrored = true
-height_ratio = 0.205
-tuck_ratio = 0.05099999999999999
+height_ratio = 0.32
+tuck_ratio = 0.10499999999999998
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Bottom/Right" unique_id=392255040]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_right = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 26
+alignment = 1
+
+[node name="Panel" type="Control" parent="CanvasLayer/Bottom/Right/HBoxContainer" unique_id=730556505]
+custom_minimum_size = Vector2(317.095, 0)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Bottom/Right/HBoxContainer/Panel" unique_id=994035053]
+custom_minimum_size = Vector2(0, 58.36)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -18.235
+offset_bottom = 18.235
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="Label" type="Label" parent="CanvasLayer/Bottom/Right/HBoxContainer/Panel/Panel" unique_id=1733713488]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.832
+anchor_right = 0.5
+anchor_bottom = 0.832
+offset_left = -22.5
+offset_top = -10.213161
+offset_right = 22.5
+offset_bottom = 22.786839
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "resources"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Value" type="Label" parent="CanvasLayer/Bottom/Right/HBoxContainer/Panel/Panel" unique_id=978613789]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.04
+offset_bottom = -1.0400009
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SettingsButton" type="TextureButton" parent="CanvasLayer/Bottom/Right" unique_id=360644980]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -58.5
+offset_right = -20.0
+offset_bottom = 58.5
+grow_horizontal = 0
+grow_vertical = 2
+texture_normal = ExtResource("12_exqf6")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="Wheel" type="TextureRect" parent="CanvasLayer/Bottom" unique_id=1529679700]
 custom_minimum_size = Vector2(-1, -1)
@@ -434,7 +636,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 offset_transform_enabled = true
-offset_transform_position_ratio = Vector2(0, 0.5)
+offset_transform_position_ratio = Vector2(0, 0.4)
 offset_transform_visual_only = false
 mouse_filter = 2
 texture = ExtResource("13_o8st7")
@@ -454,10 +656,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("14_mgoxf")
-radius_ratio = 0.753
+radius = 106.435
+radius_ratio = 0.743
 item_size_ratio = 0.143
-arc_from_degrees = 195.0
-arc_to_degrees = 345.0
+arc_from_degrees = 180.0
+arc_to_degrees = 360.0
 
 [node name="Click" type="TextureButton" parent="CanvasLayer/Bottom/Wheel/Container2" unique_id=1789490234]
 layout_mode = 2
@@ -507,58 +710,25 @@ custom_maximum_size = Vector2(72, 72)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.38
+anchor_top = 0.185
 anchor_right = 0.5
-anchor_bottom = 0.465
-offset_left = -36.0
-offset_top = -36.0
-offset_right = 36.0
-offset_bottom = 36.0
+anchor_bottom = 0.53
+offset_left = -50.962463
+offset_right = 50.962524
+offset_bottom = 46.761482
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 1)
+offset_transform_enabled = true
 texture_normal = ExtResource("21_085mh")
 stretch_mode = 0
 
-[node name="SizeSlider" type="HSlider" parent="CanvasLayer/Bottom" unique_id=1744459679]
+[node name="Profile" type="Panel" parent="CanvasLayer" unique_id=1713301352]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, -1)
-custom_maximum_size = Vector2(150, -1)
-layout_mode = 1
+custom_minimum_size = Vector2(215.975, 200)
+custom_maximum_size = Vector2(212.255, 271.96)
 anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -200.0
-offset_top = -42.0
-offset_right = -50.0
-offset_bottom = -10.0
-grow_horizontal = 0
-grow_vertical = 0
-size_flags_horizontal = 3
-size_flags_vertical = 1
-theme_override_constants/center_grabber = 1
-theme_override_icons/grabber = SubResource("GradientTexture2D_adaop")
-theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_ap7yk")
-theme_override_styles/slider = SubResource("StyleBoxFlat_pw7dr")
-theme_override_styles/grabber_area = SubResource("StyleBoxFlat_615i1")
-theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_ap7yk")
-min_value = 0.5
-max_value = 1.5
-step = 0.0
-value = 1.0
-scrollable = false
-tick_count = 5
-ticks_on_borders = true
-ticks_position = 2
-
-[node name="Profile" type="NinePatchRect" parent="CanvasLayer" unique_id=1746369468]
-unique_name_in_owner = true
-visible = false
-custom_minimum_size = Vector2(200, 200)
-custom_maximum_size = Vector2(300, 300)
-anchors_preset = -1
+anchor_left = 0.105
 anchor_right = 0.658
 anchor_bottom = 0.868
 offset_left = 25.0
@@ -568,13 +738,6 @@ offset_bottom = -110.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
-mouse_filter = 0
-texture = ExtResource("21_x3e77")
-region_rect = Rect2(0, 0, 200, 200)
-patch_margin_left = 32
-patch_margin_top = 25
-patch_margin_right = 40
-patch_margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile" unique_id=1203041896]
 layout_mode = 1
@@ -589,71 +752,82 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Profile/VBoxContainer" unique_id=317271788]
+custom_minimum_size = Vector2(0, 83.065)
 layout_mode = 2
 
 [node name="Picture" type="Panel" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer" unique_id=371200410]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
 
 [node name="Body" type="TextureRect" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/Picture" unique_id=1587339137]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = 41.0
+offset_right = 15.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("23_c3smh")
-expand_mode = 1
-stretch_mode = 6
+expand_mode = 5
+stretch_mode = 5
 
 [node name="Shirt" type="TextureRect" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/Picture" unique_id=1762868296]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = 41.0
+offset_right = 15.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("24_5jwjf")
-expand_mode = 1
-stretch_mode = 6
+expand_mode = 5
+stretch_mode = 5
 
 [node name="Hair" type="TextureRect" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/Picture" unique_id=1901696958]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = 41.0
+offset_right = 15.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("25_nso1x")
-expand_mode = 1
-stretch_mode = 6
+expand_mode = 5
+stretch_mode = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer" unique_id=1991521506]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="NameLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=394576686]
+[node name="NameLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=36321778]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 25.475)
 layout_mode = 2
-size_flags_vertical = 1
-text = "stuff"
-label_settings = SubResource("LabelSettings_st70h")
-vertical_alignment = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_7522t")
+text = "chudlet"
 
 [node name="AgeLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=499980360]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
+theme_override_font_sizes/font_size = 9
 text = "age: 0"
-label_settings = SubResource("LabelSettings_st70h")
 vertical_alignment = 1
 
 [node name="WantLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1979162048]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
+theme_override_font_sizes/font_size = 9
 text = "wants: "
-label_settings = SubResource("LabelSettings_st70h")
 vertical_alignment = 1
 
 [node name="POVButton" type="Button" parent="CanvasLayer/Profile/VBoxContainer" unique_id=50105486]
@@ -672,6 +846,21 @@ text = "track"
 layout_mode = 2
 size_flags_horizontal = 3
 text = "deallocate"
+
+[node name="Panel" type="NinePatchRect" parent="CanvasLayer/Profile" unique_id=1850378183]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_x3e77")
+draw_center = false
+region_rect = Rect2(0, 0, 200, 200)
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 10
 
 [node name="Settings" type="NinePatchRect" parent="CanvasLayer" unique_id=2001730921]
 unique_name_in_owner = true
@@ -780,7 +969,7 @@ ticks_on_borders = true
 ticks_position = 2
 
 [connection signal="pressed" from="CanvasLayer/NinePatchRect/HFlowContainer/Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="CanvasLayer/Bottom/ColorRect2/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Bottom/Right/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/POVButton" to="." method="_on_pov_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/HBoxContainer2/TrackButton" to="." method="_on_track_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/VBoxContainer/HBoxContainer2/DeallocateButton" to="." method="_on_deallocate_button_pressed"]

@@ -31,6 +31,16 @@ func _ready() -> void:
 	_update_time_label()
 
 	play_resume.pressed.connect(_on_play_resume)
+	
+	play_resume.mouse_entered.connect(func():
+		var tween = create_tween().set_parallel(true)
+		tween.tween_property(play_resume, "modulate", Color.WHITE, 0.06)
+	)
+	play_resume.mouse_exited.connect(func():
+		_return_to_normal(play_resume)
+	)
+	
+	
 	_update_play_button()
 
 
@@ -61,6 +71,8 @@ func _wire_button(button: TextureButton) -> void:
 		toggle(button)
 	)
 	button.mouse_entered.connect(func():
+		if button == active:
+			return
 		var tween = create_tween().set_parallel(true)
 		tween.tween_property(button, "offset_transform_scale", Vector2(1.15, 1.15), 0.06)
 		tween.tween_property(button, "modulate", Color.WHITE, 0.06)
@@ -99,7 +111,7 @@ func _on_quit_pressed() -> void:
 	get_tree().quit()
 
 @onready var name_label: Label = %NameLabel
-@onready var profile: NinePatchRect = %Profile
+@onready var profile: Control = %Profile
 var focused_folk: Folk
 var tracking_folk := false
 

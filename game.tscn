@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://cbtff2g0rblin"]
 
+[ext_resource type="CompressedCubemap" uid="uid://c2olwpiupceb8" path="res://skybox/cubemap.png" id="1_7sc4i"]
 [ext_resource type="Script" uid="uid://cba0w7iu3m4ge" path="res://scripts/camera.gd" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://cy5dtkudlsf2e" path="res://scripts/day_night_cycle.gd" id="1_215e1"]
 [ext_resource type="Material" uid="uid://4mc4ktvjal3e" path="res://materials/ocean_water.tres" id="1_iotsf"]
@@ -13,16 +14,38 @@
 [ext_resource type="Script" uid="uid://c6fa4xqxlj36p" path="res://scripts/map_collision.gd" id="6_mfdv2"]
 [ext_resource type="Script" uid="uid://dtglqyjy6lr0" path="res://scripts/entity_gen.gd" id="7_iotsf"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_215e1"]
+[sub_resource type="Shader" id="Shader_iotsf"]
+code = "shader_type sky;
+
+uniform samplerCube source_panorama : filter_linear, source_color, hint_default_black;
+uniform float exposure : hint_range(0, 128) = 1.0;
+
+void sky() {
+    // If importing a cubemap from another engine, you may need to flip one of the `EYEDIR` components below
+    // by replacing it with `-EYEDIR`.
+    vec3 eyedir = vec3(EYEDIR.x, EYEDIR.y, EYEDIR.z);
+    COLOR = texture(source_panorama, eyedir).rgb * exposure;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lc2xo"]
+shader = SubResource("Shader_iotsf")
+shader_parameter/source_panorama = ExtResource("1_7sc4i")
+shader_parameter/exposure = 1.0
 
 [sub_resource type="Sky" id="Sky_08a0c"]
-sky_material = SubResource("PanoramaSkyMaterial_215e1")
+sky_material = SubResource("ShaderMaterial_lc2xo")
 
 [sub_resource type="Environment" id="Environment_7sc4i"]
 background_mode = 1
 background_color = Color(0.93333334, 1, 1, 1)
 sky = SubResource("Sky_08a0c")
+tonemap_mode = 2
+tonemap_exposure = 0.98
 glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.02
+volumetric_fog_gi_inject = 0.0
+volumetric_fog_length = 4.35
 
 [sub_resource type="Gradient" id="Gradient_mhi6y"]
 offsets = PackedFloat32Array(0.20238096, 0.26785713, 0.32738096, 0.67261904, 0.71428573, 0.77380955)
@@ -99,6 +122,51 @@ shader_parameter/noise = ExtResource("6_eow3j")
 [sub_resource type="PlaneMesh" id="PlaneMesh_xbydb"]
 size = Vector2(1, 1)
 
+[sub_resource type="Shader" id="Shader_nso1x"]
+code = "shader_type canvas_item;
+uniform sampler2D ST : hint_screen_texture, filter_linear_mipmap_anisotropic;
+uniform vec4 scanline_color : source_color = vec4(0, 0, 0, 1);
+uniform vec4 flicker_color : source_color = vec4(0, 0, 0, 1);
+uniform float scanlines_count = 10.0;
+uniform float scanlines_intensity = 0.05;
+uniform float flicker_speed = 30.0;
+uniform float flicker_intensity : hint_range(0.0, 1.0, 0.001) = 0.025;
+uniform float color_offset = 1.5;
+uniform float blur = 0.15;
+
+void fragment() {
+	vec2 pixel_size = 1.0 / vec2(textureSize(ST, 0));
+	float offset = color_offset * pixel_size.x;
+	
+	// chromatic aberration
+	float channel_r = textureLod(ST, SCREEN_UV + vec2(offset, 0.0), blur).r;
+	float channel_g = textureLod(ST, SCREEN_UV, blur).g;
+	float channel_b = textureLod(ST, SCREEN_UV + vec2(-offset, 0.0), blur).b;
+	vec4 aberrate = vec4(channel_r, channel_g, channel_b, 1.0);
+	
+	// scanline flicker
+	float mix_value = sin((UV.y - (TIME * flicker_speed)) * 10.0) * flicker_intensity;
+	vec4 flicker = mix(aberrate, flicker_color, mix_value);
+
+	// scanlines
+	float scanlines = sin(FRAGCOORD.y * scanlines_count) * scanlines_intensity;
+	vec4 final = mix(flicker, scanline_color, scanlines);
+	
+	COLOR = final;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5jwjf"]
+shader = SubResource("Shader_nso1x")
+shader_parameter/scanline_color = Color(0, 0, 0, 1)
+shader_parameter/flicker_color = Color(0, 0, 0, 1)
+shader_parameter/scanlines_count = 10.0
+shader_parameter/scanlines_intensity = 0.12
+shader_parameter/flicker_speed = 0.665
+shader_parameter/flicker_intensity = 0.0150000007125
+shader_parameter/color_offset = 1.5
+shader_parameter/blur = 0.065
+
 [node name="Game2" type="Node3D" unique_id=556122064]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1294957651]
@@ -137,18 +205,6 @@ unique_name_in_owner = true
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Island/Model/InteractionLayer" unique_id=854433624]
 shape = SubResource("HeightMapShape3D_215e1")
 script = ExtResource("6_mfdv2")
-
-[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=2010596024]
-scale = Vector2(0.33, 0.33)
-transform = Transform2D(0.33, 0, 0, 0.33, 0, 0)
-
-[node name="Debug" type="VFlowContainer" parent="CanvasLayer2" unique_id=1814383400]
-unique_name_in_owner = true
-visible = false
-anchors_preset = -1
-anchor_top = 0.352
-anchor_bottom = 1.0
-grow_vertical = 2
 
 [node name="Entities" type="Node" parent="." unique_id=2001399486]
 script = ExtResource("7_iotsf")
@@ -192,3 +248,22 @@ mesh = SubResource("PlaneMesh_xbydb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92.10134, 31.531723, -678.284)
 light_color = Color(0.8150196, 3.5857408e-06, 7.70092e-07, 1)
 omni_range = 101.811
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=2010596024]
+
+[node name="Debug" type="VFlowContainer" parent="CanvasLayer2" unique_id=1814383400]
+unique_name_in_owner = true
+visible = false
+anchors_preset = -1
+anchor_top = 0.352
+anchor_bottom = 1.0
+grow_vertical = 2
+
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer2" unique_id=172519826]
+material = SubResource("ShaderMaterial_5jwjf")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

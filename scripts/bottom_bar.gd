@@ -30,14 +30,14 @@ func _layout() -> void:
 	if p == null:
 		return
 	var wheel_side := minf(p.size.x, p.size.y)
-	
+
 	var edge_to_wheel := p.size.x * 0.5 - wheel_side * 0.5
 	var h := wheel_side * height_ratio
-	
+
 	var s := h / float(texture.get_height())
-	
-	scale = Vector2(-s if mirrored else s, s)
+
+	scale = Vector2(s, s)
 	const BLEED := 2.0
-	size = Vector2((edge_to_wheel + wheel_side * tuck_ratio) / s + BLEED / s,
-		texture.get_height() + BLEED / s)
-	position = Vector2(p.size.x + BLEED if mirrored else -BLEED, p.size.y - h)
+	var span := edge_to_wheel + wheel_side * tuck_ratio  # on-screen bar length
+	size = Vector2(span / s + BLEED / s, texture.get_height() + BLEED / s)
+	position = Vector2(p.size.x - span if mirrored else -BLEED, p.size.y - h)

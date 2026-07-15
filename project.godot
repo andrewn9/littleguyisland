@@ -26,11 +26,17 @@ Game="*uid://bjyydtgntx0kv"
 window/size/viewport_width=800
 window/size/viewport_height=600
 window/stretch/aspect="keep_height"
+window/stretch/scale_mode="integer"
 window/vsync/vsync_mode=0
 
 [dotnet]
 
 project/assembly_name="little guy island"
+
+[gui]
+
+theme/default_font_antialiasing=0
+theme/custom="uid://288gq0xrorpp"
 
 [input]
 
