@@ -56,7 +56,7 @@ var takeover_radius := 45.0
 var birth_chance := 0.9
 
 var adulthood_age := 3
-var child_scale := 0.45
+var child_scale := 0.25
 var breed_radius := 30.0
 
 var share_radius := 24.0

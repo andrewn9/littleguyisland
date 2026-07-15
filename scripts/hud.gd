@@ -106,15 +106,36 @@ func toggle(thing: Control):
 
 	match active.name:
 		"Land":
-			Input.set_custom_mouse_cursor(cursor_terrain, Input.CURSOR_ARROW, Vector2(0, 32))
+			_set_tool_cursor(cursor_terrain, Vector2(0, 32))
 		"Brush":
-			Input.set_custom_mouse_cursor(cursor_smooth, Input.CURSOR_ARROW, Vector2(0, 32))
+			_set_tool_cursor(cursor_smooth, Vector2(0, 32))
 		"Mountain":
-			Input.set_custom_mouse_cursor(cursor_mountain, Input.CURSOR_ARROW, Vector2(0, 32))
+			_set_tool_cursor(cursor_mountain, Vector2(0, 32))
 		"Dig":
-			Input.set_custom_mouse_cursor(cursor_shovel, Input.CURSOR_ARROW, Vector2(0, 32))
+			_set_tool_cursor(cursor_shovel, Vector2(0, 32))
 		"Click":
-			Input.set_custom_mouse_cursor(cursor_arrow, Input.CURSOR_ARROW, Vector2(0, 0))
+			_set_tool_cursor(cursor_arrow, Vector2(0, 0))
+
+var _tool_cursor: Texture2D = cursor_arrow
+var _tool_hotspot := Vector2.ZERO
+var _cursor_on_ui := false
+
+func _set_tool_cursor(tex: Texture2D, hotspot: Vector2) -> void:
+	_tool_cursor = tex
+	_tool_hotspot = hotspot
+	if not _cursor_on_ui:
+		Input.set_custom_mouse_cursor(tex, Input.CURSOR_ARROW, hotspot)
+
+func _refresh_hover_cursor() -> void:
+	var hovered := get_viewport().gui_get_hovered_control()
+	var on_ui := hovered != null and hovered.mouse_filter == Control.MOUSE_FILTER_STOP
+	if on_ui == _cursor_on_ui:
+		return
+	_cursor_on_ui = on_ui
+	if on_ui:
+		Input.set_custom_mouse_cursor(cursor_arrow)
+	else:
+		Input.set_custom_mouse_cursor(_tool_cursor, Input.CURSOR_ARROW, _tool_hotspot)
 
 func _on_settings_button_pressed():
 	settings.visible = not settings.visible
@@ -133,6 +154,7 @@ func _on_settings_button_pressed():
 
 func _process(delta: float) -> void:
 	_update_island_stats()
+	_refresh_hover_cursor()
 
 	day_count_label.text = str(Game.day)
 	var hr = fmod(Game.day_fraction * 24, 12)
