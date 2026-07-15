@@ -38,6 +38,9 @@ func _ready() -> void:
 	time_slider.set_value_no_signal(log(Game.time_scale) / log(2.0) + 1.0)
 	_update_time_label()
 
+	size_slider.value_changed.connect(_on_size_slider_changed)
+	_on_size_slider_changed(size_slider.value)
+
 	play_resume.pressed.connect(_on_play_resume)
 	
 	play_resume.mouse_entered.connect(func():
@@ -59,6 +62,10 @@ func _on_time_slider_changed(value: float) -> void:
 
 func _update_time_label() -> void:
 	time_label.text = " speed: %sx  " % str(Game.time_scale)
+	time_slider.tooltip_text = "simulation speed: %sx" % str(Game.time_scale)
+
+func _on_size_slider_changed(value: float) -> void:
+	size_slider.tooltip_text = "brush size: %.2fx" % value
 
 func _on_play_resume() -> void:
 	if Game.paused:
@@ -69,6 +76,7 @@ func _on_play_resume() -> void:
 
 func _update_play_button() -> void:
 	play_resume.texture_normal = PLAY_TEX if Game.paused else PLAYING_TEX
+	play_resume.tooltip_text = "resume sim" if Game.paused else "pause sim"
 
 func _wire_button(button: TextureButton) -> void:
 	button.modulate = button_inactive_color
@@ -147,7 +155,14 @@ func _on_settings_button_pressed():
 @onready var island_happy: ProgressBar = $"%IslandStats/VBoxContainer2/HBoxContainer/HappinessProgressBar"
 @onready var island_homes: Label = $"%IslandStats/VBoxContainer2/HBoxContainer4/HomeCount"
 @onready var island_farms: Label = $"%IslandStats/VBoxContainer2/HBoxContainer6/FarmCount"
-@onready var island_flags: Label = $"%IslandStats/VBoxContainer2/HBoxContainer5/Flags"
+@onready var _flags_root := $"%IslandStats/VBoxContainer2/HBoxContainer5"
+@onready var flag_starving: Label = _flags_root.get_node("StarvingFlag")
+@onready var flag_hungry: Label = _flags_root.get_node("HungryFlag")
+@onready var flag_growth: Label = _flags_root.get_node("GrowthFlag")
+@onready var flag_building: Label = _flags_root.get_node("BuildingFlag")
+@onready var flag_cant_build: Label = _flags_root.get_node("CantBuildFlag")
+@onready var flag_no_trees: Label = _flags_root.get_node("NoTreesFlag")
+@onready var flag_cant_farm: Label = _flags_root.get_node("CantFarmFlag")
 
 @onready var wood_value: Label = %WoodValue
 @onready var food_value: Label = %FoodValue
@@ -180,24 +195,14 @@ func _update_island_stats() -> void:
 	wood_value.text = str(Game.total_wood)
 	food_value.text = str(roundi(Game.food))
 
-	var flags := PackedStringArray()
-	if Game.food <= 0.0 and Game.population > 0:
-		flags.append("!starving")
-	elif Game.hungry():
-		flags.append("!hungry")
-	if Game.prosperous():
-		flags.append("+growth")
-		
-	if Game.cant_build():
-		flags.append("[cant_build]")
-	elif Game.needs_housing():
-		flags.append("+building")
-		
-	if Game.out_of_resources():
-		flags.append("[no_trees]")
-	if Game.cant_farm():
-		flags.append("[cant_farm]")
-	island_flags.text = " ".join(flags)
+	var starving := Game.food <= 0.0 and Game.population > 0
+	flag_starving.visible = starving
+	flag_hungry.visible = not starving and Game.hungry()
+	flag_growth.visible = Game.prosperous()
+	flag_cant_build.visible = Game.cant_build()
+	flag_building.visible = not Game.cant_build() and Game.needs_housing()
+	flag_no_trees.visible = Game.out_of_resources()
+	flag_cant_farm.visible = Game.cant_farm()
 func _on_quit_pressed() -> void:
 	get_tree().quit()
 

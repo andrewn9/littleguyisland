@@ -301,7 +301,7 @@ mouse_filter = 2
 
 [node name="Monkey" type="TextureRect" parent="CanvasLayer/MarginContainer" unique_id=746295296]
 layout_mode = 2
-mouse_filter = 2
+tooltip_text = "Suzanne"
 texture = ExtResource("5_c3smh")
 expand_mode = 3
 stretch_mode = 5
@@ -322,7 +322,6 @@ title = "Island Overview"
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/IslandStats" unique_id=45216505]
 layout_mode = 2
 size_flags_vertical = 0
-mouse_filter = 0
 
 [node name="HBoxContainer3" type="HSplitContainer" parent="CanvasLayer/IslandStats/VBoxContainer2" unique_id=889648148]
 layout_mode = 2
@@ -330,6 +329,8 @@ layout_mode = 2
 [node name="Label" type="Label" parent="CanvasLayer/IslandStats/VBoxContainer2/HBoxContainer3" unique_id=52081308]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "folk count"
+mouse_filter = 0
 theme_override_font_sizes/font_size = 19
 text = "Population"
 vertical_alignment = 1
@@ -351,6 +352,8 @@ split_offset = 106
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 1
+tooltip_text = "happiness across folk; food, neighbors, dry land"
+mouse_filter = 0
 theme_override_font_sizes/font_size = 19
 text = "Avg. Happiness"
 vertical_alignment = 1
@@ -359,6 +362,7 @@ vertical_alignment = 1
 custom_maximum_size = Vector2(70, -1)
 layout_mode = 2
 size_flags_vertical = 1
+mouse_filter = 2
 theme_override_font_sizes/font_size = 19
 value = 33.22
 
@@ -368,6 +372,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="CanvasLayer/IslandStats/VBoxContainer2/HBoxContainer4" unique_id=881672725]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "number of homes"
 theme_override_font_sizes/font_size = 19
 text = "Homes"
 vertical_alignment = 1
@@ -386,6 +391,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="CanvasLayer/IslandStats/VBoxContainer2/HBoxContainer6" unique_id=1612956088]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "number of farms"
 theme_override_font_sizes/font_size = 19
 text = "Farms"
 vertical_alignment = 1
@@ -398,18 +404,66 @@ text = "0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="CanvasLayer/IslandStats/VBoxContainer2" unique_id=1163151548]
+[node name="HBoxContainer5" type="HFlowContainer" parent="CanvasLayer/IslandStats/VBoxContainer2" unique_id=1163151548]
 layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 2
 
-[node name="Flags" type="Label" parent="CanvasLayer/IslandStats/VBoxContainer2/HBoxContainer5" unique_id=1208352898]
-custom_maximum_size = Vector2(177.12, -1)
+[node name="StarvingFlag" type="Label" parent="CanvasLayer/IslandStats/VBoxContainer2/HBoxContainer5" unique_id=1208352901]
 layout_mode = 2
-size_flags_vertical = 1
+tooltip_text = "no food stockpile. folk are starving andlosing happiness"
+mouse_filter = 0
 theme_override_fonts/font = ExtResource("9_hyw70")
-theme_override_font_sizes/font_size = 19
-text = "!-hungry +growth !out_of_resources !cant_build !cant_farm"
-vertical_alignment = 1
-autowrap_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "!starving"
+
+[node name="HungryFlag" type="Label" parent="CanvasLayer/IslandStats/VBoxContainer2/HBoxContainer5" unique_id=1208352902]
+layout_mode = 2
+tooltip_text = "food numbers low. folk will prioritize farming at home"
+mouse_filter = 0
+theme_override_fonts/font = ExtResource("9_hyw70")
+theme_override_font_sizes/font_size = 14
+text = "!hungry"
+
+[node name="GrowthFlag" type="Label" parent="CanvasLayer/IslandStats/VBoxContainer2/HBoxContainer5" unique_id=1208352903]
+layout_mode = 2
+tooltip_text = "good amount of food and happiness. more folk will develop"
+mouse_filter = 0
+theme_override_fonts/font = ExtResource("9_hyw70")
+theme_override_font_sizes/font_size = 14
+text = "+growth"
+
+[node name="BuildingFlag" type="Label" parent="CanvasLayer/IslandStats/VBoxContainer2/HBoxContainer5" unique_id=1208352904]
+layout_mode = 2
+tooltip_text = "folk want to expand, so folk are gathering wood and build homes"
+mouse_filter = 0
+theme_override_fonts/font = ExtResource("9_hyw70")
+theme_override_font_sizes/font_size = 14
+text = "+building"
+
+[node name="CantBuildFlag" type="Label" parent="CanvasLayer/IslandStats/VBoxContainer2/HBoxContainer5" unique_id=1208352905]
+layout_mode = 2
+tooltip_text = "folk want to build houses but there are no trees left to chop and not enough wood to build"
+mouse_filter = 0
+theme_override_fonts/font = ExtResource("9_hyw70")
+theme_override_font_sizes/font_size = 14
+text = "[cant_build]"
+
+[node name="NoTreesFlag" type="Label" parent="CanvasLayer/IslandStats/VBoxContainer2/HBoxContainer5" unique_id=1208352906]
+layout_mode = 2
+tooltip_text = "no wood can be gathered until trees are replenished"
+mouse_filter = 0
+theme_override_fonts/font = ExtResource("9_hyw70")
+theme_override_font_sizes/font_size = 14
+text = "[no_trees]"
+
+[node name="CantFarmFlag" type="Label" parent="CanvasLayer/IslandStats/VBoxContainer2/HBoxContainer5" unique_id=1208352907]
+layout_mode = 2
+tooltip_text = "folk are hungry but there is no fertile and low land to plant on"
+mouse_filter = 0
+theme_override_fonts/font = ExtResource("9_hyw70")
+theme_override_font_sizes/font_size = 14
+text = "[cant_farm]"
 
 [node name="Notifications" type="VBoxContainer" parent="CanvasLayer" unique_id=185400638]
 unique_name_in_owner = true
@@ -623,6 +677,8 @@ offset_bottom = 22.786839
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_vertical = 1
+tooltip_text = "speed of the simulation"
+mouse_filter = 1
 theme_override_font_sizes/font_size = 37
 text = "speed: 1.0x"
 horizontal_alignment = 1
@@ -776,6 +832,7 @@ offset_right = -20.0
 offset_bottom = 58.5
 grow_horizontal = 0
 grow_vertical = 2
+tooltip_text = "settings"
 texture_normal = ExtResource("12_exqf6")
 ignore_texture_size = true
 stretch_mode = 5
@@ -819,6 +876,7 @@ arc_to_degrees = 360.0
 [node name="Click" type="TextureButton" parent="CanvasLayer/Bottom/Wheel/Container2" unique_id=1789490234]
 layout_mode = 2
 offset_transform_enabled = true
+tooltip_text = "select"
 texture_normal = ExtResource("15_0f6tk")
 ignore_texture_size = true
 stretch_mode = 5
@@ -826,6 +884,7 @@ stretch_mode = 5
 [node name="Land" type="TextureButton" parent="CanvasLayer/Bottom/Wheel/Container2" unique_id=1199655206]
 layout_mode = 2
 offset_transform_enabled = true
+tooltip_text = "land"
 texture_normal = ExtResource("16_e4yjp")
 ignore_texture_size = true
 stretch_mode = 5
@@ -833,6 +892,7 @@ stretch_mode = 5
 [node name="Water" type="TextureButton" parent="CanvasLayer/Bottom/Wheel/Container2" unique_id=226070401]
 layout_mode = 2
 offset_transform_enabled = true
+tooltip_text = "water"
 texture_normal = ExtResource("17_3y3rt")
 ignore_texture_size = true
 stretch_mode = 5
@@ -840,6 +900,7 @@ stretch_mode = 5
 [node name="Mountain" type="TextureButton" parent="CanvasLayer/Bottom/Wheel/Container2" unique_id=1446097784]
 layout_mode = 2
 offset_transform_enabled = true
+tooltip_text = "mountain"
 texture_normal = ExtResource("18_5rocq")
 ignore_texture_size = true
 stretch_mode = 5
@@ -847,6 +908,7 @@ stretch_mode = 5
 [node name="Dig" type="TextureButton" parent="CanvasLayer/Bottom/Wheel/Container2" unique_id=511580146]
 layout_mode = 2
 offset_transform_enabled = true
+tooltip_text = "dig"
 texture_normal = ExtResource("19_2u3la")
 ignore_texture_size = true
 stretch_mode = 5
@@ -854,6 +916,7 @@ stretch_mode = 5
 [node name="Brush" type="TextureButton" parent="CanvasLayer/Bottom/Wheel/Container2" unique_id=166836023]
 layout_mode = 2
 offset_transform_enabled = true
+tooltip_text = "smooth"
 texture_normal = ExtResource("20_g4gvt")
 ignore_texture_size = true
 stretch_mode = 5

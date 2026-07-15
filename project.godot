@@ -20,6 +20,7 @@ run/max_fps=120
 MapData="*uid://nuxupllisxqo"
 Hud="*uid://d3a07uu08qw8"
 Game="*uid://bjyydtgntx0kv"
+Tooltips="*res://scripts/tooltips.gd"
 
 [display]
 
@@ -37,6 +38,7 @@ project/assembly_name="little guy island"
 
 theme/default_font_antialiasing=0
 theme/custom="uid://288gq0xrorpp"
+timers/tooltip_delay_sec=3600.0
 
 [input]
 
