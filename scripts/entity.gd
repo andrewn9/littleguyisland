@@ -34,9 +34,24 @@ func set_prop_mat(mat):
 	$Pivot/MeshInstance3D.set_surface_override_material(0, mat)
 
 func _height_from_map() -> float:
-	return MapData.height_img.get_pixelv(pos.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))).r * MapData.HEIGHT_SCALE
+	var p1 = pos.floor().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))
+	var p2 = pos.ceil().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))
 
-func update_height():
+	if p1 == p2:
+		return MapData.height_img.get_pixelv(p1).r * MapData.HEIGHT_SCALE
+
+	var d1 = pos - p1
+	var d2 = p2 - pos
+
+	var h = MapData.height_img.get_pixelv(p1).r * (1 - d1.x) * (1 - d1.y)
+	h += MapData.height_img.get_pixelv(p2).r * (1 - d2.x) * (1 - d2.y)
+	h += MapData.height_img.get_pixelv(Vector2(p1.x, p2.y)).r * (1 - d1.x) * (1 - d2.y)
+	h += MapData.height_img.get_pixelv(Vector2(p2.x, p1.y)).r * (1 - d2.x) * (1 - d1.y)
+
+
+	return h * MapData.HEIGHT_SCALE
+
+func update_pos():
 	var wx := pos.x * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2
 	var wz := pos.y * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2
 	var wy := _height_from_map()
@@ -46,15 +61,6 @@ func update_height():
 		queue_free()
 		return
 
-	if not is_static and is_inside_tree():
-		var space := get_world_3d().direct_space_state
-		var from := Vector3(wx, MapData.HEIGHT_SCALE + 100.0, wz)
-		var to := Vector3(wx, -100.0, wz)
-		var q := PhysicsRayQueryParameters3D.create(from, to)
-		q.collision_mask = 1
-		var hit := space.intersect_ray(q)
-		if hit:
-			wy = hit.position.y
 
 	position = Vector3(wx, wy, wz)
 
@@ -63,4 +69,4 @@ func _process(delta):
 	if not is_static:
 		if dt > 0.0:
 			pos += (target_pos - pos).limit_length(speed * dt)
-	update_height()
+	update_pos()
