@@ -40,10 +40,13 @@ func _make_layer(fill: Color) -> DrawableTexture2D:
 	return tex
 
 var _dirty := true
+var changed = false
 
 func _process(_delta):
+	changed = false
 	if _dirty:
 		update()
+		changed = true
 
 func mark_dirty() -> void:
 	_dirty = true

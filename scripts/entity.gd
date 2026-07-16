@@ -1,7 +1,13 @@
 class_name Entity extends Node3D
 
 var type: Game.EntityType = Game.EntityType.DECORATIVE
-var pos: Vector2
+var _pos: Vector2
+var pos: Vector2:
+	get:
+		return _pos
+	set(value):
+		_pos = value
+		update_world_pos()
 var target_pos: Vector2
 var speed = 20
 var is_static := true
@@ -48,10 +54,9 @@ func _height_from_map() -> float:
 	h += MapData.height_img.get_pixelv(Vector2(p1.x, p2.y)).r * (1 - d1.x) * (1 - d2.y)
 	h += MapData.height_img.get_pixelv(Vector2(p2.x, p1.y)).r * (1 - d2.x) * (1 - d1.y)
 
-
 	return h * MapData.HEIGHT_SCALE
 
-func update_pos():
+func update_world_pos():
 	var wx := pos.x * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2
 	var wz := pos.y * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2
 	var wy := _height_from_map()
@@ -61,26 +66,12 @@ func update_pos():
 		queue_free()
 		return
 
-
 	position = Vector3(wx, wy, wz)
 
-var _positioned := false
-
 func _process(delta):
-	if is_static:
-		if type == Game.EntityType.HOUSING:
-			update_pos()
-		elif not _positioned:
-			update_pos()
-			_positioned = true
-		return
+	if (MapData.changed):
+		update_world_pos()
 
 	var dt: float = Game.scaled_delta
-	var moved := false
 	if dt > 0.0:
-		var prev := pos
 		pos += (target_pos - pos).limit_length(speed * dt)
-		moved = not pos.is_equal_approx(prev)
-	if moved or not _positioned:
-		update_pos()
-		_positioned = true
