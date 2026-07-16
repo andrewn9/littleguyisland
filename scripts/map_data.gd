@@ -39,11 +39,13 @@ func _make_layer(fill: Color) -> DrawableTexture2D:
 	return tex
 
 var _dirty := true
-var map_version := 0 # increment when important map change
+var changed = false
 
 func _process(_delta):
+	changed = false
 	if _dirty:
 		update()
+		changed = true
 
 func mark_dirty() -> void:
 	_dirty = true
@@ -51,8 +53,7 @@ func mark_dirty() -> void:
 func update():
 	height_img = height.get_image()
 	val_img = val.get_image()
-	map_version += 1
-	_land_cache.clear()
+	_land_cache.clear() # heights moved, so the walkable lookups are stale
 	_dirty = false
 
 func _walkable(h: float):

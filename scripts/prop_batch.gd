@@ -8,7 +8,6 @@ const QUAD_SIZE := Vector2(11.615, 11.415)
 var _records: Dictionary = {}
 var _mmis: Dictionary = {} # key -> MultiMeshInstance3D
 var _dirty := false
-var _seen_version := -1
 
 func add_decor(tex: Texture2D, flipped: bool, texel_pos: Vector2, scale_mult: float) -> void:
 	var key := tex.get_instance_id() * 2 + int(flipped)
@@ -29,10 +28,9 @@ func clear_region(x1: float, y1: float, x2: float, y2: float) -> void:
 func _process(_delta: float) -> void:
 	if MapData.height_img == null:
 		return
-	if _dirty or _seen_version != MapData.map_version:
+	if _dirty or MapData.changed:
 		_rebuild()
 		_dirty = false
-		_seen_version = MapData.map_version
 
 func _rebuild() -> void:
 	for key in _records:
