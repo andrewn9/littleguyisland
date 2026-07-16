@@ -457,6 +457,13 @@ theme_override_fonts/font = ExtResource("9_hyw70")
 theme_override_font_sizes/font_size = 14
 text = "[no_trees]"
 
+[node name="NoSpaceFlag" type="Label" parent="CanvasLayer/IslandStats/VBoxContainer2/HBoxContainer5" unique_id=1208352908]
+layout_mode = 2
+tooltip_text = "not enough flat space to build"
+theme_override_fonts/font = ExtResource("9_hyw70")
+theme_override_font_sizes/font_size = 14
+text = "[no_space]"
+
 [node name="CantFarmFlag" type="Label" parent="CanvasLayer/IslandStats/VBoxContainer2/HBoxContainer5" unique_id=1208352907]
 layout_mode = 2
 tooltip_text = "folk are hungry but there is no fertile and low land to plant on"
@@ -716,11 +723,11 @@ offset_left = 40.0
 offset_right = -100.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 26
+theme_override_constants/separation = 14
 alignment = 1
 
 [node name="Panel" type="Control" parent="CanvasLayer/Bottom/Right/HBoxContainer" unique_id=730556505]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 
 [node name="Panel" type="Panel" parent="CanvasLayer/Bottom/Right/HBoxContainer/Panel" unique_id=994035053]
@@ -770,7 +777,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Panel2" type="Control" parent="CanvasLayer/Bottom/Right/HBoxContainer" unique_id=730556506]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 
 [node name="Panel" type="Panel" parent="CanvasLayer/Bottom/Right/HBoxContainer/Panel2" unique_id=994035054]
@@ -805,6 +812,106 @@ horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="FoodValue" type="Label" parent="CanvasLayer/Bottom/Right/HBoxContainer/Panel2/Panel" unique_id=978613790]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.04
+offset_bottom = -1.0400009
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 38
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel3" type="Control" parent="CanvasLayer/Bottom/Right/HBoxContainer" unique_id=730556507]
+custom_minimum_size = Vector2(105, 0)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Bottom/Right/HBoxContainer/Panel3" unique_id=994035055]
+custom_minimum_size = Vector2(0, 58.36)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -18.235
+offset_bottom = 18.235
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="Label" type="Label" parent="CanvasLayer/Bottom/Right/HBoxContainer/Panel3/Panel" unique_id=1733713490]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.832
+anchor_right = 0.5
+anchor_bottom = 0.832
+offset_left = -50.0
+offset_top = -10.213161
+offset_right = 50.0
+offset_bottom = 22.786839
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 30
+text = "stone"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="StoneValue" type="Label" parent="CanvasLayer/Bottom/Right/HBoxContainer/Panel3/Panel" unique_id=978613791]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.04
+offset_bottom = -1.0400009
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 38
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel4" type="Control" parent="CanvasLayer/Bottom/Right/HBoxContainer" unique_id=730556508]
+custom_minimum_size = Vector2(105, 0)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Bottom/Right/HBoxContainer/Panel4" unique_id=994035056]
+custom_minimum_size = Vector2(0, 58.36)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -18.235
+offset_bottom = 18.235
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="Label" type="Label" parent="CanvasLayer/Bottom/Right/HBoxContainer/Panel4/Panel" unique_id=1733713491]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.832
+anchor_right = 0.5
+anchor_bottom = 0.832
+offset_left = -50.0
+offset_top = -10.213161
+offset_right = 50.0
+offset_bottom = 22.786839
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 30
+text = "animals"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="AnimalValue" type="Label" parent="CanvasLayer/Bottom/Right/HBoxContainer/Panel4/Panel" unique_id=978613792]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15

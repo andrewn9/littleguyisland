@@ -28,6 +28,10 @@ const FARM_STAGE_PATHS := [
 	"res://sprites/props/farmland/wheat3.png",
 	"res://sprites/props/farmland/wheat4.png",
 ]
+const WELL_PATH := "res://sprites/props/well.png"
+var well_texture: Texture2D
+var farm_building_textures: Array[Texture2D] = []
+
 var farm_textures: Array[Texture2D] = []
 var _farms: Array = []
 var crop_grow_days := Vector2(1.0, 2.5)
@@ -99,6 +103,8 @@ func _ready():
 	)
 	for p in FARM_STAGE_PATHS:
 		farm_textures.append(load(p))
+	well_texture = load(WELL_PATH)
+	farm_building_textures = load_textures("res://sprites/props/farm_buildings/")
 
 
 	body_textures = load_textures("res://sprites/folk/body/")
@@ -250,12 +256,16 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 
 				var fac = 1.0 - sqrt(val) / 0.16
 
-				spawn_static_prop(
+				var rock = spawn_static_prop(
 					Vector2(x, y),
 					mountain_textures,
 					0.8 * fac,
 					1.5 * fac
 				)
+				if rock:
+					rock.name = "Rock"
+					rock.type = Game.EntityType.ROCK
+					rock.add_to_group("rocks")
 
 				if elevation > 0.7:
 					if height_map.get_pixel(max(x - 1, 0), y).r > elevation or height_map.get_pixel(max(x + 1, MapData.RESOLUTION - 1), y).r > elevation or height_map.get_pixel(x, max(y - 1, 0)).r > elevation or height_map.get_pixel(x, max(y + 1, MapData.RESOLUTION - 1)).r > elevation:
@@ -272,6 +282,10 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 					add_child(cloud)
 
 
+func _is_built(t: Game.EntityType) -> bool:
+	return t == Game.EntityType.HOUSING or t == Game.EntityType.FARM \
+			or t == Game.EntityType.WELL or t == Game.EntityType.FARM_BUILDING
+
 func generate(x1: int, y1: int, x2: int, y2: int):
 	for child: Node3D in get_children():
 		var x_pos = (child.position.x + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
@@ -279,8 +293,8 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 
 		if x_pos > x1 and y_pos > y1 and x_pos < x2 and y_pos < y2:
 			if child is Entity and (child as Entity).is_static \
-					and (child as Entity).type != Game.EntityType.HOUSING:
-				child.queue_free()  # regenerate trees/props, but keep homes
+					and not _is_built((child as Entity).type):
+				child.queue_free()  # regrow natural props, keep what the folk built
 			elif child is GPUParticles3D:
 				child.queue_free()
 
@@ -355,6 +369,26 @@ func spawn_home(p: Vector2, capacity := 3) -> Entity:
 	Game.house_capacity += capacity  # reflect at once so the build cap is tight
 	return ent
 
+func spawn_well(p: Vector2) -> Entity:
+	if well_texture == null:
+		return null
+	var ent = spawn_static_prop(p, [well_texture] as Array[Texture2D], 1.2, 1.4)
+	if ent == null:
+		return null
+	ent.name = "Well"
+	ent.type = Game.EntityType.WELL
+	ent.add_to_group("wells")
+	return ent
+
+func spawn_farm_building(p: Vector2) -> Entity:
+	var ent = spawn_static_prop(p, farm_building_textures, 1.4, 1.7)
+	if ent == null:
+		return null
+	ent.name = "FarmBuilding"
+	ent.type = Game.EntityType.FARM_BUILDING
+	ent.add_to_group("farm_buildings")
+	return ent
+
 func farm_is_ripe(f: Entity):
 	return is_instance_valid(f) and f.type == Game.EntityType.FARM \
 			and f.growth_stage >= farm_textures.size() - 1
@@ -427,7 +461,19 @@ func spawn_little_guy(x: int, y: int, birth_home: Entity = null):
 	ent.name = folk_name
 
 	Hud.push_notification("[i]" + folk_name + " has joined the game [/i]")
-	if Game.population == 0:
-		Hud.push_notification("the first folk have arrived")
-	elif Game.population % 50 == 0:
-		Hud.push_notification("the population has grown to " + str(Game.population) + " folk!")
+
+	var pop := get_tree().get_nodes_in_group("folk").size()
+	if pop == 1:
+		_announce("first", "the first folk have arrived")
+	elif pop % 50 == 0:
+		_announce("pop_%d" % pop, "the population has grown to %d folk!" % pop)
+
+	return ent
+
+var _announced := {}
+
+func _announce(key, msg):
+	if _announced.has(key):
+		return
+	_announced[key] = true
+	Hud.push_notification(msg)

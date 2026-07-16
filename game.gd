@@ -14,7 +14,10 @@ enum EntityType {
 	HOUSING,
 	TREE,
 	FOLK,
-	FARM
+	FARM,
+	ROCK,
+	WELL,
+	FARM_BUILDING,
 }
 
 var day_fraction := 0.375
@@ -22,6 +25,7 @@ var day := 0  # whole days passed
 
 var food := 0.0
 var rock := 0.0
+var animals := 0
 var population := 0
 var avg_happiness := 0.0
 var total_wood := 0
@@ -29,6 +33,10 @@ var house_capacity := 0 # total capacity
 var home_count := 0
 var farm_count := 0
 var tree_count := 0
+var well_count := 0
+var farm_building_count := 0
+var homeless := 0
+var build_fail_streak := 0
 
 
 var food_per_person := 4.0 # stockpile buffer target per folk
@@ -37,6 +45,7 @@ var crop_yield := 5.0
 
 var housing_slack := 4 # extra home multiplier to prepare
 var wood_per_house := 4
+var homeless_birth_limit := 0.25 # stop breeding when this amout homeless
 var birth_food_ratio := 1.15 # how much food to make new children
 var birth_happiness := 0.5
 
@@ -61,10 +70,17 @@ func cant_build() -> bool:
 func cant_farm() -> bool:
 	return population > 0 and hungry() and farm_count == 0 and not MapData.has_farmland
 
+func overcrowded() -> bool:
+	return population > 0 and float(homeless) / population > homeless_birth_limit
+
+func no_build_space() -> bool:
+	return needs_housing() and build_fail_streak >= 5
+
 func prosperous():
 	return population > 0 \
 			and food >= population * food_per_person * birth_food_ratio \
-			and avg_happiness >= birth_happiness
+			and avg_happiness >= birth_happiness \
+			and not overcrowded()
 
 func resume():
 	paused = false
@@ -100,10 +116,15 @@ func _refresh_stats() -> void:
 	var folks := get_tree().get_nodes_in_group("folk")
 	population = folks.size()
 	total_wood = 0
+	rock = 0.0
+	homeless = 0
 	var happy_sum := 0.0
 	for f in folks:
 		total_wood += f.carried_wood
+		rock += f.carried_rock
 		happy_sum += f.happiness
+		if not is_instance_valid(f.home):
+			homeless += 1
 	avg_happiness = happy_sum / population if population > 0 else 0.0
 
 	var homes := get_tree().get_nodes_in_group("homes")
@@ -114,3 +135,5 @@ func _refresh_stats() -> void:
 
 	farm_count = get_tree().get_nodes_in_group("farms").size()
 	tree_count = get_tree().get_nodes_in_group("trees").size()
+	well_count = get_tree().get_nodes_in_group("wells").size()
+	farm_building_count = get_tree().get_nodes_in_group("farm_buildings").size()

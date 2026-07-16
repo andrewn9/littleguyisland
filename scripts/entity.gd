@@ -59,14 +59,15 @@ func update_height():
 	position = Vector3(wx, wy, wz)
 
 var _positioned := false
+var _seen_version := -1
 
 func _process(delta):
 	if is_static:
 		if type == Game.EntityType.HOUSING:
 			update_height()
-		elif not _positioned:
+		elif _seen_version != MapData.map_version:
 			update_height()
-			_positioned = true
+			_seen_version = MapData.map_version
 		return
 
 	var dt: float = Game.scaled_delta

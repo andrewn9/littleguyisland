@@ -40,6 +40,7 @@ func _make_layer(fill: Color) -> DrawableTexture2D:
 	return tex
 
 var _dirty := true
+var map_version := 0 # increment when important map change
 
 func _process(_delta):
 	if _dirty:
@@ -51,6 +52,7 @@ func mark_dirty() -> void:
 func update():
 	height_img = height.get_image()
 	val_img = val.get_image()
+	map_version += 1
 	_dirty = false
 
 func _walkable(h: float):

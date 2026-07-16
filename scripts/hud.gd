@@ -163,9 +163,12 @@ func _on_settings_button_pressed():
 @onready var flag_cant_build: Label = _flags_root.get_node("CantBuildFlag")
 @onready var flag_no_trees: Label = _flags_root.get_node("NoTreesFlag")
 @onready var flag_cant_farm: Label = _flags_root.get_node("CantFarmFlag")
+@onready var flag_no_space: Label = _flags_root.get_node("NoSpaceFlag")
 
 @onready var wood_value: Label = %WoodValue
 @onready var food_value: Label = %FoodValue
+@onready var stone_value: Label = %StoneValue
+@onready var animal_value: Label = %AnimalValue
 
 func _process(delta: float) -> void:
 	_update_island_stats()
@@ -194,6 +197,8 @@ func _update_island_stats() -> void:
 
 	wood_value.text = str(Game.total_wood)
 	food_value.text = str(roundi(Game.food))
+	stone_value.text = str(roundi(Game.rock))
+	animal_value.text = str(Game.animals) # placeholder until livestock exist
 
 	var starving := Game.food <= 0.0 and Game.population > 0
 	flag_starving.visible = starving
@@ -203,6 +208,7 @@ func _update_island_stats() -> void:
 	flag_building.visible = not Game.cant_build() and Game.needs_housing()
 	flag_no_trees.visible = Game.out_of_resources()
 	flag_cant_farm.visible = Game.cant_farm()
+	flag_no_space.visible = Game.no_build_space()
 func _on_quit_pressed() -> void:
 	get_tree().quit()
 

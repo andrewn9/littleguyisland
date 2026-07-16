@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d7shnev8b3sh"
-path="res://.godot/imported/sickhouse1.png-0842e4012026ba94dea6e4d54938d483.ctex"
+uid="uid://cl2e66k35fdeq"
+path="res://.godot/imported/stables.png-3f911b5d8fa2711aadcccbc217746489.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/props/house/sickhouse1.png"
-dest_files=["res://.godot/imported/sickhouse1.png-0842e4012026ba94dea6e4d54938d483.ctex"]
+source_file="res://sprites/props/farm_buildings/stables.png"
+dest_files=["res://.godot/imported/stables.png-3f911b5d8fa2711aadcccbc217746489.ctex"]
 
 [params]
 
