@@ -213,6 +213,20 @@ func _physics_process(_delta: float):
 
 func _decide():
 	_release_claim()  # drop any tree/crop claim from a previous plan
+
+	if _height_at(pos) > MapData.NAV_MOUNTAIN_LEVEL:
+		var land = MapData._nearest_land(Vector2i(pos.round()))
+		var dest := Vector2(land) if land != null else _downhill_step()
+		goal = Goal.ROAM
+		_at_home = false
+		visible = true
+		_target_entity = null
+		target_pos = dest
+		_path = PackedVector2Array([target_pos])
+		_path_i = 0
+		state = FolkState.WALKING
+		return
+
 	goal = _choose_goal()
 
 	if goal == Goal.GO_HOME and is_instance_valid(home) \
@@ -251,6 +265,16 @@ func _decide():
 				_rest()
 		Goal.ROAM:
 			_roam()
+
+func _downhill_step() -> Vector2:
+	var best := pos
+	var best_h = _height_at(pos)
+	for i in 8:
+		var p = pos + Vector2.from_angle(i * PI / 4.0) * 3.0
+		if _on_map(p) and _height_at(p) < best_h:
+			best_h = _height_at(p)
+			best = p
+	return best if best != pos else pos + Vector2.from_angle(randf() * TAU) * 3.0
 
 func _go_to(dest: Vector2):
 	if MapData.clear_path(pos, dest): # straight line

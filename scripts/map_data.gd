@@ -14,7 +14,7 @@ var GRASS_KEY: Color = Color.from_rgba8(85, 130, 0, 255)
 var MOUNTAIN_KEY: Color = Color.GRAY
 
 const NAV_WATER_LEVEL := 0.05
-const NAV_MOUNTAIN_LEVEL := 0.10
+const NAV_MOUNTAIN_LEVEL := 0.50
 
 const MOUNTAIN_WEIGHT := 9999.0
 const SWIM_WEIGHT := 10.0
@@ -39,12 +39,19 @@ func _make_layer(fill: Color) -> DrawableTexture2D:
 		DrawableTexture2D.DRAWABLE_FORMAT_RGBA8, fill)
 	return tex
 
-func _process(delta):
-	update()
+var _dirty := true
+
+func _process(_delta):
+	if _dirty:
+		update()
+
+func mark_dirty() -> void:
+	_dirty = true
 
 func update():
 	height_img = height.get_image()
 	val_img = val.get_image()
+	_dirty = false
 
 func _walkable(h: float):
 	return h >= NAV_WATER_LEVEL and h <= NAV_MOUNTAIN_LEVEL

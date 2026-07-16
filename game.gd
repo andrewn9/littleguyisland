@@ -97,24 +97,20 @@ func _physics_process(delta: float) -> void:
 	water_mat.set_shader_parameter("time_scale", time_scale if not paused else 0)
 
 func _refresh_stats() -> void:
-	population = 0
+	var folks := get_tree().get_nodes_in_group("folk")
+	population = folks.size()
 	total_wood = 0
-	house_capacity = 0
-	home_count = 0
-	farm_count = 0
-	tree_count = 0
 	var happy_sum := 0.0
-	for e in model.entity_gen.get_children():
-		if e is Folk:
-			population += 1
-			total_wood += e.carried_wood
-			happy_sum += e.happiness
-		elif e is Entity and e.type == EntityType.HOUSING:
-			house_capacity += e.capacity
-			home_count += 1
-		elif e is Entity and e.type == EntityType.FARM:
-			farm_count += 1
-		elif e is Entity and e.type == EntityType.TREE:
-			tree_count += 1
-	MapData._scan_farmland()
+	for f in folks:
+		total_wood += f.carried_wood
+		happy_sum += f.happiness
 	avg_happiness = happy_sum / population if population > 0 else 0.0
+
+	var homes := get_tree().get_nodes_in_group("homes")
+	home_count = homes.size()
+	house_capacity = 0
+	for h in homes:
+		house_capacity += h.capacity
+
+	farm_count = get_tree().get_nodes_in_group("farms").size()
+	tree_count = get_tree().get_nodes_in_group("trees").size()
