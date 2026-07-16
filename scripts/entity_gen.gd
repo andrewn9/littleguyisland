@@ -44,6 +44,8 @@ var hair_textures: Array[Texture2D]
 
 var prop_materials: Dictionary[int, StandardMaterial3D] = {}
 
+var prop_batch: PropBatch
+
 func load_textures(path: StringName) -> Array[Texture2D]:
 	var textures: Array[Texture2D] = []
 
@@ -147,6 +149,10 @@ func _ready():
 
 	MapData.update()
 
+	prop_batch = PropBatch.new()
+	prop_batch.name = "PropBatch"
+	add_child(prop_batch)
+
 	plains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 	mountains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 
@@ -168,6 +174,21 @@ func spawn_static_prop(pos: Vector2, textures: Array[Texture2D], min_scale: floa
 	ent.set_prop_mat(mat)
 	add_child(ent)
 	return ent
+
+func _add_decor(p: Vector2, textures: Array[Texture2D]) -> void:
+	if textures.is_empty():
+		return
+	rng.seed = hash(str(p.x) + str(p.y))
+	var texture = textures[rng.randi_range(0, textures.size() - 1)]
+	var flipped := rng.randf() < 0.5
+	var s := rng.randf_range(1.0, 1.4) * texture.get_width() / float(pixel_size)
+	prop_batch.add_decor(texture, flipped, p, s)
+
+func _layer(ent: Node3D, group: String) -> void:
+	ent.add_to_group(group)
+	if ent is Entity:
+		Game.note_spawn(group, (ent as Entity).pos)
+	Game.fade_new(ent, group)
 
 func plains(x1: int, y1: int, x2: int, y2: int):
 	var height_map = MapData.height_img
@@ -208,25 +229,11 @@ func plains(x1: int, y1: int, x2: int, y2: int):
 					)
 					ent.name = "Tree"
 					ent.type = Game.EntityType.TREE
-					ent.add_to_group("trees")
+					_layer(ent, "trees")
 				elif random > 43:
-					ent = spawn_static_prop(
-						Vector2(x, y),
-						bush_textures,
-						1.0,
-						1.4
-					)
-					ent.name = "Bush"
-					ent.type = Game.EntityType.DECORATIVE
+					_add_decor(Vector2(x, y), bush_textures)
 				elif random > 30:
-					ent = spawn_static_prop(
-						Vector2(x, y),
-						grass_textures,
-						1.0,
-						1.4
-					)
-					ent.name = "Grass"
-					ent.type = Game.EntityType.DECORATIVE
+					_add_decor(Vector2(x, y), grass_textures)
 				
 
 func mountains(x1: int, y1: int, x2: int, y2: int):
@@ -265,7 +272,7 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 				if rock:
 					rock.name = "Rock"
 					rock.type = Game.EntityType.ROCK
-					rock.add_to_group("rocks")
+					_layer(rock, "rocks")
 
 				if elevation > 0.7:
 					if height_map.get_pixel(max(x - 1, 0), y).r > elevation or height_map.get_pixel(max(x + 1, MapData.RESOLUTION - 1), y).r > elevation or height_map.get_pixel(x, max(y - 1, 0)).r > elevation or height_map.get_pixel(x, max(y + 1, MapData.RESOLUTION - 1)).r > elevation:
@@ -280,6 +287,7 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 					cloud.scale *= rng.randf_range(0.3, 1.0)
 
 					add_child(cloud)
+					_layer(cloud, "clouds")
 
 
 func _is_built(t: Game.EntityType) -> bool:
@@ -297,6 +305,8 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 				child.queue_free()  # regrow natural props, keep what the folk built
 			elif child is GPUParticles3D:
 				child.queue_free()
+
+	prop_batch.clear_region(x1, y1, x2, y2) # plains() re-adds the decor below
 
 	plains(x1, y1, x2, y2)
 	mountains(x1, y1, x2, y2)
@@ -364,7 +374,7 @@ func spawn_home(p: Vector2, capacity := 3) -> Entity:
 		return null
 	ent.name = "Home"
 	ent.type = Game.EntityType.HOUSING
-	ent.add_to_group("homes")
+	_layer(ent, "homes")
 	ent.capacity = capacity
 	Game.house_capacity += capacity  # reflect at once so the build cap is tight
 	return ent
@@ -377,7 +387,7 @@ func spawn_well(p: Vector2) -> Entity:
 		return null
 	ent.name = "Well"
 	ent.type = Game.EntityType.WELL
-	ent.add_to_group("wells")
+	_layer(ent, "wells")
 	return ent
 
 func spawn_farm_building(p: Vector2) -> Entity:
@@ -386,7 +396,7 @@ func spawn_farm_building(p: Vector2) -> Entity:
 		return null
 	ent.name = "FarmBuilding"
 	ent.type = Game.EntityType.FARM_BUILDING
-	ent.add_to_group("farm_buildings")
+	_layer(ent, "farm_buildings")
 	return ent
 
 func farm_is_ripe(f: Entity):
@@ -410,7 +420,7 @@ func spawn_farm(p: Vector2):
 	ent.set_prop_mat(get_prop_material(farm_textures[0]))
 
 	add_child(ent)
-	ent.add_to_group("farms")
+	_layer(ent, "farms")
 	_farms.append(ent)
 	Game.farm_count += 1  # reflect at once so the passive-farm cap is tight
 
@@ -457,7 +467,7 @@ func spawn_little_guy(x: int, y: int, birth_home: Entity = null):
 	(ent.get_node("Pivot/Sprite/SubViewport/hair") as TextureRect).modulate = hair_colors.sample(randf())
 
 	add_child(ent)
-	ent.add_to_group("folk")
+	_layer(ent, "folk")
 	ent.name = folk_name
 
 	Hud.push_notification("[i]" + folk_name + " has joined the game [/i]")

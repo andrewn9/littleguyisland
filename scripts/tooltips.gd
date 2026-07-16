@@ -28,7 +28,7 @@ func _ready() -> void:
 	_panel.add_theme_stylebox_override("panel", sb)
 
 	_label = Label.new()
-	_label.add_theme_font_size_override("font_size", 16)
+	_label.add_theme_font_size_override("font_size", 12)
 	_panel.add_child(_label)
 	_layer.add_child(_panel)
 

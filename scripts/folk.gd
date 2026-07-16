@@ -64,7 +64,7 @@ var hungry_roam_radius := 18.0 # when hungry, stay this close to home
 var farm_village_clearance := 14.0
 
 var home_group_radius := 70.0 # how far a homeless folk looks to join a home
-var home_spacing := Vector2(1.0, 6.0) # how close new homes cluster
+var home_spacing := Vector2(6.0, 14.0)
 var new_village_dist := Vector2(55.0, 130.0) # how far out a settler looks
 var new_village_clearance := 40.0 # dist from other homes
 var night_home_range := 30.0
@@ -73,7 +73,7 @@ var neighbour_home_radius := 10.0 # I got x neighbors -> happy
 
 var birth_chance := 0.9 # chance a prosperous home makes a child on a night
 var adulthood_age := 3
-var child_scale := 0.25
+var child_scale := 0.5
 var breed_radius := 30.0
 
 @export var viewport: SubViewport
@@ -195,7 +195,9 @@ func _unhandled_input(event):
 			and event.button_mask & MOUSE_BUTTON_MASK_LEFT):
 		return
 
-	var camera = get_viewport().get_camera_3d() as CameraController
+	var camera := get_viewport().get_camera_3d()
+	if camera == null:
+		return
 	var c_min = camera.unproject_position(global_position + Vector3(0, 14, 0))
 	var c_max = camera.unproject_position(global_position)
 	var h = c_max.y - c_min.y
@@ -340,7 +342,8 @@ func _want_farm_building() -> Goal:
 	return Goal.GATHER if _pending_tree else Goal.ROAM
 
 func _build_or_gather() -> Goal:
-	if not Game.needs_housing():
+	
+	if not Game.needs_housing() or Game.no_build_space():
 		return Goal.ROAM
 	if carried_wood < wood_to_build:
 		_share_wood()
@@ -632,18 +635,14 @@ func _share(prop: StringName, target: int) -> void:
 			need -= give
 
 func _pick_build_spot() -> Vector2:
-	if adventurousness > 0.5 and randf() < adventurousness: # diversify
-		var frontier := _pick_frontier_spot()
-		if frontier.is_finite():
-			return frontier
-
-	var nearest := _find_nearest(Game.EntityType.HOUSING, 120.0)
-	var anchor: Vector2 = nearest.pos if nearest else pos
-	var spot := _find_spot(anchor, home_spacing.x, home_spacing.y, 16,
-			func(p: Vector2): return _house_spot_ok(p) \
-					and _nearest_dist("homes", p) > 5.0)
-	if spot.is_finite():
-		return spot
+	if not (adventurousness > 0.5 and randf() < adventurousness):
+		var nearest := _find_nearest(Game.EntityType.HOUSING, 120.0)
+		var anchor: Vector2 = nearest.pos if nearest else pos
+		var spot := _find_spot(anchor, home_spacing.x, home_spacing.y, 16,
+				func(p: Vector2): return _house_spot_ok(p) \
+						and _nearest_dist("homes", p) > 5.0)
+		if spot.is_finite():
+			return spot
 	return _pick_frontier_spot()
 
 func _pick_frontier_spot() -> Vector2:
@@ -716,10 +715,7 @@ func _find_farm_building_spot() -> Vector2:
 					and _nearest_dist("homes", p) > farm_village_clearance)
 
 func _farm_too_close(p: Vector2, r: float) -> bool:
-	for f in _group("farms"):
-		if p.distance_to(f.pos) < r:
-			return true
-	return false
+	return _nearest_dist("farms", p) < r
 
 
 func _group(name: String) -> Array:
@@ -791,17 +787,10 @@ func _count_nearby_homes(radius: float) -> int:
 	return _count_near("homes", radius, func(h): return h != home)
 
 func _nearest_dist(group: String, p: Vector2) -> float:
-	var d := 9999.0
-	for e in _group(group):
-		d = minf(d, p.distance_to(e.pos))
-	return d
+	return Game.nearest_dist(group, p)
 
 func _count_in_radius(group: String, center: Vector2, radius: float) -> int:
-	var c := 0
-	for e in _group(group):
-		if center.distance_to(e.pos) < radius:
-			c += 1
-	return c
+	return Game.count_in_radius(group, center, radius)
 
 func _flock_center() -> Vector2:
 	var sum := Vector2.ZERO

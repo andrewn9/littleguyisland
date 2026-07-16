@@ -1,7 +1,7 @@
 [gd_resource type="Theme" format=3 uid="uid://288gq0xrorpp"]
 
-[ext_resource type="FontFile" uid="uid://c44gviuwnhqpv" path="res://ui/webpixel-bitmap.regular.otf" id="1_56gqf"]
+[ext_resource type="FontFile" uid="uid://bc62mk63rr4vb" path="res://ui/Comic Sans MS.ttf" id="1_56gqf"]
 
 [resource]
 default_font = ExtResource("1_56gqf")
-default_font_size = 34
+default_font_size = 12

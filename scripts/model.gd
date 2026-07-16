@@ -219,6 +219,7 @@ func _unhandled_input(event):
 			entity_gen.generate(min_x, min_y, max_x, max_y)
 			map_collision.update()
 			MapData.rebuild_nav()
+			Game.build_fail_streak = 0 # new ground: let folk look for room again
 
 			min_stroke = null
 			max_stroke = null

@@ -51,6 +51,9 @@ var birth_happiness := 0.5
 
 signal day_changed
 
+func _ready() -> void:
+	day_changed.connect(func(): build_fail_streak = 0)
+
 var _stats_timer := 0.0
 func is_night():
 	return day_fraction < 0.25 or day_fraction > 0.75
@@ -81,6 +84,81 @@ func prosperous():
 			and food >= population * food_per_person * birth_food_ratio \
 			and avg_happiness >= birth_happiness \
 			and not overcrowded()
+
+var _pos_cache := {} # each group is a packed vector2 array for speed
+
+func positions(group: String) -> PackedVector2Array:
+	if not _pos_cache.has(group):
+		_rebuild_positions(group)
+	return _pos_cache[group]
+
+func _rebuild_positions(group: String) -> void:
+	var arr := PackedVector2Array()
+	for e in get_tree().get_nodes_in_group(group):
+		arr.append(e.pos)
+	_pos_cache[group] = arr
+
+func note_spawn(group: String, p: Vector2) -> void:
+	if _pos_cache.has(group):
+		_pos_cache[group].append(p)
+
+func nearest_dist(group: String, p: Vector2) -> float:
+	var d := 9999.0
+	for q in positions(group):
+		d = minf(d, p.distance_to(q))
+	return d
+
+func count_in_radius(group: String, center: Vector2, radius: float) -> int:
+	var c := 0
+	for q in positions(group):
+		if center.distance_to(q) < radius:
+			c += 1
+	return c
+const LAYER_FADE := 0.75
+const LAYER_GROUPS := {
+	"nature": ["trees", "rocks", "clouds"],
+	"buildings": ["homes", "farms", "farm_buildings", "wells"],
+	"folk": ["folk"],
+}
+
+var layer_opaque := {}
+
+func layer_is_opaque(key: String) -> bool:
+	return layer_opaque.get(key, true)
+
+func set_layer_opaque(key: String, opaque: bool) -> void:
+	layer_opaque[key] = opaque
+	_apply_layer(key)
+
+func layer_of(group: String) -> String:
+	for key in LAYER_GROUPS:
+		if group in LAYER_GROUPS[key]:
+			return key
+	return ""
+
+func _apply_layer(key: String) -> void:
+	if not model:
+		return
+	var amount := 0.0 if layer_is_opaque(key) else LAYER_FADE
+	if key == "island":
+		_fade(model.geometry, amount)
+		return
+	if key == "nature":
+		_fade(model.entity_gen.prop_batch, amount)
+	for g in LAYER_GROUPS.get(key, []):
+		for e in get_tree().get_nodes_in_group(g):
+			_fade(e, amount)
+
+func fade_new(n: Node, group: String) -> void:
+	var key := layer_of(group)
+	if key != "" and not layer_is_opaque(key):
+		_fade(n, LAYER_FADE)
+
+func _fade(n: Node, amount: float) -> void:
+	if n is GeometryInstance3D:
+		n.transparency = amount
+	for c in n.get_children():
+		_fade(c, amount)
 
 func resume():
 	paused = false
@@ -132,6 +210,9 @@ func _refresh_stats() -> void:
 	house_capacity = 0
 	for h in homes:
 		house_capacity += h.capacity
+
+	for g in _pos_cache: # prune anything freed since the last tick
+		_rebuild_positions(g)
 
 	farm_count = get_tree().get_nodes_in_group("farms").size()
 	tree_count = get_tree().get_nodes_in_group("trees").size()

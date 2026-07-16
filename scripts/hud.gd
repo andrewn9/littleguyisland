@@ -56,6 +56,29 @@ func _ready() -> void:
 
 	Input.set_custom_mouse_cursor(cursor_arrow)
 
+	_build_layers_menu()
+	_make_profile_draggable()
+	brush_size.visible = _drawing_tool()
+
+const LAYERS := {
+	"island": "terrain geometry",
+	"nature": "trees, rocks, grass, bushes and clouds",
+	"buildings": "homes, farms, farmsteads and wells",
+	"folk": "the little guys",
+}
+
+@onready var layers_list: VBoxContainer = %LayersList
+
+func _build_layers_menu() -> void:
+	for key in LAYERS:
+		var cb := CheckButton.new()
+		cb.text = key
+		cb.button_pressed = true # ticked = solid
+		cb.add_theme_font_size_override("font_size", 15)
+		cb.tooltip_text = "%s\n(untick to make it see-through)" % LAYERS[key]
+		cb.toggled.connect(func(on: bool): Game.set_layer_opaque(key, on))
+		layers_list.add_child(cb)
+
 func _on_time_slider_changed(value: float) -> void:
 	Game.time_scale = pow(2.0, value - 1.0)
 	_update_time_label()
@@ -64,8 +87,15 @@ func _update_time_label() -> void:
 	time_label.text = " speed: %sx  " % str(Game.time_scale)
 	time_slider.tooltip_text = "simulation speed: %sx" % str(Game.time_scale)
 
+@onready var brush_size: VBoxContainer = %BrushSize
+@onready var brush_size_label: Label = %BrushSizeLabel
+
 func _on_size_slider_changed(value: float) -> void:
+	brush_size_label.text = "brush size: %.2fx" % value
 	size_slider.tooltip_text = "brush size: %.2fx" % value
+
+func _drawing_tool():
+	return active.name != "Click"
 
 func _on_play_resume() -> void:
 	if Game.paused:
@@ -112,6 +142,8 @@ func toggle(thing: Control):
 	tween.tween_property(thing, "modulate", Color.WHITE, 0.025)
 	tween.tween_property(thing, "offset_transform_scale", Vector2(1.25, 1.25), 0.06)
 
+	brush_size.visible = _drawing_tool()
+
 	match active.name:
 		"Land":
 			_set_tool_cursor(cursor_terrain, Vector2(0, 32))
@@ -154,7 +186,7 @@ func _on_settings_button_pressed():
 @onready var island_pop: Label = $"%IslandStats/VBoxContainer2/HBoxContainer3/PopulationCount"
 @onready var island_happy: ProgressBar = $"%IslandStats/VBoxContainer2/HBoxContainer/HappinessProgressBar"
 @onready var island_homes: Label = $"%IslandStats/VBoxContainer2/HBoxContainer4/HomeCount"
-@onready var island_farms: Label = $"%IslandStats/VBoxContainer2/HBoxContainer6/FarmCount"
+@onready var island_farms: Label = $"%IslandStats/VBoxContainer2/HBoxContainer4/FarmCount"
 @onready var _flags_root := $"%IslandStats/VBoxContainer2/HBoxContainer5"
 @onready var flag_starving: Label = _flags_root.get_node("StarvingFlag")
 @onready var flag_hungry: Label = _flags_root.get_node("HungryFlag")
@@ -221,9 +253,48 @@ func _on_quit_pressed() -> void:
 var focused_folk: Folk
 var tracking_folk := false
 
+var _profile_pos := Vector2.INF
+var _dragging_profile := false
+var _drag_grab := Vector2.ZERO
+
+var _profile_anchored := false
+
+func _make_profile_draggable() -> void:
+	profile.gui_input.connect(_on_profile_gui_input)
+	for n in _descendants(profile):
+		if n is Label or n is TextureRect or n is Container:
+			n.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+func _descendants(root: Node) -> Array:
+	var out := []
+	for c in root.get_children():
+		out.append(c)
+		out.append_array(_descendants(c))
+	return out
+
+func _on_profile_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		_dragging_profile = event.pressed
+		if event.pressed:
+			_drag_grab = profile.get_global_mouse_position() - profile.global_position
+	elif event is InputEventMouseMotion and _dragging_profile:
+		_place_profile(profile.get_global_mouse_position() - _drag_grab)
+
+func _place_profile(p: Vector2) -> void:
+	var vp := get_viewport_rect().size
+	p.x = clampf(p.x, 0.0, maxf(0.0, vp.x - profile.size.x))
+	p.y = clampf(p.y, 0.0, maxf(0.0, vp.y - profile.size.y))
+	profile.global_position = p
+	_profile_pos = p
+
 func show_profile(folk: Folk):
 	profile.visible = true
 	focused_folk = folk
+
+	if not _profile_anchored:
+		profile.set_anchors_preset(Control.PRESET_TOP_LEFT, true)
+		_profile_anchored = true
+	_place_profile(_profile_pos if _profile_pos.is_finite() else profile.global_position)
 
 	profile.get_node("VBoxContainer/HBoxContainer/Picture/Body").texture = folk.get_node("Pivot/Sprite/SubViewport/body").texture
 	profile.get_node("VBoxContainer/HBoxContainer/Picture/Shirt").texture = folk.get_node("Pivot/Sprite/SubViewport/shirt").texture

@@ -16,7 +16,6 @@ var MOUNTAIN_KEY: Color = Color.GRAY
 const NAV_WATER_LEVEL := 0.05
 const NAV_MOUNTAIN_LEVEL := 0.50
 
-const MOUNTAIN_WEIGHT := 9999.0
 const SWIM_WEIGHT := 10.0
 
 const MAX_SWIM := 18
@@ -53,6 +52,7 @@ func update():
 	height_img = height.get_image()
 	val_img = val.get_image()
 	map_version += 1
+	_land_cache.clear()
 	_dirty = false
 
 func _walkable(h: float):
@@ -73,7 +73,7 @@ func rebuild_nav() -> void:
 		for x in RESOLUTION:
 			var h := height_img.get_pixel(x, y).r
 			var p := Vector2i(x, y)
-			astar.set_point_weight_scale(p, MOUNTAIN_WEIGHT if h < NAV_MOUNTAIN_LEVEL else 1.0)
+			astar.set_point_solid(p, h > NAV_MOUNTAIN_LEVEL)
 			astar.set_point_weight_scale(p, SWIM_WEIGHT if h < NAV_WATER_LEVEL else 1.0)
 	_scan_farmland()
 
@@ -104,8 +104,17 @@ func _has_water_neighbor(x: int, y: int) -> bool:
 				return true
 	return false
 
+var _land_cache := {}
+
 func _nearest_land(p: Vector2i):
 	p = p.clamp(Vector2i.ZERO, Vector2i.ONE * (RESOLUTION - 1))
+	if _land_cache.has(p):
+		return _land_cache[p]
+	var found = _search_land(p)
+	_land_cache[p] = found
+	return found
+
+func _search_land(p: Vector2i):
 	if _walkable(height_img.get_pixelv(p).r):
 		return p
 	for r in range(1, 12):
@@ -135,8 +144,10 @@ func find_path(from: Vector2, to: Vector2):
 	if astar == null:
 		return PackedVector2Array()
 	var a = _nearest_land(Vector2i(from.round()))
+	if a == null:
+		return PackedVector2Array() # standing somewhere with no way off
 	var b = _nearest_land(Vector2i(to.round()))
-	if a == null or b == null:
+	if b == null:
 		return PackedVector2Array()
 	var path = astar.get_point_path(a, b)
 	if _longest_water_run(path) > MAX_SWIM:

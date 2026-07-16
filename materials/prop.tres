@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://c1octdf80cn3k" path="res://testing/grangler.png" id="1_08a0c"]
 
 [resource]
-transparency = 1
+transparency = 4
 shading_mode = 2
 albedo_texture = ExtResource("1_08a0c")
 billboard_mode = 2
