@@ -46,6 +46,7 @@ func _process(_delta):
 	if _dirty:
 		update()
 		changed = true
+		get_tree().call_group(Entity.TERRAIN_PINNED, "update_world_pos")
 
 func mark_dirty() -> void:
 	_dirty = true

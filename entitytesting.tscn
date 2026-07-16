@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://blgvw64liodr1"]
 
-[ext_resource type="Script" uid="uid://bjyydtgntx0kv" path="res://game.gd" id="1_qk1l1"]
+[ext_resource type="Script" uid="uid://bjyydtgntx0kv" path="res://scripts/game.gd" id="1_qk1l1"]
 [ext_resource type="Shader" uid="uid://b5caf5n8vdpxi" path="res://shaders/better_water.gdshader" id="2_keahw"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tevtn"]

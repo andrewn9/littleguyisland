@@ -101,10 +101,10 @@ colors = PackedColorArray(0, 0, 0, 1, 0.73, 0.30076, 0.116800025, 1, 0.91, 0.639
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yltck"]
 shader = ExtResource("5_7jktm")
-shader_parameter/weight = 0.042
-shader_parameter/line_thickness = 0.478000022705
-shader_parameter/color = Color(0.009155408, 0.01144718, 0.1174045, 1)
-shader_parameter/opacity = 1.0
+shader_parameter/weight = 0.017
+shader_parameter/line_thickness = 0.4010000190475
+shader_parameter/color = Color(0.00016593076, 0.1341582, 0.487368, 1)
+shader_parameter/opacity = 0.5999999865888
 shader_parameter/scale = Vector2(200, 200)
 shader_parameter/strength = 0.2
 shader_parameter/fps = 2.0
