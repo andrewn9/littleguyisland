@@ -156,6 +156,7 @@ func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: 
 			tex, color, 0, _add_mat if additive else null
 		)
 
+	MapData.mark_dirty()
 
 	if min_stroke:
 		min_stroke = min_stroke.min(Vector2i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5)))
@@ -214,8 +215,10 @@ func _unhandled_input(event):
 				draw_debug.position = Vector3((min_x + max_x) * 0.5, 10.0, (min_y + max_y) * 0.5) * MapData.WORLD_SIZE / MapData.RESOLUTION - Vector3(MapData.WORLD_SIZE / 2, 0, MapData.WORLD_SIZE / 2)
 				draw_debug.scale = Vector3(max_x - min_x, 1.0, max_y - min_y) * MapData.WORLD_SIZE / MapData.RESOLUTION
 
+			MapData.update()
 			entity_gen.generate(min_x, min_y, max_x, max_y)
 			map_collision.update()
+			MapData.rebuild_nav()
 
 			min_stroke = null
 			max_stroke = null

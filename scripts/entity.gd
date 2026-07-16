@@ -58,9 +58,23 @@ func update_height():
 
 	position = Vector3(wx, wy, wz)
 
+var _positioned := false
+
 func _process(delta):
+	if is_static:
+		if type == Game.EntityType.HOUSING:
+			update_height()
+		elif not _positioned:
+			update_height()
+			_positioned = true
+		return
+
 	var dt: float = Game.scaled_delta
-	if not is_static:
-		if dt > 0.0:
-			pos += (target_pos - pos).limit_length(speed * dt)
-	update_height()
+	var moved := false
+	if dt > 0.0:
+		var prev := pos
+		pos += (target_pos - pos).limit_length(speed * dt)
+		moved = not pos.is_equal_approx(prev)
+	if moved or not _positioned:
+		update_height()
+		_positioned = true

@@ -202,6 +202,7 @@ func plains(x1: int, y1: int, x2: int, y2: int):
 					)
 					ent.name = "Tree"
 					ent.type = Game.EntityType.TREE
+					ent.add_to_group("trees")
 				elif random > 43:
 					ent = spawn_static_prop(
 						Vector2(x, y),
@@ -349,6 +350,7 @@ func spawn_home(p: Vector2, capacity := 3) -> Entity:
 		return null
 	ent.name = "Home"
 	ent.type = Game.EntityType.HOUSING
+	ent.add_to_group("homes")
 	ent.capacity = capacity
 	Game.house_capacity += capacity  # reflect at once so the build cap is tight
 	return ent
@@ -374,12 +376,15 @@ func spawn_farm(p: Vector2):
 	ent.set_prop_mat(get_prop_material(farm_textures[0]))
 
 	add_child(ent)
+	ent.add_to_group("farms")
 	_farms.append(ent)
 	Game.farm_count += 1  # reflect at once so the passive-farm cap is tight
 
 	return ent
 
 func _process(_delta: float) -> void:
+	if Game.paused:
+		return
 	var now := Game.day + Game.day_fraction
 	var last := farm_textures.size() - 1
 	var alive = []
@@ -418,6 +423,7 @@ func spawn_little_guy(x: int, y: int, birth_home: Entity = null):
 	(ent.get_node("Pivot/Sprite/SubViewport/hair") as TextureRect).modulate = hair_colors.sample(randf())
 
 	add_child(ent)
+	ent.add_to_group("folk")
 	ent.name = folk_name
 
 	Hud.push_notification("[i]" + folk_name + " has joined the game [/i]")
