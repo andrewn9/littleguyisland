@@ -392,6 +392,8 @@ func _on_track_button_pressed():
 	if focused_folk:
 		tracking_folk = not tracking_folk
 
+func _on_gfx_button_toggled(toggled_on: bool):
+	World.low_gfx = toggled_on
 
 func push_notification(msg: String):
 	var label = NOTIFICATION.instantiate()
