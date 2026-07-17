@@ -54,6 +54,7 @@ stretch_mode = 0
 
 [node name="Label" type="Label" parent="VFlowContainer/VBoxContainer" unique_id=865767862]
 layout_mode = 2
+theme_override_font_sizes/font_size = 8
 text = "little guy island"
 clip_text = true
 text_overrun_behavior = 3
