@@ -3,8 +3,15 @@
 [ext_resource type="Texture2D" uid="uid://c1octdf80cn3k" path="res://testing/grangler.png" id="1_08a0c"]
 
 [resource]
-transparency = 4
+transparency = 3
+alpha_hash_scale = 1.0
+alpha_antialiasing_mode = 0
 shading_mode = 2
+specular_mode = 2
+disable_fog = true
+disable_specular_occlusion = true
 albedo_texture = ExtResource("1_08a0c")
+texture_filter = 0
+texture_repeat = false
 billboard_mode = 2
 billboard_keep_scale = true

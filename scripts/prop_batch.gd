@@ -38,12 +38,12 @@ func _rebuild() -> void:
 		var mmi: MultiMeshInstance3D = _mmis.get(key)
 		if mmi == null:
 			mmi = MultiMeshInstance3D.new()
-			var mm := MultiMesh.new()
-			mm.transform_format = MultiMesh.TRANSFORM_3D
+			var _mm := MultiMesh.new()
+			_mm.transform_format = MultiMesh.TRANSFORM_3D
 			var quad := QuadMesh.new()
 			quad.size = QUAD_SIZE
-			mm.mesh = quad
-			mmi.multimesh = mm
+			_mm.mesh = quad
+			mmi.multimesh = _mm
 			mmi.material_override = get_parent().get_prop_material(rec.tex, rec.flipped)
 			if not Game.layer_is_opaque("nature"):
 				mmi.transparency = Game.LAYER_FADE

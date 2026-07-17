@@ -216,7 +216,7 @@ func plains(x1: int, y1: int, x2: int, y2: int):
 
 			var diff = color - MapData.GRASS_KEY
 
-			if white_val > 0.95 || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.04 && (white_val > 0.8 && white_val * cluster_val > 0.4):
+			if white_val > 0.97 || Vector3(diff.r, diff.g, diff.b).length_squared() < 0.04 && (white_val > 0.8 && white_val * cluster_val > 0.4):
 				rng.seed = hash(str(x) + str(y))
 				var random = rng.randf_range(0, 100)
 				var ent
@@ -290,9 +290,6 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 					_layer(cloud, "clouds")
 
 
-func _is_built(t: Game.EntityType) -> bool:
-	return t == Game.EntityType.HOUSING or t == Game.EntityType.FARM \
-			or t == Game.EntityType.WELL or t == Game.EntityType.FARM_BUILDING
 
 func generate(x1: int, y1: int, x2: int, y2: int):
 	for child: Node3D in get_children():
@@ -301,7 +298,7 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 
 		if x_pos > x1 and y_pos > y1 and x_pos < x2 and y_pos < y2:
 			if child is Entity and (child as Entity).is_static \
-					and not _is_built((child as Entity).type):
+					and not Game.is_built((child as Entity).type):
 				child.queue_free()  # regrow natural props, keep what the folk built
 			elif child is GPUParticles3D:
 				child.queue_free()

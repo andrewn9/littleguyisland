@@ -356,7 +356,7 @@ func _on_track_button_pressed():
 		tracking_folk = not tracking_folk
 
 func push_notification(msg: String):
-	var label = NOTIFICATION.instantiate(0)
+	var label = NOTIFICATION.instantiate()
 
 	label.text = msg
 	notifications.add_child(label)

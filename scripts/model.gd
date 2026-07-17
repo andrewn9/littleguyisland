@@ -106,7 +106,7 @@ func _bake_rotations() -> void:
 func _rotate_tex(src: Image, angle: float) -> ImageTexture:
 	var w := src.get_width()
 	var h := src.get_height()
-	var out := Image.create(w, h, false, Image.FORMAT_RGBA8)
+	var out := Image.create_empty(w, h, false, Image.FORMAT_RGBA8)
 	var cx := w * 0.5
 	var cy := h * 0.5
 	var ca := cos(angle)

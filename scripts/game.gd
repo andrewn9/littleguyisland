@@ -20,10 +20,6 @@ enum EntityType {
 	FARM_BUILDING,
 }
 
-func is_built(t: EntityType) -> bool:
-	return t == EntityType.HOUSING or t == EntityType.FARM \
-			or t == EntityType.WELL or t == EntityType.FARM_BUILDING
-
 var day_fraction := 0.375
 var day := 0  # whole days passed
 
@@ -41,7 +37,6 @@ var well_count := 0
 var farm_building_count := 0
 var homeless := 0
 var build_fail_streak := 0
-
 
 var food_per_person := 4.0 # stockpile buffer target per folk
 var food_consumption := 0.012 # eaten per folk per second
@@ -170,7 +165,7 @@ func resume():
 func pause():
 	paused = true
 
-func _input(event: InputEvent) -> void:
+func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("person"):
 		model.entity_gen.spawn_little_guy(MapData.RESOLUTION/2, MapData.RESOLUTION/2)
 
@@ -178,7 +173,7 @@ func _physics_process(delta: float) -> void:
 	if paused:
 		scaled_delta = 0
 	else:
-		scaled_delta = delta * time_scale
+		scaled_delta = delta * time_scale * 2
 	if not model:
 		return
 
@@ -192,7 +187,7 @@ func _physics_process(delta: float) -> void:
 
 	var water: MeshInstance3D = model.get_parent().get_node("Water")
 	var water_mat: ShaderMaterial = water.get_surface_override_material(0)
-	water_mat.set_shader_parameter("time_scale", time_scale if not paused else 0)
+	water_mat.set_shader_parameter("time_scale", time_scale if not paused else 0.0)
 
 func _refresh_stats() -> void:
 	var folks := get_tree().get_nodes_in_group("folk")

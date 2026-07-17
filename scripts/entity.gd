@@ -30,6 +30,15 @@ func _ready() -> void:
 	else:
 		target_pos = pos
 
+	_setup_processing.call_deferred()
+
+func _setup_processing() -> void:
+	if is_static:
+		add_to_group(TERRAIN_PINNED)
+		set_process(false)
+
+const TERRAIN_PINNED := "terrain_pinned"
+
 func apply_scale(x):
 	$Pivot.scale *= x 
 
@@ -61,7 +70,7 @@ func update_world_pos():
 	var wz := pos.y * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2
 	var wy := _height_from_map()
 
-	if type == Game.EntityType.HOUSING \
+	if Game.is_built(type) \
 			and wy <= MapData.NAV_WATER_LEVEL * MapData.HEIGHT_SCALE:
 		queue_free()
 		return
@@ -71,9 +80,6 @@ func update_world_pos():
 func _process(_delta):
 	if MapData.changed:
 		update_world_pos()
-
-	if is_static:
-		return
 
 	var dt: float = Game.scaled_delta
 	if dt > 0.0 and not pos.is_equal_approx(target_pos):

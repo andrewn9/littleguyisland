@@ -15,10 +15,10 @@ const STATUS_TEXT := {
 var wander_radius := 30.0
 var idle_time_range := Vector2(0.20, 0.5)
 var water_level := 0.05
-var walk_speed := 2.1
-var swim_speed := 0.55
+var walk_speed := 5.1
+var swim_speed := 2.55
 var climb_slowdown := 14.0
-var meander := 1.4 # width of wander cone
+var meander := 2.4 # width of wander cone
 var roam_rest_chance := 0.5
 var elevation_attachment := 6.0
 
@@ -109,9 +109,6 @@ var _farm_building_spot := Vector2.INF
 
 var _path: PackedVector2Array = [] # remaining waypoints toward the destination
 var _path_i := 0
-
-@onready var _sprite = $Pivot/Sprite
-
 
 func _ready():
 	super()
@@ -718,8 +715,8 @@ func _farm_too_close(p: Vector2, r: float) -> bool:
 	return _nearest_dist("farms", p) < r
 
 
-func _group(name: String) -> Array:
-	return get_tree().get_nodes_in_group(name)
+func _group(_name: String) -> Array:
+	return get_tree().get_nodes_in_group(_name)
 
 func _group_of(t: Game.EntityType) -> String:
 	match t:
