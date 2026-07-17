@@ -5,6 +5,16 @@
 [ext_resource type="Texture2D" uid="uid://ci7v6wvi1q7ok" path="res://ui/bg - Copy.png" id="1_mae5d"]
 [ext_resource type="Texture2D" uid="uid://ikh4qw7n0wv5" path="res://ui/ui/bars + box/box.png" id="2_ouk20"]
 [ext_resource type="Texture2D" uid="uid://b5eay0mlm2f4u" path="res://ui/computa.png" id="2_ytr4m"]
+[ext_resource type="Texture2D" uid="uid://d2aj82u5x4ey3" path="res://ui/logo.png" id="5_l48gv"]
+[ext_resource type="Texture2D" uid="uid://bqi2n86mlcyjs" path="res://ui/tachyon.webp" id="6_kk3ma"]
+[ext_resource type="Texture2D" uid="uid://c082xjjw5jx5r" path="res://ui/ui/paper.png" id="7_nrnbx"]
+[ext_resource type="Texture2D" uid="uid://bnv0s0boheps6" path="res://ui/goodbox.png" id="8_g7jxm"]
+[ext_resource type="AudioStream" uid="uid://bwxkxy1oy5yp8" path="res://sfx/boot.mp3" id="9_nrnbx"]
+[ext_resource type="AudioStream" uid="uid://cbyvghltoleav" path="res://sfx/PS2 Startup Sound.mp3" id="10_h1wq0"]
+[ext_resource type="AudioStream" uid="uid://cpbkgif2v063o" path="res://sfx/Computer Fan Ambient Sounds.mp3" id="11_dwrpx"]
+[ext_resource type="Texture2D" uid="uid://bcu3kmseq6sc6" path="res://ui/ui/window and box/miniscreen.png" id="13_jspdm"]
+[ext_resource type="AudioStream" uid="uid://056tjrsfvs83" path="res://sfx/click.ogg" id="14_jspdm"]
+[ext_resource type="AudioStream" uid="uid://bewvq1dg3cjva" path="res://sfx/tanweraman-horse-neigh-261131.mp3" id="15_oxnod"]
 
 [sub_resource type="Gradient" id="Gradient_mae5d"]
 offsets = PackedFloat32Array(0, 0.4979424, 0.8436214)
@@ -54,10 +64,10 @@ shader = SubResource("Shader_nso1x")
 shader_parameter/scanline_color = Color(0, 0, 0, 1)
 shader_parameter/flicker_color = Color(0, 0, 0, 1)
 shader_parameter/scanlines_count = 10.0
-shader_parameter/scanlines_intensity = 0.39
+shader_parameter/scanlines_intensity = 0.165
 shader_parameter/flicker_speed = 20.78
 shader_parameter/flicker_intensity = 0.006000000285
-shader_parameter/color_offset = 0.16
+shader_parameter/color_offset = 1.5
 shader_parameter/blur = 0.0
 
 [sub_resource type="Animation" id="Animation_mae5d"]
@@ -158,6 +168,126 @@ tracks/7/keys = {
 "update": 0,
 "values": [0.0]
 }
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("RetroFilter:material:shader_parameter/color_offset")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("RetroFilter:material:shader_parameter/scanlines_count")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [10.0]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Apps/readme:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Apps/credits:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Apps/horse:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Apps/sim:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("boot:playing")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("boot2:playing")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("boot2:volume_db")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-10.0]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("boot3:volume_db")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-10.0]
+}
 
 [sub_resource type="Animation" id="Animation_4hy44"]
 resource_name = "boot"
@@ -193,10 +323,10 @@ tracks/2/path = NodePath("Apps:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 5.366667),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [false]
+"values": [false, true]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -205,7 +335,7 @@ tracks/3/path = NodePath("TaskBar:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 4.866667),
+"times": PackedFloat32Array(0, 5.3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -229,7 +359,7 @@ tracks/5/path = NodePath("Screen/TextureRect:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.76666665),
+"times": PackedFloat32Array(0, 1.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -270,12 +400,135 @@ tracks/8/keys = {
 "update": 0,
 "values": [0.0, 26.0, 73.07, 74.435, 100.0]
 }
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("RetroFilter:material:shader_parameter/color_offset")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 1.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [10.0, 0.0]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("RetroFilter:material:shader_parameter/scanlines_count")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 0.93333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [13.64, 10.0]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = false
+tracks/11/path = NodePath("Apps/readme:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 5.9666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Apps/credits:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0, 6.1666665),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Apps/horse:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0, 6.3333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("Apps/sim:visible")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0, 6.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("boot:playing")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0, 0.2, 1.0666666),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("boot2:playing")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0, 1.4667, 7.766667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("boot2:volume_db")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(2, 2.0333333, 3.583078),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-10.0, -10.0, -10.0]
+}
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("boot3:volume_db")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(0, 0.76666665),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-55.0, -10.0]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ytr4m"]
 _data = {
 &"RESET": SubResource("Animation_mae5d"),
 &"boot": SubResource("Animation_4hy44")
 }
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7522t"]
+bg_color = Color(0.95, 0.93575, 0.893, 1)
 
 [node name="Menu" type="Control" unique_id=356684299]
 layout_mode = 3
@@ -337,18 +590,20 @@ anchors_preset = -1
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -40.0
+offset_top = -32.0
 grow_horizontal = 2
 grow_vertical = 0
 texture = SubResource("GradientTexture2D_mae5d")
 expand_mode = 1
 
 [node name="Button" type="Button" parent="TaskBar" unique_id=1601534637]
+custom_maximum_size = Vector2(-1, 32)
 layout_mode = 0
 offset_right = 90.0
 offset_bottom = 40.0
 text = "Start"
 icon = ExtResource("1_lti8b")
+alignment = 0
 expand_icon = true
 
 [node name="Label" type="Label" parent="TaskBar" unique_id=2140276001]
@@ -377,79 +632,90 @@ offset_bottom = 31.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Apps" unique_id=1551236516]
+[node name="readme" type="VBoxContainer" parent="Apps" unique_id=838094509]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="Apps/VBoxContainer" unique_id=1567717777]
-custom_minimum_size = Vector2(40, 40)
+[node name="TextureButton" type="TextureButton" parent="Apps/readme" unique_id=825101654]
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(50, 50)
 layout_mode = 2
-texture_normal = ExtResource("1_lti8b")
+size_flags_horizontal = 4
+texture_normal = ExtResource("7_nrnbx")
 ignore_texture_size = true
-stretch_mode = 0
+stretch_mode = 5
 
-[node name="Label" type="Label" parent="Apps/VBoxContainer" unique_id=865767862]
+[node name="Label" type="Label" parent="Apps/readme" unique_id=799046215]
 layout_mode = 2
-theme_override_font_sizes/font_size = 8
-text = "little guy island"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 21
+text = "README.txt"
 horizontal_alignment = 1
-clip_text = true
-text_overrun_behavior = 3
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="Apps" unique_id=1379080693]
+[node name="credits" type="VBoxContainer" parent="Apps" unique_id=869289882]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="Apps/VBoxContainer2" unique_id=1056945072]
-custom_minimum_size = Vector2(40, 40)
+[node name="TextureButton" type="TextureButton" parent="Apps/credits" unique_id=13632310]
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(50, 50)
 layout_mode = 2
-texture_normal = ExtResource("1_lti8b")
+size_flags_horizontal = 4
+texture_normal = ExtResource("7_nrnbx")
 ignore_texture_size = true
-stretch_mode = 0
+stretch_mode = 5
 
-[node name="Label" type="Label" parent="Apps/VBoxContainer2" unique_id=73279372]
+[node name="LinkButton" type="LinkButton" parent="Apps/credits/TextureButton" unique_id=1791574183]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+uri = "https://auyease.itch.io/little-guy-island"
+
+[node name="Label" type="Label" parent="Apps/credits" unique_id=23955046]
 layout_mode = 2
-theme_override_font_sizes/font_size = 8
-text = "save"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 21
+text = "credits"
 horizontal_alignment = 1
-clip_text = true
-text_overrun_behavior = 3
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="Apps" unique_id=838094509]
-visible = false
+[node name="horse" type="VBoxContainer" parent="Apps" unique_id=1379080693]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="Apps/VBoxContainer3" unique_id=825101654]
-custom_minimum_size = Vector2(40, 40)
+[node name="TextureButton" type="TextureButton" parent="Apps/horse" unique_id=1056945072]
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(50, 50)
 layout_mode = 2
-texture_normal = ExtResource("1_lti8b")
+size_flags_horizontal = 4
+texture_normal = ExtResource("6_kk3ma")
 ignore_texture_size = true
-stretch_mode = 0
+stretch_mode = 5
 
-[node name="Label" type="Label" parent="Apps/VBoxContainer3" unique_id=799046215]
+[node name="Label" type="Label" parent="Apps/horse" unique_id=73279372]
 layout_mode = 2
-theme_override_font_sizes/font_size = 8
-text = "load"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 21
+text = "horse.png"
 horizontal_alignment = 1
-clip_text = true
-text_overrun_behavior = 3
 
-[node name="VBoxContainer4" type="VBoxContainer" parent="Apps" unique_id=869289882]
-visible = false
+[node name="sim" type="VBoxContainer" parent="Apps" unique_id=1551236516]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="Apps/VBoxContainer4" unique_id=13632310]
-custom_minimum_size = Vector2(40, 40)
+[node name="simexe" type="TextureButton" parent="Apps/sim" unique_id=1567717777]
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(50, 50)
 layout_mode = 2
-texture_normal = ExtResource("1_lti8b")
+size_flags_horizontal = 4
+texture_normal = ExtResource("5_l48gv")
 ignore_texture_size = true
-stretch_mode = 0
+stretch_mode = 5
 
-[node name="Label" type="Label" parent="Apps/VBoxContainer4" unique_id=23955046]
+[node name="Label" type="Label" parent="Apps/sim" unique_id=865767862]
 layout_mode = 2
-theme_override_font_sizes/font_size = 8
-text = "recycle bin"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 21
+text = "sim.exe"
 horizontal_alignment = 1
-clip_text = true
-text_overrun_behavior = 3
 
 [node name="StartMenu" type="NinePatchRect" parent="." unique_id=300528188]
 visible = false
@@ -481,6 +747,7 @@ layout_mode = 2
 text = "Log Out"
 
 [node name="SaveModal" type="NinePatchRect" parent="." unique_id=1622184990]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -494,12 +761,12 @@ offset_right = 200.0
 offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_ouk20")
-region_rect = Rect2(0, 0, 316, 316)
-patch_margin_left = 25
-patch_margin_top = 25
-patch_margin_right = 25
-patch_margin_bottom = 25
+texture = ExtResource("8_g7jxm")
+region_rect = Rect2(0, 0, 200, 200)
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 10
 
 [node name="VFlowContainer" type="VFlowContainer" parent="SaveModal" unique_id=1435746051]
 layout_mode = 1
@@ -550,6 +817,7 @@ icon = ExtResource("1_lti8b")
 expand_icon = true
 
 [node name="Modal" type="NinePatchRect" parent="." unique_id=823499308]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -605,7 +873,7 @@ layout_mode = 2
 rounded = true
 show_percentage = false
 
-[node name="RetroFitler" type="ColorRect" parent="." unique_id=849122069]
+[node name="RetroFilter" type="ColorRect" parent="." unique_id=849122069]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_mae5d")
 layout_mode = 1
@@ -618,3 +886,75 @@ mouse_filter = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1629861286]
 libraries/ = SubResource("AnimationLibrary_ytr4m")
+
+[node name="boot" type="AudioStreamPlayer" parent="." unique_id=795285688]
+stream = ExtResource("9_nrnbx")
+volume_db = -0.5
+
+[node name="boot2" type="AudioStreamPlayer" parent="." unique_id=441431430]
+stream = ExtResource("10_h1wq0")
+volume_db = -10.0
+
+[node name="boot3" type="AudioStreamPlayer" parent="." unique_id=1456455270]
+stream = ExtResource("11_dwrpx")
+volume_db = -10.0
+autoplay = true
+parameters/looping = true
+
+[node name="readmepanel" type="Panel" parent="." unique_id=1420357723]
+visible = false
+layout_mode = 0
+offset_right = 235.0
+offset_bottom = 154.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7522t")
+
+[node name="Label" type="Label" parent="readmepanel" unique_id=1309086629]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+offset_left = 14.545
+offset_top = 25.22
+offset_right = 218.0
+offset_bottom = 154.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "how to operate:
+
+1. open sim.exe
+2. create or select a new world
+3. listen to the monkey"
+autowrap_mode = 2
+
+[node name="Panel" type="NinePatchRect" parent="readmepanel" unique_id=762321728]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("13_jspdm")
+region_rect = Rect2(0, 0, 960, 544)
+patch_margin_left = 11
+patch_margin_right = 11
+patch_margin_bottom = 10
+
+[node name="Label2" type="Label" parent="readmepanel" unique_id=86036104]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 18.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 10
+text = "README.txt"
+horizontal_alignment = 1
+
+[node name="ClickSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1337679198]
+stream = ExtResource("14_jspdm")
+max_polyphony = 3
+
+[node name="HorseSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1464277340]
+stream = ExtResource("15_oxnod")
+max_polyphony = 5
+
+[connection signal="pressed" from="Apps/horse/TextureButton" to="." method="_on_texture_button_pressed"]
+[connection signal="pressed" from="Apps/sim/simexe" to="." method="_on_simexe_pressed"]

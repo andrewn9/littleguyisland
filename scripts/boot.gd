@@ -5,7 +5,16 @@ extends Control
 func _ready() -> void:
 	$AnimationPlayer.play("boot")
 
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			$ClickSoundPlayer.play()
+			print("s")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+
+func _on_texture_button_pressed() -> void:
+	$HorseSoundPlayer.play()
+
+
+func _on_simexe_pressed() -> void:
+	%SaveModal.visible = not %SaveModal.visible

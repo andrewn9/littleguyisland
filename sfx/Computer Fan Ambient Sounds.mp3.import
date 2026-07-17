@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cpbkgif2v063o"
+path="res://.godot/imported/Computer Fan Ambient Sounds.mp3-6c915b1285327256649f871c2b0146fe.mp3str"
+
+[deps]
+
+source_file="res://sfx/Computer Fan Ambient Sounds.mp3"
+dest_files=["res://.godot/imported/Computer Fan Ambient Sounds.mp3-6c915b1285327256649f871c2b0146fe.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
