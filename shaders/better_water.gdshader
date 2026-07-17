@@ -192,7 +192,7 @@ void fragment() {
 		ALBEDO = mix(shoreline_color, ALBEDO, clamp(pow((world_pos.y - world.y) / shoreline_depth, 0.2), 0.0, 1.0));
 	}
 
-	float fac = dot(NORMAL, vec3(0.0, 0.0, 1.0)) * pow(1.0 - dot(VIEW, NORMAL), 5.0);
+	float fac = clamp(dot(NORMAL, vec3(0.0, 0.0, 1.0)) * pow(1.0 - dot(VIEW, NORMAL), 5.0), 0.0, 1.0);
 	IRRADIANCE = vec4(0.0, 0.0, 0.0, 1.0 - fac);
 	RADIANCE = vec4(0.0, 0.0, 0.0, 1.0 - fac);
 }

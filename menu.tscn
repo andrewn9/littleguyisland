@@ -140,8 +140,7 @@ horizontal_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=300528188]
-visible = false
+[node name="StartMenu" type="NinePatchRect" parent="." unique_id=300528188]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
@@ -152,7 +151,7 @@ offset_bottom = -40.0
 grow_vertical = 0
 texture = ExtResource("1_lti8b")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect" unique_id=1303223115]
+[node name="VBoxContainer" type="VBoxContainer" parent="StartMenu" unique_id=1303223115]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -165,11 +164,79 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 2
 
-[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer" unique_id=121411543]
+[node name="Button" type="Button" parent="StartMenu/VBoxContainer" unique_id=121411543]
 layout_mode = 2
 text = "Log Out"
 
-[node name="NinePatchRect2" type="NinePatchRect" parent="." unique_id=823499308]
+[node name="SavesDialog" type="NinePatchRect" parent="." unique_id=1622184990]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_ouk20")
+region_rect = Rect2(0, 0, 316, 316)
+patch_margin_left = 25
+patch_margin_top = 25
+patch_margin_right = 25
+patch_margin_bottom = 25
+
+[node name="VFlowContainer" type="VFlowContainer" parent="SavesDialog" unique_id=1435746051]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="SavesDialog/VFlowContainer" unique_id=657911678]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+text = "Save 1"
+icon = ExtResource("1_lti8b")
+expand_icon = true
+
+[node name="Button2" type="Button" parent="SavesDialog/VFlowContainer" unique_id=252218592]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+text = "Save 2"
+icon = ExtResource("1_lti8b")
+expand_icon = true
+
+[node name="Button3" type="Button" parent="SavesDialog/VFlowContainer" unique_id=898548057]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+text = "Save 3"
+icon = ExtResource("1_lti8b")
+expand_icon = true
+
+[node name="Button4" type="Button" parent="SavesDialog/VFlowContainer" unique_id=536491938]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+text = "Save 3"
+icon = ExtResource("1_lti8b")
+expand_icon = true
+
+[node name="LoadingDialog" type="NinePatchRect" parent="." unique_id=823499308]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -189,7 +256,7 @@ patch_margin_top = 25
 patch_margin_right = 25
 patch_margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect2" unique_id=1194381155]
+[node name="VBoxContainer" type="VBoxContainer" parent="LoadingDialog" unique_id=1194381155]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -203,7 +270,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="NinePatchRect2/VBoxContainer" unique_id=1750459277]
+[node name="Label" type="Label" parent="LoadingDialog/VBoxContainer" unique_id=1750459277]
 layout_mode = 2
 theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 32
@@ -211,5 +278,5 @@ text = "folkOS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="NinePatchRect2/VBoxContainer" unique_id=2092123716]
+[node name="ProgressBar" type="ProgressBar" parent="LoadingDialog/VBoxContainer" unique_id=2092123716]
 layout_mode = 2
