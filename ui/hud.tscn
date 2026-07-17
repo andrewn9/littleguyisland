@@ -17,7 +17,6 @@
 [ext_resource type="Texture2D" uid="uid://cujcgx2wus85x" path="res://ui/ui/bars + box/bars - Copy.png" id="11_5jwjf"]
 [ext_resource type="Texture2D" uid="uid://cqd6ppniuptvw" path="res://sprites/props/farmland/wheat2.png" id="11_vjpmv"]
 [ext_resource type="Texture2D" uid="uid://sie3s385wr4i" path="res://ui/ui/coloredbuttons/settings.png" id="12_exqf6"]
-[ext_resource type="FontFile" uid="uid://bc62mk63rr4vb" path="res://ui/Comic Sans MS.ttf" id="12_vjpmv"]
 [ext_resource type="Texture2D" uid="uid://cyj3a6ab0kgo1" path="res://ui/ui/uiwheel.png" id="13_o8st7"]
 [ext_resource type="Script" uid="uid://32wl0030kqom" path="res://scripts/circular_container.gd" id="14_mgoxf"]
 [ext_resource type="Texture2D" uid="uid://bekw7sxjg7q8d" path="res://ui/ui/coloredbuttons/cursor.png" id="15_0f6tk"]
@@ -123,12 +122,6 @@ _data = {
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7522t"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="LabelSettings" id="LabelSettings_st70h"]
-font = ExtResource("12_vjpmv")
-font_size = 15
-outline_size = 7
-outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_615i1"]
 offsets = PackedFloat32Array(0.35460994, 0.42553192, 0.4491726)
@@ -327,15 +320,13 @@ anchor_right = 1.0
 anchor_bottom = 0.58
 offset_left = 8.0
 offset_top = 39.0
-offset_right = -7.0
+offset_right = -24.0
 offset_bottom = -1.0
 grow_horizontal = 0
 mouse_filter = 2
 
 [node name="RichTextLabel" parent="CanvasLayer/Notifications" unique_id=1781102424 instance=ExtResource("10_nso1x")]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 12
-theme_override_font_sizes/bold_font_size = 13
 text = ""
 
 [node name="MarginContainer" type="Control" parent="CanvasLayer" unique_id=99900099]
@@ -418,9 +409,11 @@ theme_override_constants/separation = 4
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
+folded = true
 title = "overview"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Panels/IslandStats" unique_id=45216505]
+visible = false
 layout_mode = 2
 size_flags_vertical = 0
 
@@ -480,6 +473,7 @@ split_offset = 35
 layout_mode = 2
 size_flags_vertical = 1
 tooltip_text = "number of homes"
+mouse_filter = 0
 text = "homes"
 vertical_alignment = 1
 
@@ -500,6 +494,7 @@ stretch_mode = 5
 layout_mode = 2
 size_flags_vertical = 1
 tooltip_text = "number of farms"
+mouse_filter = 0
 text = "farms"
 vertical_alignment = 1
 
@@ -568,6 +563,7 @@ text = "[no_trees]"
 [node name="NoSpaceFlag" type="Label" parent="CanvasLayer/Panels/IslandStats/VBoxContainer2/HBoxContainer5" unique_id=1208352908]
 layout_mode = 2
 tooltip_text = "not enough flat space to build"
+mouse_filter = 0
 theme_override_font_sizes/font_size = 12
 text = "[no_space]"
 
@@ -1377,9 +1373,36 @@ patch_margin_top = 11
 patch_margin_right = 11
 patch_margin_bottom = 10
 
-[node name="Settings" type="Control" parent="CanvasLayer" unique_id=574423350]
+[node name="Settings" type="Panel" parent="CanvasLayer" unique_id=671094804]
 unique_name_in_owner = true
-layout_mode = 3
+visible = false
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Control" type="Control" parent="CanvasLayer/Settings" unique_id=568740118]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Settings/Control" unique_id=1734470655]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1389,30 +1412,41 @@ offset_right = 8.0
 offset_bottom = -21.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+theme_override_constants/separation = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Settings" unique_id=1734470655]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -51.0
-offset_right = 51.0
-offset_bottom = 174.0
-grow_horizontal = 2
+[node name="Label" type="Label" parent="CanvasLayer/Settings/Control/VBoxContainer" unique_id=2064360901]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 16
+text = "settings"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Sens" type="HFlowContainer" parent="CanvasLayer/Settings/VBoxContainer" unique_id=44215137]
+[node name="GFX" type="HFlowContainer" parent="CanvasLayer/Settings/Control/VBoxContainer" unique_id=2045994773]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/Settings/VBoxContainer/Sens" unique_id=1052630241]
+[node name="Label" type="Label" parent="CanvasLayer/Settings/Control/VBoxContainer/GFX" unique_id=40641062]
+layout_mode = 2
+size_flags_vertical = 1
+text = "low gfx"
+vertical_alignment = 1
+
+[node name="GFXButton" type="CheckButton" parent="CanvasLayer/Settings/Control/VBoxContainer/GFX" unique_id=1041402889]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Sens" type="HFlowContainer" parent="CanvasLayer/Settings/Control/VBoxContainer" unique_id=44215137]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Settings/Control/VBoxContainer/Sens" unique_id=1052630241]
 layout_mode = 2
 size_flags_vertical = 1
 text = "senstivity: 1.0 "
-label_settings = SubResource("LabelSettings_st70h")
 vertical_alignment = 1
 
-[node name="SensSlider" type="HSlider" parent="CanvasLayer/Settings/VBoxContainer/Sens" unique_id=1125203895]
+[node name="SensSlider" type="HSlider" parent="CanvasLayer/Settings/Control/VBoxContainer/Sens" unique_id=1125203895]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, -1)
 custom_maximum_size = Vector2(150, -1)
@@ -1434,34 +1468,32 @@ tick_count = 5
 ticks_on_borders = true
 ticks_position = 2
 
-[node name="Cam" type="HFlowContainer" parent="CanvasLayer/Settings/VBoxContainer" unique_id=322313272]
+[node name="Cam" type="HFlowContainer" parent="CanvasLayer/Settings/Control/VBoxContainer" unique_id=322313272]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/Settings/VBoxContainer/Cam" unique_id=424932717]
+[node name="Label" type="Label" parent="CanvasLayer/Settings/Control/VBoxContainer/Cam" unique_id=424932717]
 layout_mode = 2
 size_flags_vertical = 1
 text = "orthographic"
-label_settings = SubResource("LabelSettings_st70h")
 vertical_alignment = 1
 
-[node name="CamButton" type="CheckButton" parent="CanvasLayer/Settings/VBoxContainer/Cam" unique_id=122473411]
+[node name="CamButton" type="CheckButton" parent="CanvasLayer/Settings/Control/VBoxContainer/Cam" unique_id=122473411]
 unique_name_in_owner = true
 layout_mode = 2
 button_pressed = true
 
-[node name="Vol" type="HFlowContainer" parent="CanvasLayer/Settings/VBoxContainer" unique_id=1218994644]
+[node name="Vol" type="HFlowContainer" parent="CanvasLayer/Settings/Control/VBoxContainer" unique_id=1218994644]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/Settings/VBoxContainer/Vol" unique_id=1340053677]
+[node name="Label" type="Label" parent="CanvasLayer/Settings/Control/VBoxContainer/Vol" unique_id=1340053677]
 layout_mode = 2
 size_flags_vertical = 1
 text = "volume: 1.0 "
-label_settings = SubResource("LabelSettings_st70h")
 vertical_alignment = 1
 
-[node name="VolSlider" type="HSlider" parent="CanvasLayer/Settings/VBoxContainer/Vol" unique_id=1340680545]
+[node name="VolSlider" type="HSlider" parent="CanvasLayer/Settings/Control/VBoxContainer/Vol" unique_id=1340680545]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, -1)
 custom_maximum_size = Vector2(150, -1)
@@ -1486,3 +1518,4 @@ ticks_position = 2
 [connection signal="pressed" from="CanvasLayer/Profile/HBoxContainer2/TrackButton" to="." method="_on_track_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/HBoxContainer2/POVButton" to="." method="_on_pov_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/HBoxContainer2/DeallocateButton" to="." method="_on_deallocate_button_pressed"]
+[connection signal="toggled" from="CanvasLayer/Settings/Control/VBoxContainer/GFX/GFXButton" to="." method="_on_gfx_button_toggled"]

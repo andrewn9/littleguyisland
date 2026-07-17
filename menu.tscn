@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://djv2xdeic8eds"]
 
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_lti8b"]
+[ext_resource type="Texture2D" uid="uid://ikh4qw7n0wv5" path="res://ui/ui/bars + box/box.png" id="2_ouk20"]
 
 [node name="Menu" type="Control" unique_id=356684299]
 layout_mode = 3
@@ -10,7 +11,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1729360705]
+[node name="Background" type="TextureRect" parent="." unique_id=646608950]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_lti8b")
+stretch_mode = 1
+
+[node name="TaskBar" type="TextureRect" parent="." unique_id=1729360705]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
@@ -22,7 +34,7 @@ grow_vertical = 0
 texture = ExtResource("1_lti8b")
 expand_mode = 1
 
-[node name="Button" type="Button" parent="TextureRect" unique_id=1601534637]
+[node name="Button" type="Button" parent="TaskBar" unique_id=1601534637]
 layout_mode = 0
 offset_right = 90.0
 offset_bottom = 40.0
@@ -30,7 +42,7 @@ text = "Start"
 icon = ExtResource("1_lti8b")
 expand_icon = true
 
-[node name="Label" type="Label" parent="TextureRect" unique_id=2140276001]
+[node name="Label" type="Label" parent="TaskBar" unique_id=2140276001]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -44,7 +56,7 @@ text = "1:13 AM"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="VFlowContainer" type="VFlowContainer" parent="." unique_id=414753089]
+[node name="Apps" type="VFlowContainer" parent="." unique_id=414753089]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -56,17 +68,17 @@ offset_bottom = -55.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VFlowContainer" unique_id=1551236516]
+[node name="VBoxContainer" type="VBoxContainer" parent="Apps" unique_id=1551236516]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="VFlowContainer/VBoxContainer" unique_id=1567717777]
+[node name="TextureButton" type="TextureButton" parent="Apps/VBoxContainer" unique_id=1567717777]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 texture_normal = ExtResource("1_lti8b")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="VFlowContainer/VBoxContainer" unique_id=865767862]
+[node name="Label" type="Label" parent="Apps/VBoxContainer" unique_id=865767862]
 layout_mode = 2
 theme_override_font_sizes/font_size = 8
 text = "little guy island"
@@ -74,17 +86,17 @@ horizontal_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="VFlowContainer" unique_id=1379080693]
+[node name="VBoxContainer2" type="VBoxContainer" parent="Apps" unique_id=1379080693]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="VFlowContainer/VBoxContainer2" unique_id=1056945072]
+[node name="TextureButton" type="TextureButton" parent="Apps/VBoxContainer2" unique_id=1056945072]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 texture_normal = ExtResource("1_lti8b")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="VFlowContainer/VBoxContainer2" unique_id=73279372]
+[node name="Label" type="Label" parent="Apps/VBoxContainer2" unique_id=73279372]
 layout_mode = 2
 theme_override_font_sizes/font_size = 8
 text = "save"
@@ -92,17 +104,17 @@ horizontal_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="VFlowContainer" unique_id=838094509]
+[node name="VBoxContainer3" type="VBoxContainer" parent="Apps" unique_id=838094509]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="VFlowContainer/VBoxContainer3" unique_id=825101654]
+[node name="TextureButton" type="TextureButton" parent="Apps/VBoxContainer3" unique_id=825101654]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 texture_normal = ExtResource("1_lti8b")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="VFlowContainer/VBoxContainer3" unique_id=799046215]
+[node name="Label" type="Label" parent="Apps/VBoxContainer3" unique_id=799046215]
 layout_mode = 2
 theme_override_font_sizes/font_size = 8
 text = "load"
@@ -110,7 +122,26 @@ horizontal_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
 
+[node name="VBoxContainer4" type="VBoxContainer" parent="Apps" unique_id=869289882]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="Apps/VBoxContainer4" unique_id=13632310]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture_normal = ExtResource("1_lti8b")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="Apps/VBoxContainer4" unique_id=23955046]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "recycle bin"
+horizontal_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
 [node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=300528188]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
@@ -138,10 +169,47 @@ alignment = 2
 layout_mode = 2
 text = "Log Out"
 
-[node name="Background" type="TextureRect" parent="." unique_id=646608950]
+[node name="NinePatchRect2" type="NinePatchRect" parent="." unique_id=823499308]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("2_ouk20")
+region_rect = Rect2(0, 0, 316, 316)
+patch_margin_left = 25
+patch_margin_top = 25
+patch_margin_right = 25
+patch_margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect2" unique_id=1194381155]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -53.5
+offset_top = -23.0
+offset_right = 53.5
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="NinePatchRect2/VBoxContainer" unique_id=1750459277]
+layout_mode = 2
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 32
+text = "folkOS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="NinePatchRect2/VBoxContainer" unique_id=2092123716]
+layout_mode = 2
