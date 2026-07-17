@@ -580,3 +580,10 @@ func _on_sens_slider_value_changed(value: float) -> void:
 func _on_scale_slider_value_changed(value: float) -> void:
 	%ScaleValue.text = "render scale: " + str(value)
 	get_viewport().scaling_3d_scale = value
+
+func _on_hide_button_pressed():
+	get_node("CanvasLayer").visible = false
+
+func _unhandled_input(event):
+	if event is InputEventMouseButton and event.button_mask & MOUSE_BUTTON_MASK_LEFT and event.pressed and not get_node("CanvasLayer").visible:
+		get_node("CanvasLayer").visible = true

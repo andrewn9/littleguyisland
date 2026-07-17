@@ -1568,6 +1568,16 @@ unique_name_in_owner = true
 layout_mode = 2
 button_pressed = true
 
+[node name="hide" type="HFlowContainer" parent="CanvasLayer/Settings/Control/VBoxContainer" unique_id=1162909740]
+layout_mode = 2
+tooltip_text = "retro scanlines and flicker effect"
+alignment = 1
+
+[node name="HideButton" type="Button" parent="CanvasLayer/Settings/Control/VBoxContainer/hide" unique_id=1670848139]
+layout_mode = 2
+tooltip_text = "Hide all UI elements"
+text = "Hide UI"
+
 [connection signal="pressed" from="CanvasLayer/NinePatchRect/HFlowContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="CanvasLayer/Bottom/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/HBoxContainer2/TrackButton" to="." method="_on_track_button_pressed"]
@@ -1580,3 +1590,4 @@ button_pressed = true
 [connection signal="toggled" from="CanvasLayer/Settings/Control/VBoxContainer/Reflections/ReflectionsButton" to="." method="_on_reflections_button_toggled"]
 [connection signal="toggled" from="CanvasLayer/Settings/Control/VBoxContainer/outlines/OutlinesButton" to="." method="_on_outlines_button_toggled"]
 [connection signal="toggled" from="CanvasLayer/Settings/Control/VBoxContainer/crt/CRTButton" to="." method="_on_crt_button_toggled"]
+[connection signal="pressed" from="CanvasLayer/Settings/Control/VBoxContainer/hide/HideButton" to="." method="_on_hide_button_pressed"]
