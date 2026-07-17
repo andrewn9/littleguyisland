@@ -218,8 +218,9 @@ func _physics_process(delta: float) -> void:
 		_refresh_stats()
 
 	var water: MeshInstance3D = model.get_parent().get_node("Water")
-	var water_mat: ShaderMaterial = water.get_surface_override_material(0)
-	water_mat.set_shader_parameter("time_scale", time_scale if not paused else 0.0)
+	var water_mat = water.material_overlay
+	if water_mat is ShaderMaterial:
+		water_mat.set_shader_parameter("time_scale", time_scale if not paused else 0.0)
 
 
 func _refresh_stats() -> void:
