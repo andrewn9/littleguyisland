@@ -77,7 +77,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("OS:visible")
+tracks/1/path = NodePath("Apps:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -89,7 +89,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Apps:visible")
+tracks/2/path = NodePath("TaskBar:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -101,70 +101,58 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("TaskBar:visible")
+tracks/3/path = NodePath("Screen:color")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Screen:color")
+tracks/4/path = NodePath("Screen/TextureRect:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0, 0, 0, 1)]
+"update": 1,
+"values": [true]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Screen/TextureRect:visible")
+tracks/5/path = NodePath("Modal/VBoxContainer/Label2:text")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": ["welcome to folk os"]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("OS/VBoxContainer/Label2:text")
+tracks/6/path = NodePath("Modal/VBoxContainer/ProgressBar:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": ["welcome to folk os"]
+"values": [true]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("OS/VBoxContainer/ProgressBar:visible")
+tracks/7/path = NodePath("Modal/VBoxContainer/ProgressBar:value")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("OS/VBoxContainer/ProgressBar:value")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -189,7 +177,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("OS:visible")
+tracks/1/path = NodePath("Modal:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -249,7 +237,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("OS/VBoxContainer/Label2:text")
+tracks/6/path = NodePath("Modal/VBoxContainer/Label2:text")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -261,7 +249,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("OS/VBoxContainer/ProgressBar:visible")
+tracks/7/path = NodePath("Modal/VBoxContainer/ProgressBar:visible")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -273,7 +261,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("OS/VBoxContainer/ProgressBar:value")
+tracks/8/path = NodePath("Modal/VBoxContainer/ProgressBar:value")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -492,7 +480,76 @@ alignment = 2
 layout_mode = 2
 text = "Log Out"
 
-[node name="OS" type="NinePatchRect" parent="." unique_id=823499308]
+[node name="SaveModal" type="NinePatchRect" parent="." unique_id=1622184990]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_ouk20")
+region_rect = Rect2(0, 0, 316, 316)
+patch_margin_left = 25
+patch_margin_top = 25
+patch_margin_right = 25
+patch_margin_bottom = 25
+
+[node name="VFlowContainer" type="VFlowContainer" parent="SaveModal" unique_id=1435746051]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="SaveModal/VFlowContainer" unique_id=657911678]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+text = "Save 1"
+icon = ExtResource("1_lti8b")
+expand_icon = true
+
+[node name="Button2" type="Button" parent="SaveModal/VFlowContainer" unique_id=252218592]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+text = "Save 2"
+icon = ExtResource("1_lti8b")
+expand_icon = true
+
+[node name="Button3" type="Button" parent="SaveModal/VFlowContainer" unique_id=898548057]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+text = "Save 3"
+icon = ExtResource("1_lti8b")
+expand_icon = true
+
+[node name="Button4" type="Button" parent="SaveModal/VFlowContainer" unique_id=536491938]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+text = "Save 3"
+icon = ExtResource("1_lti8b")
+expand_icon = true
+
+[node name="Modal" type="NinePatchRect" parent="." unique_id=823499308]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -512,7 +569,7 @@ patch_margin_top = 25
 patch_margin_right = 25
 patch_margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="OS" unique_id=1194381155]
+[node name="VBoxContainer" type="VBoxContainer" parent="Modal" unique_id=1194381155]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -526,7 +583,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="OS/VBoxContainer" unique_id=1750459277]
+[node name="Label" type="Label" parent="Modal/VBoxContainer" unique_id=1750459277]
 layout_mode = 2
 theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 32
@@ -534,7 +591,7 @@ text = "folkOS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="OS/VBoxContainer" unique_id=820270233]
+[node name="Label2" type="Label" parent="Modal/VBoxContainer" unique_id=820270233]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 14
@@ -542,7 +599,7 @@ text = "welcome to folk os"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="OS/VBoxContainer" unique_id=2092123716]
+[node name="ProgressBar" type="ProgressBar" parent="Modal/VBoxContainer" unique_id=2092123716]
 custom_minimum_size = Vector2(0, 15.565)
 layout_mode = 2
 rounded = true
