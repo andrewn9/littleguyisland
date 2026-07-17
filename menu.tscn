@@ -1,7 +1,293 @@
 [gd_scene format=3 uid="uid://djv2xdeic8eds"]
 
+[ext_resource type="Script" uid="uid://5di6h38n6c27" path="res://scripts/boot.gd" id="1_4hy44"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_lti8b"]
+[ext_resource type="Texture2D" uid="uid://ci7v6wvi1q7ok" path="res://ui/bg - Copy.png" id="1_mae5d"]
 [ext_resource type="Texture2D" uid="uid://ikh4qw7n0wv5" path="res://ui/ui/bars + box/box.png" id="2_ouk20"]
+[ext_resource type="Texture2D" uid="uid://b5eay0mlm2f4u" path="res://ui/computa.png" id="2_ytr4m"]
+
+[sub_resource type="Gradient" id="Gradient_mae5d"]
+offsets = PackedFloat32Array(0, 0.4979424, 0.8436214)
+colors = PackedColorArray(0, 0.12757987, 0.35232416, 1, 0.021098306, 0.15901083, 0.35822216, 0.47058824, 0, 0.12757987, 0.35232416, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mae5d"]
+gradient = SubResource("Gradient_mae5d")
+fill_from = Vector2(0.55128205, 1)
+fill_to = Vector2(0.4957265, 0)
+
+[sub_resource type="Shader" id="Shader_nso1x"]
+code = "shader_type canvas_item;
+uniform sampler2D ST : hint_screen_texture, filter_linear_mipmap_anisotropic;
+uniform vec4 scanline_color : source_color = vec4(0, 0, 0, 1);
+uniform vec4 flicker_color : source_color = vec4(0, 0, 0, 1);
+uniform float scanlines_count = 10.0;
+uniform float scanlines_intensity = 0.05;
+uniform float flicker_speed = 30.0;
+uniform float flicker_intensity : hint_range(0.0, 1.0, 0.001) = 0.025;
+uniform float color_offset = 1.5;
+uniform float blur = 0.15;
+
+void fragment() {
+	vec2 pixel_size = 1.0 / vec2(textureSize(ST, 0));
+	float offset = color_offset * pixel_size.x;
+	
+	// chromatic aberration
+	float channel_r = textureLod(ST, SCREEN_UV + vec2(offset, 0.0), blur).r;
+	float channel_g = textureLod(ST, SCREEN_UV, blur).g;
+	float channel_b = textureLod(ST, SCREEN_UV + vec2(-offset, 0.0), blur).b;
+	vec4 aberrate = vec4(channel_r, channel_g, channel_b, 1.0);
+	
+	// scanline flicker
+	float mix_value = sin((UV.y - (TIME * flicker_speed)) * 10.0) * flicker_intensity;
+	vec4 flicker = mix(aberrate, flicker_color, mix_value);
+
+	// scanlines
+	float scanlines = sin(FRAGCOORD.y * scanlines_count) * scanlines_intensity;
+	vec4 final = mix(flicker, scanline_color, scanlines);
+	
+	COLOR = final;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mae5d"]
+shader = SubResource("Shader_nso1x")
+shader_parameter/scanline_color = Color(0, 0, 0, 1)
+shader_parameter/flicker_color = Color(0, 0, 0, 1)
+shader_parameter/scanlines_count = 10.0
+shader_parameter/scanlines_intensity = 0.39
+shader_parameter/flicker_speed = 20.78
+shader_parameter/flicker_intensity = 0.006000000285
+shader_parameter/color_offset = 0.16
+shader_parameter/blur = 0.0
+
+[sub_resource type="Animation" id="Animation_mae5d"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OS:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Apps:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TaskBar:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Screen:color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Screen/TextureRect:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("OS/VBoxContainer/Label2:text")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["welcome to folk os"]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("OS/VBoxContainer/ProgressBar:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("OS/VBoxContainer/ProgressBar:value")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_4hy44"]
+resource_name = "boot"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.6666667, 2.7, 2.7333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OS:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2, 4.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Apps:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TaskBar:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 4.866667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Screen:color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.73333335),
+"transitions": PackedFloat32Array(284.0497, 284.0497),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0.4390491, 0.43904912, 0.43904912, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Screen/TextureRect:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.76666665),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("OS/VBoxContainer/Label2:text")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(1.9666665, 2.5666666),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": ["welcome to folk os", "starting up.."]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("OS/VBoxContainer/ProgressBar:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 2.7333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("OS/VBoxContainer/ProgressBar:value")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(2.7, 3.0666666, 3.4333334, 3.5626953, 4.5),
+"transitions": PackedFloat32Array(26.729486, 26.729486, 26.729486, 26.729486, 26.729486),
+"update": 0,
+"values": [0.0, 26.0, 73.07, 74.435, 100.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ytr4m"]
+_data = {
+&"RESET": SubResource("Animation_mae5d"),
+&"boot": SubResource("Animation_4hy44")
+}
 
 [node name="Menu" type="Control" unique_id=356684299]
 layout_mode = 3
@@ -10,6 +296,37 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_4hy44")
+
+[node name="Screen" type="ColorRect" parent="." unique_id=1175769421]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -112.0
+offset_top = -83.0
+offset_right = 112.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="Screen" unique_id=1222347267]
+custom_maximum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -270.0
+offset_top = -250.0
+offset_right = 270.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_ytr4m")
 
 [node name="Background" type="TextureRect" parent="." unique_id=646608950]
 z_index = -1
@@ -17,10 +334,14 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -112.0
+offset_top = -84.0
+offset_right = 112.0
+offset_bottom = 84.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_lti8b")
-stretch_mode = 1
+texture = ExtResource("1_mae5d")
+stretch_mode = 6
 
 [node name="TaskBar" type="TextureRect" parent="." unique_id=1729360705]
 layout_mode = 1
@@ -31,7 +352,7 @@ anchor_bottom = 1.0
 offset_top = -40.0
 grow_horizontal = 2
 grow_vertical = 0
-texture = ExtResource("1_lti8b")
+texture = SubResource("GradientTexture2D_mae5d")
 expand_mode = 1
 
 [node name="Button" type="Button" parent="TaskBar" unique_id=1601534637]
@@ -63,8 +384,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 15.0
 offset_top = 15.0
-offset_right = -15.0
-offset_bottom = -55.0
+offset_right = 15.0
+offset_bottom = 31.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -105,6 +426,7 @@ clip_text = true
 text_overrun_behavior = 3
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="Apps" unique_id=838094509]
+visible = false
 layout_mode = 2
 
 [node name="TextureButton" type="TextureButton" parent="Apps/VBoxContainer3" unique_id=825101654]
@@ -123,6 +445,7 @@ clip_text = true
 text_overrun_behavior = 3
 
 [node name="VBoxContainer4" type="VBoxContainer" parent="Apps" unique_id=869289882]
+visible = false
 layout_mode = 2
 
 [node name="TextureButton" type="TextureButton" parent="Apps/VBoxContainer4" unique_id=13632310]
@@ -140,7 +463,7 @@ horizontal_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=300528188]
+[node name="StartMenu" type="NinePatchRect" parent="." unique_id=300528188]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -152,7 +475,7 @@ offset_bottom = -40.0
 grow_vertical = 0
 texture = ExtResource("1_lti8b")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect" unique_id=1303223115]
+[node name="VBoxContainer" type="VBoxContainer" parent="StartMenu" unique_id=1303223115]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -165,11 +488,11 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 2
 
-[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer" unique_id=121411543]
+[node name="Button" type="Button" parent="StartMenu/VBoxContainer" unique_id=121411543]
 layout_mode = 2
 text = "Log Out"
 
-[node name="NinePatchRect2" type="NinePatchRect" parent="." unique_id=823499308]
+[node name="OS" type="NinePatchRect" parent="." unique_id=823499308]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -189,7 +512,7 @@ patch_margin_top = 25
 patch_margin_right = 25
 patch_margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect2" unique_id=1194381155]
+[node name="VBoxContainer" type="VBoxContainer" parent="OS" unique_id=1194381155]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -203,7 +526,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="NinePatchRect2/VBoxContainer" unique_id=1750459277]
+[node name="Label" type="Label" parent="OS/VBoxContainer" unique_id=1750459277]
 layout_mode = 2
 theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 32
@@ -211,5 +534,30 @@ text = "folkOS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="NinePatchRect2/VBoxContainer" unique_id=2092123716]
+[node name="Label2" type="Label" parent="OS/VBoxContainer" unique_id=820270233]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "welcome to folk os"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="OS/VBoxContainer" unique_id=2092123716]
+custom_minimum_size = Vector2(0, 15.565)
+layout_mode = 2
+rounded = true
+show_percentage = false
+
+[node name="RetroFitler" type="ColorRect" parent="." unique_id=849122069]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_mae5d")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1629861286]
+libraries/ = SubResource("AnimationLibrary_ytr4m")

@@ -25,12 +25,6 @@ const NOTIFICATION = preload("res://ui/notification.tscn")
 
 @onready var notifications = %Notifications
 
-# folk drag-and-drop: a folk sets itself here on press; the model turns it into
-# a drag once the mouse moves, and clears it on release
-var grabbed_folk: Folk = null
-var grab_screen := Vector2.ZERO
-var dragging_folk := false
-
 @export var button_inactive_color := Color.from_rgba8(200, 200, 200, 255)
 @export var button_pressed_color := Color.from_rgba8(139, 139, 139, 255)
 
@@ -245,6 +239,10 @@ func _set_tool_cursor(tex: Texture2D, hotspot: Vector2) -> void:
 
 var _cursor_key := "" # what's currently shown, so we only reset on a change
 
+var grabbed_folk: Folk = null
+var grab_screen := Vector2.ZERO
+var dragging_folk := false
+
 func _refresh_hover_cursor() -> void:
 	var hovered := get_viewport().gui_get_hovered_control()
 	_cursor_on_ui = hovered != null and hovered.mouse_filter == Control.MOUSE_FILTER_STOP
@@ -298,8 +296,10 @@ func _on_settings_button_pressed():
 @onready var stone_value: Label = %StoneValue
 @onready var animal_value: Label = %AnimalValue
 
-
 func _process(delta: float) -> void:
+	$CanvasLayer.visible = is_instance_valid(Game.model)
+	if not is_instance_valid(Game.model):
+		return
 	_update_island_stats()
 	_refresh_hover_cursor()
 	_tick_speech(delta)

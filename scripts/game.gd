@@ -208,6 +208,8 @@ func _input(_event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if not is_instance_valid(model):
+		return
 	if paused:
 		scaled_delta = 0
 	else:
