@@ -60,19 +60,18 @@ func _arrange_children() -> void:
 		var angle := start + step * i
 		var child_size := _resolve_child_size(child)
 		var offset := Vector2(cos(angle), sin(angle)) * effective_radius
-		
+
 		var top_left := center + offset - child_size * 0.5
 		fit_child_in_rect(child, Rect2(top_left, child_size))
 
 
-
 func _resolve_child_size(child: Control) -> Vector2:
 	var result := child.get_combined_minimum_size()
-	
+
 	if item_size_ratio > 0.0:
 		var side := minf(size.x, size.y) * item_size_ratio
 		return Vector2(side, side)
-		
+
 	if result.x <= 0.0:
 		result.x = child.size.x
 	if result.y <= 0.0:
@@ -85,7 +84,7 @@ func _get_effective_radius(items: Array[Control]) -> float:
 		return minf(size.x, size.y) * 0.5 * radius_ratio
 	if not auto_radius:
 		return radius
-		
+
 	var margin := _get_largest_child_extent(items)
 	return maxf(0.0, minf(size.x, size.y) * 0.5 - margin)
 
@@ -105,7 +104,6 @@ func _get_largest_child_extent(items: Array[Control]) -> float:
 		var s := _resolve_child_size(child)
 		extent = maxf(extent, maxf(s.x, s.y) * 0.5)
 	return extent
-
 
 
 func _get_minimum_size() -> Vector2:

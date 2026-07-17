@@ -46,6 +46,7 @@ var prop_materials: Dictionary[int, StandardMaterial3D] = {}
 
 var prop_batch: PropBatch
 
+
 func load_textures(path: StringName) -> Array[Texture2D]:
 	var textures: Array[Texture2D] = []
 
@@ -62,7 +63,7 @@ func load_textures(path: StringName) -> Array[Texture2D]:
 		if !dir.current_is_dir():
 			if file.ends_with(".import"):
 				file = file.replace(".import", "")
-			
+
 			var tex = load(path + file) as Texture2D
 			if tex:
 				textures.append(tex)
@@ -87,27 +88,17 @@ func get_prop_material(texture: Texture2D, flipped := false) -> StandardMaterial
 	prop_materials[key] = mat
 	return mat
 
+
 func _ready():
-	mountain_textures = load_textures(
-		"res://sprites/props/mountains/"
-	)
-	grass_textures = load_textures(
-		"res://sprites/props/grasses/"
-	)
-	bush_textures = load_textures(
-		"res://sprites/props/bushes/"
-	)
-	tree_textures = load_textures(
-		"res://sprites/props/trees/"
-	)
-	house_textures = load_textures(
-		"res://sprites/props/house/"
-	)
+	mountain_textures = load_textures("res://sprites/props/mountains/")
+	grass_textures = load_textures("res://sprites/props/grasses/")
+	bush_textures = load_textures("res://sprites/props/bushes/")
+	tree_textures = load_textures("res://sprites/props/trees/")
+	house_textures = load_textures("res://sprites/props/house/")
 	for p in FARM_STAGE_PATHS:
 		farm_textures.append(load(p))
 	well_texture = load(WELL_PATH)
 	farm_building_textures = load_textures("res://sprites/props/farm_buildings/")
-
 
 	body_textures = load_textures("res://sprites/folk/body/")
 	shirt_textures = load_textures("res://sprites/folk/shirt/")
@@ -140,12 +131,10 @@ func _ready():
 	if tree_cluster.get_image() == null:
 		await tree_cluster.changed
 
-
 	rng.seed = hash("tree")
 
 	for i in range(MapData.RESOLUTION * MapData.RESOLUTION):
 		tree_noise.append(rng.randf())
-
 
 	MapData.update()
 
@@ -155,6 +144,7 @@ func _ready():
 
 	plains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 	mountains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
+
 
 func spawn_static_prop(pos: Vector2, textures: Array[Texture2D], min_scale: float, max_scale: float):
 	if textures.is_empty():
@@ -170,10 +160,11 @@ func spawn_static_prop(pos: Vector2, textures: Array[Texture2D], min_scale: floa
 	ent.pos = pos
 	ent.apply_scale(rng.randf_range(min_scale, max_scale))
 	ent.apply_scale(texture.get_width() / float(pixel_size))
-	
+
 	ent.set_prop_mat(mat)
 	add_child(ent)
 	return ent
+
 
 func _add_decor(p: Vector2, textures: Array[Texture2D]) -> void:
 	if textures.is_empty():
@@ -184,11 +175,13 @@ func _add_decor(p: Vector2, textures: Array[Texture2D]) -> void:
 	var s := rng.randf_range(1.0, 1.4) * texture.get_width() / float(pixel_size)
 	prop_batch.add_decor(texture, flipped, p, s)
 
+
 func _layer(ent: Node3D, group: String) -> void:
 	ent.add_to_group(group)
 	if ent is Entity:
 		Game.note_spawn(group, (ent as Entity).pos)
 	Game.fade_new(ent, group)
+
 
 func plains(x1: int, y1: int, x2: int, y2: int):
 	var height_map = MapData.height_img
@@ -221,12 +214,7 @@ func plains(x1: int, y1: int, x2: int, y2: int):
 				var random = rng.randf_range(0, 100)
 				var ent
 				if random > 66:
-					ent = spawn_static_prop(
-						Vector2(x, y),
-						tree_textures,
-						1.0,
-						1.4
-					)
+					ent = spawn_static_prop(Vector2(x, y), tree_textures, 1.0, 1.4)
 					ent.name = "Tree"
 					ent.type = Game.EntityType.TREE
 					_layer(ent, "trees")
@@ -234,7 +222,7 @@ func plains(x1: int, y1: int, x2: int, y2: int):
 					_add_decor(Vector2(x, y), bush_textures)
 				elif random > 30:
 					_add_decor(Vector2(x, y), grass_textures)
-				
+
 
 func mountains(x1: int, y1: int, x2: int, y2: int):
 	var height_map = MapData.height_img
@@ -245,7 +233,7 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 		for y in range(y1, y2):
 			if Vector2(x - MapData.RESOLUTION * 0.5, y - MapData.RESOLUTION * 0.5).length() > MapData.RESOLUTION * 0.5:
 				continue
-			
+
 			var elevation = height_map.get_pixel(x, y).r
 
 			if elevation < 0.3:
@@ -263,12 +251,7 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 
 				var fac = 1.0 - sqrt(val) / 0.16
 
-				var rock = spawn_static_prop(
-					Vector2(x, y),
-					mountain_textures,
-					0.8 * fac,
-					1.5 * fac
-				)
+				var rock = spawn_static_prop(Vector2(x, y), mountain_textures, 0.8 * fac, 1.5 * fac)
 				if rock:
 					rock.name = "Rock"
 					rock.type = Game.EntityType.ROCK
@@ -290,80 +273,34 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 					_layer(cloud, "clouds")
 
 
-
 func generate(x1: int, y1: int, x2: int, y2: int):
 	for child: Node3D in get_children():
 		var x_pos = (child.position.x + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
 		var y_pos = (child.position.z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
 
 		if x_pos > x1 and y_pos > y1 and x_pos < x2 and y_pos < y2:
-			if child is Entity and (child as Entity).is_static \
-					and not Game.is_built((child as Entity).type):
+			if child is Entity and (child as Entity).is_static and not Game.is_built((child as Entity).type):
 				child.queue_free()  # regrow natural props, keep what the folk built
 			elif child is GPUParticles3D:
 				child.queue_free()
 
-	prop_batch.clear_region(x1, y1, x2, y2) # plains() re-adds the decor below
+	prop_batch.clear_region(x1, y1, x2, y2)  # plains() re-adds the decor below
 
 	plains(x1, y1, x2, y2)
 	mountains(x1, y1, x2, y2)
 
-var name_prefixes = [
-	"chud",
-	"folk",
-	"son",
-	"larp"
-]
 
-var name_suffixes = [
-	"ington",
-	"tholomew",
-	"weld",
-	"wold",
-	"ette",
-	"ling",
-	"son",
-	"soul",
-	"sen",
-	"lette",
-	"ly",
-	"lee",
-	"let",
-	"wyn",
-	"wald",
-	"sky",
-	"sten",
-	"ny",
-	"lyn",
-	"lis",
-	"len",
-	"ler",
-	"elle",
-	"ton",
-	"sy",
-	"ski",
-	"liet",
-	"ston",
-	"liah",
-	"wig",
-	"land",
-	"man"
-]
+var name_prefixes = ["chud", "folk", "son", "larp"]
 
-var special_eggs = [
-	"cliff",
-	" quixote",
-	"ihide",
-	"sang",
-	"enheim",
-	"einburg",
-	"company"
-]
+var name_suffixes = ["ington", "tholomew", "weld", "wold", "ette", "ling", "son", "soul", "sen", "lette", "ly", "lee", "let", "wyn", "wald", "sky", "sten", "ny", "lyn", "lis", "len", "ler", "elle", "ton", "sy", "ski", "liet", "ston", "liah", "wig", "land", "man"]
+
+var special_eggs = ["cliff", " quixote", "ihide", "sang", "enheim", "einburg", "company"]
 
 var special_whole_eggs = [
 	"John",
 	"jera",
 ]
+
 
 func spawn_home(p: Vector2, capacity := 3) -> Entity:
 	var ent = spawn_static_prop(p, house_textures, 1.7, 2.1)
@@ -376,6 +313,7 @@ func spawn_home(p: Vector2, capacity := 3) -> Entity:
 	Game.house_capacity += capacity  # reflect at once so the build cap is tight
 	return ent
 
+
 func spawn_well(p: Vector2) -> Entity:
 	if well_texture == null:
 		return null
@@ -387,6 +325,7 @@ func spawn_well(p: Vector2) -> Entity:
 	_layer(ent, "wells")
 	return ent
 
+
 func spawn_farm_building(p: Vector2) -> Entity:
 	var ent = spawn_static_prop(p, farm_building_textures, 1.4, 1.7)
 	if ent == null:
@@ -396,9 +335,10 @@ func spawn_farm_building(p: Vector2) -> Entity:
 	_layer(ent, "farm_buildings")
 	return ent
 
+
 func farm_is_ripe(f: Entity):
-	return is_instance_valid(f) and f.type == Game.EntityType.FARM \
-			and f.growth_stage >= farm_textures.size() - 1
+	return is_instance_valid(f) and f.type == Game.EntityType.FARM and f.growth_stage >= farm_textures.size() - 1
+
 
 func spawn_farm(p: Vector2):
 	if farm_textures.is_empty():
@@ -423,6 +363,7 @@ func spawn_farm(p: Vector2):
 
 	return ent
 
+
 func _process(_delta: float) -> void:
 	if Game.paused:
 		return
@@ -440,6 +381,7 @@ func _process(_delta: float) -> void:
 			f.growth_stage = stage
 			f.set_prop_mat(get_prop_material(farm_textures[stage]))
 	_farms = alive
+
 
 func spawn_little_guy(x: int, y: int, birth_home: Entity = null):
 	var ent = load("res://entities/folk.res").instantiate() as Entity
@@ -477,7 +419,9 @@ func spawn_little_guy(x: int, y: int, birth_home: Entity = null):
 
 	return ent
 
+
 var _announced := {}
+
 
 func _announce(key, msg):
 	if _announced.has(key):

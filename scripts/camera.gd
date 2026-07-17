@@ -17,13 +17,16 @@ var start_tween: PropertyTweener
 var pan_offset := Vector3.ZERO
 var pan_offset_target := Vector3.ZERO
 
+
 func _ready() -> void:
 	_target_orthographic_size = orthographic_size
 	orthographic_size = 1
 	_update_camera()
 	start_tween = get_tree().create_tween().tween_property(self, "orthographic_size", _target_orthographic_size, 1.0).set_trans(Tween.TRANS_QUAD)
 
+
 var _was_tracking := false
+
 
 func _process(delta: float) -> void:
 	if Hud.focused_folk and Hud.tracking_folk:
@@ -40,6 +43,7 @@ func _process(delta: float) -> void:
 	_update_camera()
 	projection = PROJECTION_ORTHOGONAL if Hud.cam_button.button_pressed else PROJECTION_PERSPECTIVE
 
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		match event.button_index:
@@ -53,10 +57,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					_target_orthographic_size = min(_target_orthographic_size + zoom_step, max_orthographic_size)
 				else:
 					perspective_distance = max(perspective_distance + zoom_step, 8.0)
-	elif event is InputEventMouseMotion and (
-			event.button_mask & MOUSE_BUTTON_MASK_MIDDLE
-			or (Input.is_key_pressed(KEY_SPACE)
-				and event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT))):
+	elif event is InputEventMouseMotion and (event.button_mask & MOUSE_BUTTON_MASK_MIDDLE or (Input.is_key_pressed(KEY_SPACE) and event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT))):
 		_pan(event.relative)
 	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_RIGHT:
 		_yaw -= event.relative.x * sensitivity * Hud.sens_slider.value
@@ -75,12 +76,9 @@ func _pan(relative: Vector2) -> void:
 	pan_offset_target.x = clampf(pan_offset_target.x, -limit, limit)
 	pan_offset_target.z = clampf(pan_offset_target.z, -limit, limit)
 
+
 func _update_camera() -> void:
-	var direction := Vector3(
-		sin(_yaw) * cos(_elev),
-		sin(_elev),
-		cos(_yaw) * cos(_elev)
-	)
+	var direction := Vector3(sin(_yaw) * cos(_elev), sin(_elev), cos(_yaw) * cos(_elev))
 	if projection == PROJECTION_ORTHOGONAL:
 		size = orthographic_size
 		look_at_from_position(pan_offset + direction * ORTHO_DISTANCE, pan_offset, Vector3.UP)

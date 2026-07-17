@@ -8,10 +8,13 @@ var time = 90.0
 
 var DAY_LENGTH = 240.0
 
+
 func _ready():
 	sky = environment.environment.sky.sky_material as ProceduralSkyMaterial
 
+
 var last = 0
+
 
 func _process(_delta):
 	time += Game.scaled_delta
@@ -26,7 +29,7 @@ func _process(_delta):
 
 	rotation.x = fmod(time_day + 0.25, 0.5) * -2.0 * PI
 
-	var color  = gradient.sample(time_day)
+	var color = gradient.sample(time_day)
 
 	environment.environment.background_color = color
 

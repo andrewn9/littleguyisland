@@ -11,7 +11,6 @@ extends NinePatchRect
 		height_ratio = value
 		_layout()
 
-
 @export_range(-0.2, 0.2) var tuck_ratio := 0.0:
 	set(value):
 		tuck_ratio = value

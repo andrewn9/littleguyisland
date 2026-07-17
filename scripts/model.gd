@@ -39,6 +39,7 @@ var _add_mat := BlitMaterial.new()
 var min_stroke = null
 var max_stroke = null
 
+
 func _ready() -> void:
 	var quad = QuadMesh.new()
 	quad.size = Vector2i(MapData.WORLD_SIZE, MapData.WORLD_SIZE)
@@ -51,7 +52,7 @@ func _ready() -> void:
 	geom_shader.set_shader_parameter("valuemap", MapData.val)
 	geom_shader.set_shader_parameter("heightmap", MapData.height)
 	geom_shader.set_shader_parameter("height_scale", MapData.HEIGHT_SCALE)
-	geom_shader.set_shader_parameter("texel_size", 1.0/MapData.RESOLUTION)
+	geom_shader.set_shader_parameter("texel_size", 1.0 / MapData.RESOLUTION)
 
 	geom_shader.set_shader_parameter("land_key", Color.from_rgba8(91, 162, 31))
 	geom_shader.set_shader_parameter("mountain_key", Color.GRAY)
@@ -61,25 +62,21 @@ func _ready() -> void:
 	_add_mat.blend_mode = BlitMaterial.BLEND_MODE_ADD
 
 	_bake_rotations()
-	
+
 	for tex in MapData.layers.values():
 		var ui = TextureRect.new()
 		ui.texture = tex
 		%Debug.add_child(ui)
-	
+
 	if Heightmap:
-		MapData.height.blit_rect(
-			Rect2i(0, 0, MapData.RESOLUTION, MapData.RESOLUTION),
-			Heightmap
-		)
+		MapData.height.blit_rect(Rect2i(0, 0, MapData.RESOLUTION, MapData.RESOLUTION), Heightmap)
 	if Valuemap:
-		MapData.val.blit_rect(
-			Rect2i(0, 0, MapData.RESOLUTION, MapData.RESOLUTION),
-			Valuemap
-		)
+		MapData.val.blit_rect(Rect2i(0, 0, MapData.RESOLUTION, MapData.RESOLUTION), Valuemap)
 	Game.model = self
 
+
 var drawing := false
+
 
 func project_screen_pos(pos: Vector2):
 	raycast.position = camera.to_local(camera.project_ray_origin(pos))
@@ -89,6 +86,7 @@ func project_screen_pos(pos: Vector2):
 		var target_pos = Vector2(raycast.get_collision_point().x + MapData.WORLD_SIZE / 2, raycast.get_collision_point().z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
 		return target_pos
 	return null
+
 
 func _bake_rotations() -> void:
 	for t in brushes:
@@ -102,6 +100,7 @@ func _bake_rotations() -> void:
 		for i in ROT_VARIANTS:
 			variants.append(_rotate_tex(img, randf() * TAU))
 		_rot_pool[t] = variants
+
 
 func _rotate_tex(src: Image, angle: float) -> ImageTexture:
 	var w := src.get_width()
@@ -121,10 +120,11 @@ func _rotate_tex(src: Image, angle: float) -> ImageTexture:
 				out.set_pixel(x, y, src.get_pixel(su, sv))
 	return ImageTexture.create_from_image(out)
 
+
 func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: float, brush_type := "default", scale_jitter := 0.35, additive := false):
 	var island_mult = Hud.size_slider.value
 	brush_size *= island_mult
-	
+
 	var tex: Texture2D = brushes[brush_type]
 	if _rot_pool.has(brush_type):
 		var variants: Array = _rot_pool[brush_type]
@@ -142,19 +142,13 @@ func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: 
 				var val = img.get_pixel(x, y)
 				sum += Vector3(val.r, val.g, val.b)
 				count += 1
-		
+
 		sum /= count
 
-		to.blit_rect(
-			Rect2i(roundi(tex_pos.x - s * 0.5), roundi(tex_pos.y - s * 0.5), s, s),
-			tex, Color(sum.x, sum.y, sum.z, 0.1)
-		)
+		to.blit_rect(Rect2i(roundi(tex_pos.x - s * 0.5), roundi(tex_pos.y - s * 0.5), s, s), tex, Color(sum.x, sum.y, sum.z, 0.1))
 	else:
 		var s := maxi(1, roundi(brush_size * (1.0 + randf_range(-scale_jitter, scale_jitter))))
-		to.blit_rect(
-			Rect2i(roundi(tex_pos.x - s * 0.5), roundi(tex_pos.y - s * 0.5), s, s),
-			tex, color, 0, _add_mat if additive else null
-		)
+		to.blit_rect(Rect2i(roundi(tex_pos.x - s * 0.5), roundi(tex_pos.y - s * 0.5), s, s), tex, color, 0, _add_mat if additive else null)
 
 	MapData.mark_dirty()
 
@@ -168,12 +162,15 @@ func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: 
 	else:
 		max_stroke = Vector2i(roundi(tex_pos.x + brush_size * 0.5), roundi(tex_pos.y + brush_size * 0.5))
 
+
 func stroke(from: Vector2, to: Vector2):
 	for i in range(0, (from - to).length(), 2):
 		use_tool(from + (to - from).limit_length(i))
 		prev_stroke = from + (to - from).limit_length(i)
 
+
 var prev_stroke
+
 
 func use_tool(pos: Vector2):
 	if Hud.active.name == "Land":
@@ -192,12 +189,13 @@ func use_tool(pos: Vector2):
 	elif Hud.active.name == "Brush":
 		draw_at(pos, MapData.height, Color.BLACK, 30, "average")
 
+
 func _unhandled_input(event):
 	if Hud.focus_cam:
 		return
 	if Input.is_key_pressed(KEY_SPACE):
 		return  # space = camera pan, don't paint
-	
+
 	if event is InputEventMouseButton:
 		if event.button_mask & MOUSE_BUTTON_MASK_LEFT and event.pressed:
 			prev_stroke = project_screen_pos(event.position)
@@ -219,7 +217,7 @@ func _unhandled_input(event):
 			entity_gen.generate(min_x, min_y, max_x, max_y)
 			map_collision.update()
 			MapData.rebuild_nav()
-			Game.build_fail_streak = 0 # new ground: let folk look for room again
+			Game.build_fail_streak = 0  # new ground: let folk look for room again
 
 			min_stroke = null
 			max_stroke = null
@@ -236,4 +234,3 @@ func _unhandled_input(event):
 	if Input.is_action_just_pressed("out"):
 		MapData.height.get_image().save_png("height.png")
 		MapData.val.get_image().save_png("value.png")
-

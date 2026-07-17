@@ -8,6 +8,7 @@ var _hover: Control = null
 var _timer := 0.0
 var _shown := false
 
+
 func _ready() -> void:
 	_layer = CanvasLayer.new()
 	_layer.layer = 3
@@ -31,6 +32,7 @@ func _ready() -> void:
 	_label.add_theme_font_size_override("font_size", 12)
 	_panel.add_child(_label)
 	_layer.add_child(_panel)
+
 
 func _process(delta: float) -> void:
 	var hovered := get_viewport().gui_get_hovered_control()
@@ -68,6 +70,7 @@ func _process(delta: float) -> void:
 		p.y = clampf(p.y, 0.0, maxf(0.0, vp.y - _panel.size.y))
 		_panel.global_position = p
 
+
 func _set_tooltip_text(text: String) -> void:
 	_label.text = text
 	var font := _label.get_theme_font("font")
@@ -80,6 +83,7 @@ func _set_tooltip_text(text: String) -> void:
 		_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 		_label.custom_minimum_size.x = 0.0
 	_panel.reset_size()
+
 
 func _tooltip_for(ctrl: Control) -> String:
 	var n: Node = ctrl

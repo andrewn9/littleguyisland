@@ -1,7 +1,9 @@
 class_name MapCollision extends CollisionShape3D
 
+
 func _ready():
 	update()
+
 
 func update():
 	var heightmap = HeightMapShape3D.new()
