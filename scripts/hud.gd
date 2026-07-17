@@ -581,11 +581,6 @@ func _on_sens_slider_value_changed(value: float) -> void:
 	%SensLabel.text = "sensitivity: " + str(value)
 	_save_settings()
 
-
-func _on_scale_slider_value_changed(value: float) -> void:
-	%ScaleValue.text = "render scale: " + str(value)
-	get_viewport().scaling_3d_scale = value
-
 func _on_hide_button_pressed():
 	print("im hidden king ")
 	hide_ui_setting = true
