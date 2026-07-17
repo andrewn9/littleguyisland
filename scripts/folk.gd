@@ -12,6 +12,15 @@ const STATUS_TEXT := {
 	FolkState.DEAD: "decomissioned",
 }
 
+const PICKAXE := preload("res://sprites/folk/tools/pickaxe.png")
+const PITCHFORK := preload("res://sprites/folk/tools/pitchfork.png")
+const MINER_CAP := preload("res://sprites/folk/hat/minercap.png")
+const FARMER_HAT := preload("res://sprites/folk/hat/farmerhat.png")
+const LIGHTS := [
+	preload("res://sprites/folk/light/lantern.png"),
+	preload("res://sprites/folk/light/torch.png"),
+]
+
 var wander_radius := 30.0
 var idle_time_range := Vector2(0.20, 0.5)
 var water_level := 0.05
@@ -28,6 +37,8 @@ var content_threshold := 0.7  # how happy u gotta be
 var adventure_growth := 0.00015
 var social_radius := 24.0
 
+var night_owl_threshold := 0.6 # adventerous threshold
+var night_work_chance := 0.35
 var wood_per_tree := 3
 var wood_to_build := 4
 var home_capacity := 3
@@ -78,6 +89,20 @@ var breed_radius := 30.0
 
 @export var viewport: SubViewport
 
+@onready var _tool: TextureRect = $Pivot/Sprite/SubViewport/tool
+@onready var _hat: TextureRect = $Pivot/Sprite/SubViewport/hat
+@onready var _boat: TextureRect = $Pivot/Sprite/SubViewport/boat
+@onready var _light_tool: TextureRect = $Pivot/Sprite/SubViewport/light_tool
+@onready var _light: OmniLight3D = $Pivot/Sprite/light_source
+
+# whichever light this folk carries after dark — picked once so they keep it
+var _my_light: Texture2D
+
+# last outfit we applied, so we only touch the nodes when something changes
+var _fit_goal := -1
+var _fit_night := false
+var _fit_swim := false
+
 var state: FolkState = FolkState.IDLE
 var goal: Goal = Goal.ROAM
 var age := 0
@@ -86,6 +111,8 @@ var carried_wood := 0
 var carried_rock := 0
 
 var _grown := true
+var _night_owl := false  # staying out to work this particular night?
+var _night_id := -1  # which night that decision was made for
 var _seeking_new_village := false
 var _birth_home_pos := Vector2.INF
 var _base_pivot_scale := Vector3.ONE
@@ -115,8 +142,10 @@ func _ready():
 	super()
 	_base_pivot_scale = $Pivot.scale
 	adventurousness = randf()
+	_my_light = LIGHTS.pick_random()
 	_apply_growth()
 	_decide()
+	_update_outfit()
 	is_static = false
 	Game.day_changed.connect(_on_new_day)
 
@@ -128,6 +157,35 @@ func _on_new_day():
 		_grown = true
 		_become_adult()
 
+
+func _update_outfit() -> void:
+	var night = Game.is_night()
+	var swim := state == FolkState.SWIMMING
+	if goal == _fit_goal and night == _fit_night and swim == _fit_swim:
+		return
+	_fit_goal = goal
+	_fit_night = night
+	_fit_swim = swim
+
+	_boat.visible = swim
+
+	var tool_tex: Texture2D = null
+	var hat_tex: Texture2D = null
+	match goal:
+		Goal.MINE:
+			tool_tex = PICKAXE
+			hat_tex = MINER_CAP
+		Goal.FARM, Goal.HARVEST:
+			tool_tex = PITCHFORK
+			hat_tex = FARMER_HAT
+	_tool.texture = tool_tex
+	_tool.visible = tool_tex != null
+	_hat.texture = hat_tex
+	_hat.visible = hat_tex != null
+
+	_light_tool.texture = _my_light
+	_light_tool.visible = night
+	_light.visible = night
 
 func _apply_growth():
 	var t := clampf(float(age) / float(adulthood_age), 0.0, 1.0)
@@ -151,6 +209,7 @@ func _become_adult():
 
 func tick(dt: float):
 	_update_happiness(dt)
+	_update_outfit()
 
 	match state:
 		FolkState.IDLE:
@@ -289,7 +348,7 @@ func _choose_goal() -> Goal:
 			joinable.residents.append(self)
 			_seeking_new_village = false
 
-	if Game.is_night():
+	if Game.is_night() and not _working_tonight():
 		if not is_instance_valid(home):
 			return Goal.ROAM
 		if pos.distance_to(home.pos) > night_home_range:
@@ -321,6 +380,18 @@ func _choose_goal() -> Goal:
 		return farmstead
 
 	return _build_or_gather()
+
+func _working_tonight() -> bool:
+	if not _grown or adventurousness < night_owl_threshold:
+		return false
+	var n := _night_id_now()
+	if n != _night_id:
+		_night_id = n
+		_night_owl = randf() < adventurousness * night_work_chance
+	return _night_owl
+
+func _night_id_now() -> int:
+	return Game.day if Game.day_fraction < 0.25 else Game.day + 1
 
 
 func _want_well() -> Goal:

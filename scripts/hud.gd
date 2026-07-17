@@ -109,6 +109,7 @@ func _on_play_resume() -> void:
 		Game.resume()
 	else:
 		Game.pause()
+	%"Paused?".visible = Game.paused
 	_update_play_button()
 
 
@@ -321,7 +322,7 @@ func show_profile(folk: Folk):
 	focused_folk = folk
 
 	if not _profile_anchored:
-		profile.set_anchors_preset(Control.PRESET_TOP_LEFT, true)
+		profile.set_anchors_preset(Control.PRESET_TOP_LEFT, false)
 		_profile_anchored = true
 	_place_profile(_profile_pos if _profile_pos.is_finite() else profile.global_position)
 

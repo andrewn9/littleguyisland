@@ -117,8 +117,8 @@ stretch_mode = 5
 [node name="light_source" type="OmniLight3D" parent="Pivot/Sprite" unique_id=1809132446]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0)
 light_color = Color(1, 0.8, 0.7, 1)
-light_energy = 11.19
+light_energy = 16.525
 light_indirect_energy = 0.0
 light_volumetric_fog_energy = 0.0
-omni_range = 73.352
+omni_range = 96.797
 omni_attenuation = 2.0
