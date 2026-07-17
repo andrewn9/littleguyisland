@@ -21,6 +21,12 @@ const NOTIFICATION = preload("res://ui/notification.tscn")
 
 @onready var notifications = %Notifications
 
+# folk drag-and-drop: a folk sets itself here on press; the model turns it into
+# a drag once the mouse moves, and clears it on release
+var grabbed_folk: Folk = null
+var grab_screen := Vector2.ZERO
+var dragging_folk := false
+
 @export var button_inactive_color := Color.from_rgba8(200, 200, 200, 255)
 @export var button_pressed_color := Color.from_rgba8(139, 139, 139, 255)
 
@@ -29,6 +35,12 @@ const cursor_mountain = preload("res://ui/cursors/cursormountain.png")
 const cursor_smooth = preload("res://ui/cursors/cursorsmooth.png")
 const cursor_shovel = preload("res://ui/cursors/cursorshovel.png")
 const cursor_terrain = preload("res://ui/cursors/cursorterrain.png")
+const cursor_openhand = preload("res://ui/cursors/openhand.png")
+const cursor_closehand = preload("res://ui/cursors/closehand.png")
+const HAND_HOTSPOT := Vector2(16, 16)
+
+# the folk currently under the cursor (folk report this via set_hovered)
+var hovered_folk: Folk = null
 
 func _ready() -> void:
 	for button: TextureButton in wheel.get_children():
@@ -182,20 +194,36 @@ var _cursor_on_ui := false
 func _set_tool_cursor(tex: Texture2D, hotspot: Vector2) -> void:
 	_tool_cursor = tex
 	_tool_hotspot = hotspot
-	if not _cursor_on_ui:
-		Input.set_custom_mouse_cursor(tex, Input.CURSOR_ARROW, hotspot)
+	_cursor_key = "" # let _refresh_hover_cursor reapply next frame
 
+
+var _cursor_key := "" # what's currently shown, so we only reset on a change
 
 func _refresh_hover_cursor() -> void:
 	var hovered := get_viewport().gui_get_hovered_control()
-	var on_ui := hovered != null and hovered.mouse_filter == Control.MOUSE_FILTER_STOP
-	if on_ui == _cursor_on_ui:
+	_cursor_on_ui = hovered != null and hovered.mouse_filter == Control.MOUSE_FILTER_STOP
+
+	# priority: UI first, then grabbing a folk, then hovering one, else the tool
+	var tex := _tool_cursor
+	var hotspot := _tool_hotspot
+	var key := "tool"
+	if _cursor_on_ui:
+		tex = cursor_arrow
+		hotspot = Vector2.ZERO
+		key = "ui"
+	elif is_instance_valid(grabbed_folk):
+		tex = cursor_closehand
+		hotspot = HAND_HOTSPOT
+		key = "grab"
+	elif is_instance_valid(hovered_folk):
+		tex = cursor_openhand
+		hotspot = HAND_HOTSPOT
+		key = "hover"
+
+	if key == _cursor_key:
 		return
-	_cursor_on_ui = on_ui
-	if on_ui:
-		Input.set_custom_mouse_cursor(cursor_arrow)
-	else:
-		Input.set_custom_mouse_cursor(_tool_cursor, Input.CURSOR_ARROW, _tool_hotspot)
+	_cursor_key = key
+	Input.set_custom_mouse_cursor(tex, Input.CURSOR_ARROW, hotspot)
 
 
 func _on_settings_button_pressed():
@@ -319,6 +347,14 @@ func _place_profile(p: Vector2) -> void:
 	profile.global_position = p
 	_profile_pos = p
 
+
+func toggle_profile(folk: Folk):
+	if not is_instance_valid(folk):
+		return
+	if focused_folk == folk:
+		hide_profile()
+	else:
+		show_profile(folk)
 
 func show_profile(folk: Folk):
 	profile.visible = true

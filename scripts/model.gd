@@ -195,6 +195,35 @@ func use_tool(pos: Vector2):
 
 
 func _unhandled_input(event):
+	if Hud.grabbed_folk != null:
+		if not is_instance_valid(Hud.grabbed_folk):
+			Hud.grabbed_folk = null
+			Hud.dragging_folk = false
+		elif event is InputEventMouseMotion:
+			if not Hud.dragging_folk \
+					and event.position.distance_to(Hud.grab_screen) > 8.0:
+				Hud.dragging_folk = true
+			if Hud.dragging_folk:
+				var map_pos = project_screen_pos(event.position)
+				if map_pos:
+					Hud.grabbed_folk.dragged_to(map_pos)
+			return
+		elif event is InputEventMouseButton \
+				and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+			if Hud.dragging_folk:
+				Hud.grabbed_folk.dropped()
+			else:
+				Hud.toggle_profile(Hud.grabbed_folk)
+			Hud.grabbed_folk = null
+			Hud.dragging_folk = false
+			return
+
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT \
+			and not event.pressed and Hud.active.name == "Click" \
+			and is_instance_valid(Hud.focused_folk):
+		Hud.hide_profile()
+		return
+
 	if Hud.focus_cam:
 		return
 	if Input.is_key_pressed(KEY_SPACE):

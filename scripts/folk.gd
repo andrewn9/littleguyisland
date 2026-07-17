@@ -216,9 +216,43 @@ func _update_outfit() -> void:
 	_light_tool.visible = night
 	_light.visible = night
 
-func _apply_growth():
+const HOVER_SCALE := 1.3
+var _hovered := false
+var _hover_scale := 1.0
+var _scale_tween: Tween
+
+func _grown_scale() -> Vector3:
 	var t := clampf(float(age) / float(adulthood_age), 0.0, 1.0)
-	$Pivot.scale = _base_pivot_scale * lerpf(child_scale, 1.0, t)
+	return _base_pivot_scale * lerpf(child_scale, 1.0, t)
+
+func _apply_growth():
+	$Pivot.scale = _grown_scale() * _hover_scale
+
+func set_hovered(h: bool) -> void:
+	if _hovered == h:
+		return
+	_hovered = h
+	if h:
+		Hud.hovered_folk = self
+	elif Hud.hovered_folk == self:
+		Hud.hovered_folk = null
+	_hover_scale = HOVER_SCALE if h else 1.0
+	if _scale_tween and _scale_tween.is_valid():
+		_scale_tween.kill()
+	_scale_tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_scale_tween.tween_property($Pivot, "scale", _grown_scale() * _hover_scale, 0.12)
+
+func _screen_hit(screen_pos: Vector2) -> bool:
+	var camera := get_viewport().get_camera_3d()
+	if camera == null:
+		return false
+	var c_min = camera.unproject_position(global_position + Vector3(0, 14, 0))
+	var c_max = camera.unproject_position(global_position)
+	var hgt = c_max.y - c_min.y
+	c_min.x -= hgt * 2 / 7
+	c_max.x += hgt * 2 / 7
+	return screen_pos.x > c_min.x and screen_pos.x < c_max.x \
+			and screen_pos.y > c_min.y and screen_pos.y < c_max.y
 
 
 func make_child(birth_home: Entity):
@@ -283,26 +317,37 @@ func _update_profile():
 
 
 func _unhandled_input(event):
-	if not (event is InputEventMouseButton and event.pressed and event.button_mask & MOUSE_BUTTON_MASK_LEFT):
+	if event is InputEventMouseMotion:
+		if Hud.active.name == "Click" and Hud.grabbed_folk == null:
+			set_hovered(_screen_hit(event.position))
 		return
 
-	var camera := get_viewport().get_camera_3d()
-	if camera == null:
+	if not (event is InputEventMouseButton and event.pressed \
+			and event.button_index == MOUSE_BUTTON_LEFT):
 		return
-	var c_min = camera.unproject_position(global_position + Vector3(0, 14, 0))
-	var c_max = camera.unproject_position(global_position)
-	var h = c_max.y - c_min.y
-	c_min.x -= h * 2 / 7
-	c_max.x += h * 2 / 7
 
-	var hit: bool = event.position.x > c_min.x and event.position.x < c_max.x and event.position.y > c_min.y and event.position.y < c_max.y
-	if hit and Hud.active.name == "Click":
-		Hud.show_profile(self)
-	elif Hud.focused_folk == self:
-		Hud.hide_profile()
+	if Hud.active.name == "Click" and _screen_hit(event.position):
+		Hud.grabbed_folk = self
+		Hud.grab_screen = event.position
 
 	viewport.push_input(event)
 
+
+func dragged_to(map_pos: Vector2) -> void:
+	set_hovered(true)
+	_release_claim()
+	_path = PackedVector2Array()
+	_at_home = false
+	visible = true
+	state = FolkState.IDLE
+	_idle_left = 0.5
+	pos = map_pos
+	target_pos = map_pos
+
+func dropped() -> void:
+	set_hovered(false)
+	_roam_goal = Vector2.INF
+	_idle_left = randf_range(0.3, 0.8)
 
 func _decide():
 	_release_claim()  # drop any tree/crop claim from a previous plan
