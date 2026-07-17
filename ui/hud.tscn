@@ -1508,9 +1508,24 @@ tick_count = 5
 ticks_on_borders = true
 ticks_position = 2
 
+[node name="Reflections" type="HFlowContainer" parent="CanvasLayer/Settings/Control/VBoxContainer" unique_id=1217242533]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Settings/Control/VBoxContainer/Reflections" unique_id=1555356909]
+layout_mode = 2
+size_flags_vertical = 1
+text = "water reflections"
+vertical_alignment = 1
+
+[node name="ReflectionsButton" type="CheckButton" parent="CanvasLayer/Settings/Control/VBoxContainer/Reflections" unique_id=1079373667]
+layout_mode = 2
+button_pressed = true
+
 [connection signal="pressed" from="CanvasLayer/NinePatchRect/HFlowContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="CanvasLayer/Bottom/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/HBoxContainer2/TrackButton" to="." method="_on_track_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/HBoxContainer2/POVButton" to="." method="_on_pov_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/HBoxContainer2/DeallocateButton" to="." method="_on_deallocate_button_pressed"]
 [connection signal="toggled" from="CanvasLayer/Settings/Control/VBoxContainer/GFX/GFXButton" to="." method="_on_gfx_button_toggled"]
+[connection signal="toggled" from="CanvasLayer/Settings/Control/VBoxContainer/Reflections/ReflectionsButton" to="." method="_on_reflections_button_toggled"]
