@@ -45,7 +45,7 @@ colors = PackedColorArray(0.36719733, 0.41976902, 0.6433378, 1, 1, 0.52466667, 0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4w5j5"]
 shading_mode = 0
-albedo_color = Color(0.09803922, 0.19215687, 0.4509804, 1)
+albedo_color = Color(0.16078432, 0.2901961, 0.6431373, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
 size = Vector2(1500, 1500)

@@ -5,7 +5,7 @@
 [resource]
 render_priority = -1
 shader = ExtResource("1_4w5j5")
-shader_parameter/color = Color(0.09942631, 0.19185543, 0.44933772, 1)
+shader_parameter/color = Color(0.16078432, 0.2901961, 0.6431373, 1)
 shader_parameter/shoreline_color = Color(0.7202103, 0.7202103, 0.7202103, 1)
 shader_parameter/normal_strength = 2.0
 shader_parameter/specular = 0.3
