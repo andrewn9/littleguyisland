@@ -300,6 +300,7 @@ var special_eggs = ["cliff", " quixote", "ihide", "sang", "enheim", "einburg", "
 var special_whole_eggs = [
 	"John",
 	"jera",
+	"bongbong",
 ]
 
 
