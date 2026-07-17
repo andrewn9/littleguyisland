@@ -18,7 +18,7 @@ const NAV_MOUNTAIN_LEVEL := 0.50
 
 const SWIM_WEIGHT := 10.0
 
-const MAX_SWIM := 18
+const MAX_SWIM := 40
 var astar: AStarGrid2D
 
 const FARM_MAX_ELEVATION := 0.16

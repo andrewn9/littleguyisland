@@ -30,6 +30,9 @@
 [ext_resource type="Texture2D" uid="uid://d0qbtsipfo1he" path="res://sprites/folk/shirt/shirt1.png" id="24_5jwjf"]
 [ext_resource type="Texture2D" uid="uid://dynh0shhdb3tc" path="res://sprites/folk/hair/hair1.png" id="25_nso1x"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6y3bq"]
+bg_color = Color(0.5082, 0.7089134, 0.77, 0.12156863)
+
 [sub_resource type="GDScript" id="GDScript_st70h"]
 script/source = "extends Label
 
@@ -206,44 +209,16 @@ offset_right = 327.2
 offset_bottom = 146.8
 theme_override_font_sizes/font_size = 22
 
-[node name="BrushSize" type="VBoxContainer" parent="CanvasLayer" unique_id=1744459680]
+[node name="Paused?" type="Panel" parent="CanvasLayer" unique_id=118991257]
 unique_name_in_owner = true
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.761
-anchor_right = 0.5
-anchor_bottom = 0.761
-offset_left = -75.0
-offset_top = -56.0
-offset_right = 75.0
-offset_bottom = -4.0
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/separation = 2
-
-[node name="BrushSizeLabel" type="Label" parent="CanvasLayer/BrushSize" unique_id=1744459681]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "brush size"
-horizontal_alignment = 1
-
-[node name="SizeSlider" type="HSlider" parent="CanvasLayer/BrushSize" unique_id=1744459679]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, -1)
-custom_maximum_size = Vector2(150, -1)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-min_value = 0.5
-max_value = 1.5
-step = 0.0
-value = 1.0
-scrollable = false
-tick_count = 7
-ticks_on_borders = true
-ticks_position = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6y3bq")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer" unique_id=1030966358]
 anchors_preset = 15
@@ -286,10 +261,52 @@ texture_normal = ExtResource("4_b1px6")
 stretch_mode = 0
 
 [node name="Label" type="Label" parent="CanvasLayer" unique_id=528747437]
-offset_right = 40.0
+anchors_preset = -1
+offset_left = 10.0
+offset_right = 60.0
 offset_bottom = 23.0
+theme_override_font_sizes/font_size = 9
 text = "FPS: 120.0"
 script = SubResource("GDScript_st70h")
+
+[node name="BrushSize" type="VBoxContainer" parent="CanvasLayer" unique_id=1744459680]
+unique_name_in_owner = true
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.761
+anchor_right = 0.5
+anchor_bottom = 0.761
+offset_left = -75.0
+offset_top = -61.0
+offset_right = 75.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="BrushSizeLabel" type="Label" parent="CanvasLayer/BrushSize" unique_id=1744459681]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "brush size"
+horizontal_alignment = 1
+
+[node name="SizeSlider" type="HSlider" parent="CanvasLayer/BrushSize" unique_id=1744459679]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, -1)
+custom_maximum_size = Vector2(150, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 0.5
+max_value = 1.5
+step = 0.0
+value = 1.0
+scrollable = false
+tick_count = 7
+ticks_on_borders = true
+ticks_position = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1648160815]
 anchors_preset = -1
@@ -1089,12 +1106,16 @@ stretch_mode = 0
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(215.975, 257.07)
-custom_maximum_size = Vector2(252.28, 276.25)
+custom_maximum_size = Vector2(215, 257)
 propagate_maximum_size = true
 anchors_preset = -1
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.868
+offset_left = 170.0
+offset_top = 167.0
+offset_right = 259.0
+offset_bottom = -122.274994
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
@@ -1208,6 +1229,7 @@ autowrap_mode = 1
 
 [node name="WantLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1979162048]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
