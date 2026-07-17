@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1tmiqnraxwiq"
-path="res://.godot/imported/flower11.png-94bf1f201f13eb51b460811fa2746264.ctex"
+uid="uid://cjf7t4tnyncj6"
+path="res://.godot/imported/torch.png-44a23b020db5432d36d6d99e43e0312e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/various/flower11.png"
-dest_files=["res://.godot/imported/flower11.png-94bf1f201f13eb51b460811fa2746264.ctex"]
+source_file="res://sprites/folk/light/torch.png"
+dest_files=["res://.godot/imported/torch.png-44a23b020db5432d36d6d99e43e0312e.ctex"]
 
 [params]
 

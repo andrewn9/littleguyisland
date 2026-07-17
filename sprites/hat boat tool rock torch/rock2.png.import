@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clh16c7prlh6l"
-path="res://.godot/imported/rock2.png-0d8470ea971b400cf53011735775fe31.ctex"
+uid="uid://b3wi0nf4sk0g0"
+path="res://.godot/imported/rock2.png-ff67c97ad93bc2374a8a25eb9f8b9eeb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/various/rock2.png"
-dest_files=["res://.godot/imported/rock2.png-0d8470ea971b400cf53011735775fe31.ctex"]
+source_file="res://sprites/hat boat tool rock torch/rock2.png"
+dest_files=["res://.godot/imported/rock2.png-ff67c97ad93bc2374a8a25eb9f8b9eeb.ctex"]
 
 [params]
 

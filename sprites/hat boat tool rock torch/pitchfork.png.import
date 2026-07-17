@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cc2qt6e43kfmm"
-path="res://.godot/imported/lantern.png-e61dc2d71a90fd1fa1e562d9c7ed5ac6.ctex"
+uid="uid://dwjbtbskkdd5"
+path="res://.godot/imported/pitchfork.png-2ceee3901b592883da4780a91c279d68.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/various/lantern.png"
-dest_files=["res://.godot/imported/lantern.png-e61dc2d71a90fd1fa1e562d9c7ed5ac6.ctex"]
+source_file="res://sprites/hat boat tool rock torch/pitchfork.png"
+dest_files=["res://.godot/imported/pitchfork.png-2ceee3901b592883da4780a91c279d68.ctex"]
 
 [params]
 
