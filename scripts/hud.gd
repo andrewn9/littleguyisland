@@ -296,8 +296,13 @@ func _on_settings_button_pressed():
 @onready var stone_value: Label = %StoneValue
 @onready var animal_value: Label = %AnimalValue
 
+var hide_ui_setting = false
+
 func _process(delta: float) -> void:
 	$CanvasLayer.visible = is_instance_valid(Game.model)
+	if (hide_ui_setting):
+		$CanvasLayer.visible = false
+	
 	if not is_instance_valid(Game.model):
 		return
 	_update_island_stats()
@@ -582,8 +587,9 @@ func _on_scale_slider_value_changed(value: float) -> void:
 	get_viewport().scaling_3d_scale = value
 
 func _on_hide_button_pressed():
-	get_node("CanvasLayer").visible = false
+	print("im hidden king ")
+	hide_ui_setting = true
 
 func _unhandled_input(event):
-	if event is InputEventMouseButton and event.button_mask & MOUSE_BUTTON_MASK_LEFT and event.pressed and not get_node("CanvasLayer").visible:
-		get_node("CanvasLayer").visible = true
+	if hide_ui_setting and event is InputEventMouseButton and event.button_mask & MOUSE_BUTTON_MASK_LEFT and event.pressed:
+		hide_ui_setting = false
