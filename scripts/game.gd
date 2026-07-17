@@ -199,6 +199,12 @@ func pause():
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("person"):
 		model.entity_gen.spawn_little_guy(MapData.RESOLUTION / 2, MapData.RESOLUTION / 2)
+		
+		var i_max = randi_range(1, 152)
+		var staar = "yooo"
+		for i in range(i_max):
+			staar += "yooo"
+		Hud.monkey_say(staar)
 
 
 func _physics_process(delta: float) -> void:

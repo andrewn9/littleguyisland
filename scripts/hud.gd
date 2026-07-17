@@ -59,6 +59,9 @@ func _ready() -> void:
 	_make_profile_draggable()
 	brush_size.visible = _drawing_tool()
 
+	monkey_anim.animation_finished.connect(_on_monkey_anim_done)
+	monkey_anim.play("idle")
+
 
 const LAYERS := {
 	"island": "terrain geometry",
@@ -226,6 +229,7 @@ func _on_settings_button_pressed():
 func _process(delta: float) -> void:
 	_update_island_stats()
 	_refresh_hover_cursor()
+	_tick_speech(delta)
 
 	day_count_label.text = str(Game.day)
 	var hr = fmod(Game.day_fraction * 24, 12)
@@ -407,3 +411,49 @@ func push_notification(msg: String):
 
 	tween.tween_property(label, "modulate", Color(1, 1, 1, 0), 1.0)
 	tween.tween_callback(label.queue_free)
+
+@onready var monkey_anim: AnimationPlayer = %MonkeyAnim
+@onready var bubble: NinePatchRect = %MonkeyBubble
+@onready var bubble_label: RichTextLabel = %MonkeyBubbleLabel
+
+const BUBBLE_MAX_WIDTH := 180.0
+const BUBBLE_MIN_WIDTH := 80.0
+const BUBBLE_TAIL_X := 10.0
+
+const BUBBLE_PAD_L := 10.0
+const BUBBLE_PAD_R := 12.0
+const BUBBLE_PAD_T := 8.0
+const BUBBLE_PAD_B := 14.0
+const TALKS := ["talk1", "talk2"]
+
+var _speech_left := 0.0
+
+func monkey_say(text: String, seconds := 4.0) -> void:
+	bubble_label.text = text
+	_fit_bubble()
+	bubble.visible = true
+	_speech_left = seconds
+	monkey_anim.play(TALKS.pick_random())
+
+func _fit_bubble() -> void:
+	bubble_label.position = Vector2(BUBBLE_PAD_L, BUBBLE_PAD_T)
+	bubble_label.size = Vector2(BUBBLE_MAX_WIDTH - BUBBLE_PAD_L - BUBBLE_PAD_R, 0)
+	var text_w = bubble_label.get_content_width()
+	var text_h = bubble_label.get_content_height()
+	bubble_label.size = Vector2(text_w, text_h)
+
+	var w := clampf(text_w + BUBBLE_PAD_L + BUBBLE_PAD_R, BUBBLE_MIN_WIDTH, BUBBLE_MAX_WIDTH)
+	var h := BUBBLE_PAD_T + text_h + BUBBLE_PAD_B
+	bubble.size = Vector2(w, h)
+	bubble.position = Vector2(BUBBLE_TAIL_X, -bubble.size.y)
+
+func _tick_speech(delta: float) -> void:
+	if _speech_left <= 0.0:
+		return
+	_speech_left -= delta
+	if _speech_left <= 0.0:
+		bubble.visible = false
+		monkey_anim.play("idle")
+
+func _on_monkey_anim_done(_anim: StringName) -> void:
+	monkey_anim.play(TALKS.pick_random() if _speech_left > 0.0 else "idle")
