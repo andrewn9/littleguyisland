@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://cy5dtkudlsf2e" path="res://scripts/day_night_cycle.gd" id="1_215e1"]
 [ext_resource type="Material" uid="uid://4mc4ktvjal3e" path="res://materials/ocean_water.tres" id="1_iotsf"]
 [ext_resource type="ArrayMesh" uid="uid://dgl7q4gabvdb0" path="res://testing/Untitled.obj" id="1_lc2xo"]
+[ext_resource type="AudioStream" uid="uid://doct02352era6" path="res://sfx/folk song draft.mp3" id="2_215e1"]
 [ext_resource type="Script" uid="uid://du7arglt47vj" path="res://scripts/model.gd" id="3_feb5d"]
 [ext_resource type="Texture2D" uid="uid://luhiju1jmkk6" path="res://testing/1height.png" id="4_7sc4i"]
 [ext_resource type="Shader" uid="uid://yphip34bcg22" path="res://shaders/terrain.gdshader" id="4_fc0e3"]
@@ -168,6 +169,12 @@ script = ExtResource("1_7sc4i")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1294957651]
 environment = SubResource("Environment_7sc4i")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=536539044]
+stream = ExtResource("2_215e1")
+volume_db = -0.5
+autoplay = true
+parameters/looping = true
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=34043254 node_paths=PackedStringArray("environment")]
 unique_name_in_owner = true

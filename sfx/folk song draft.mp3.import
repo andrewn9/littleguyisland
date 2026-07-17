@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://doct02352era6"
+path="res://.godot/imported/folk song draft.mp3-394566c5fb5c8203d08fbe4a7ce4b323.mp3str"
+
+[deps]
+
+source_file="res://sfx/folk song draft.mp3"
+dest_files=["res://.godot/imported/folk song draft.mp3-394566c5fb5c8203d08fbe4a7ce4b323.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
