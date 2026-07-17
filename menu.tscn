@@ -110,6 +110,24 @@ horizontal_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
 
+[node name="VBoxContainer4" type="VBoxContainer" parent="VFlowContainer" unique_id=869289882]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="VFlowContainer/VBoxContainer4" unique_id=13632310]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture_normal = ExtResource("1_lti8b")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="VFlowContainer/VBoxContainer4" unique_id=23955046]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "recycle bin"
+horizontal_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
 [node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=300528188]
 layout_mode = 1
 anchors_preset = -1
