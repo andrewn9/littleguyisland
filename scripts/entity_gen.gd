@@ -283,13 +283,20 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 			if child is Entity and (child as Entity).is_static and not Game.is_built((child as Entity).type):
 				child.queue_free()  # regrow natural props, keep what the folk built
 			elif child is GPUParticles3D:
-				child.queue_free()
+				free_cloud(child)
 
 	prop_batch.clear_region(x1, y1, x2, y2)  # plains() re-adds the decor below
 
 	plains(x1, y1, x2, y2)
 	mountains(x1, y1, x2, y2)
 
+func free_cloud(cloud: GPUParticles3D):
+	if not cloud.emitting:
+		return
+	
+	cloud.emitting = false
+	await get_tree().create_timer(cloud.lifetime).timeout
+	cloud.queue_free()
 
 var name_prefixes = ["chud", "folk", "son", "larp"]
 
@@ -299,10 +306,8 @@ var special_eggs = ["cliff", " quixote", "ihide", "sang", "enheim", "einburg", "
 
 var special_whole_eggs = [
 	"John",
-	"jera",
 	"bongbong",
 ]
-
 
 func spawn_home(p: Vector2, capacity := 3) -> Entity:
 	var ent = spawn_static_prop(p, house_textures, 1.7, 2.1)
@@ -423,7 +428,6 @@ func spawn_little_guy(x: int, y: int, birth_home: Entity = null):
 
 
 var _announced := {}
-
 
 func _announce(key, msg):
 	if _announced.has(key):

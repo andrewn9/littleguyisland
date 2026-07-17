@@ -1375,6 +1375,7 @@ patch_margin_bottom = 10
 
 [node name="Settings" type="Panel" parent="CanvasLayer" unique_id=671094804]
 unique_name_in_owner = true
+visible = false
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
