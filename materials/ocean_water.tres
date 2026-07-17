@@ -5,7 +5,7 @@
 [resource]
 render_priority = -1
 shader = ExtResource("1_4w5j5")
-shader_parameter/color = Color(0.09942631, 0.19185543, 0.44933772, 1)
+shader_parameter/color = Color(0.16078432, 0.2901961, 0.6431373, 1)
 shader_parameter/shoreline_color = Color(0.7202103, 0.7202103, 0.7202103, 1)
 shader_parameter/normal_strength = 2.0
 shader_parameter/specular = 0.3
@@ -13,3 +13,9 @@ shader_parameter/roughness = 0.3
 shader_parameter/metallic = 0.0
 shader_parameter/wave_strength = 2.245
 shader_parameter/time_scale = 1.0
+shader_parameter/ssr_enabled = true
+shader_parameter/ssr_resolution = 1.0
+shader_parameter/ssr_max_travel = 200.0
+shader_parameter/ssr_max_diff = 4.0
+shader_parameter/ssr_mix_strength = 0.2999999932944
+shader_parameter/ssr_screen_border_fadeout = 0.3

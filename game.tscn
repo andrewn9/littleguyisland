@@ -45,12 +45,12 @@ colors = PackedColorArray(0.36719733, 0.41976902, 0.6433378, 1, 1, 0.52466667, 0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4w5j5"]
 shading_mode = 0
-albedo_color = Color(0.15079999, 0.27240667, 0.58, 1)
+albedo_color = Color(0.16078432, 0.2901961, 0.6431373, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_feb5d"]
 size = Vector2(1500, 1500)
-subdivide_width = 256
-subdivide_depth = 256
+subdivide_width = 255
+subdivide_depth = 255
 orientation = 1
 
 [sub_resource type="Gradient" id="Gradient_base"]
@@ -81,7 +81,7 @@ shader_parameter/heightmap = ExtResource("4_7sc4i")
 shader_parameter/valuemap = ExtResource("5_lc2xo")
 shader_parameter/height_scale = 256.0
 shader_parameter/uv_scale = Vector2(1, 1)
-shader_parameter/texel_size = 0.01
+shader_parameter/texel_size = 0.004
 shader_parameter/near_threshold = 0.5
 shader_parameter/land_ramp = SubResource("Ramp_land")
 shader_parameter/mountain_ramp = SubResource("Ramp_mountain")

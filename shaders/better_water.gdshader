@@ -22,14 +22,6 @@ uniform float metallic = 0.0;
 uniform float wave_strength = 1.0;
 uniform float time_scale = 1.0;
 
-// group_uniforms SSR;
-
-// uniform float ssr_resolution   : hint_range(0.01, 10.0, 0.1)	= 1.0;
-// uniform float ssr_max_travel   : hint_range(0.0, 200.0, 0.1) 	= 30.0;
-// uniform float ssr_max_diff     : hint_range(0.1, 10.0, 0.1) 	= 4.0;
-// uniform float ssr_mix_strength : hint_range(0.0, 1.0, 0.01) 	= 0.7;
-// uniform float ssr_screen_border_fadeout: hint_range(0.0, 1.0, 0.1)	= 0.3;
-
 const Wave waves[] = {
 Wave(0.7f, 0.005f, 0.34607890423724263f, vec2(-0.8926928682552505f, -0.4506655555577927f)),
 Wave(0.588f, 0.005600000000000001f, 0.6016964491417672f, vec2(0.5361229026047912f, 0.8441399370380562f)),
@@ -65,75 +57,78 @@ Wave(0.0037452138595782075f, 0.14979961060455577f, 0.9439328711189685f, vec2(0.6
 Wave(0.003145979642045694f, 0.16777556387710246f, 0.20300367073966663f, vec2(-0.9894975692234914f, -0.14454950882241627f))
 };
 
-// bool is_zero(float value) 
-// {
-//     return abs(value) < EPSILON;
-// }
+group_uniforms SSR;
 
-// bool is_within_screen_boundaries(vec2 position) 
-// {
-// 	return position.x > 0.0 && position.x < 1.0 && position.y > 0.0 && position.y < 1.0;
-// }
+uniform bool ssr_enabled = true;
+uniform float ssr_resolution   : hint_range(0.01, 10.0, 0.1)	= 1.0;
+uniform float ssr_max_travel   : hint_range(0.0, 200.0, 0.1) 	= 30.0;
+uniform float ssr_max_diff     : hint_range(0.1, 10.0, 0.1) 	= 4.0;
+uniform float ssr_mix_strength : hint_range(0.0, 1.0, 0.01) 	= 0.7;
+uniform float ssr_screen_border_fadeout: hint_range(0.0, 1.0, 0.1)	= 0.3;
 
-// vec2 get_uv_from_view_position(vec3 position_view_space, mat4 proj_m)
-// {
-// 	vec4 position_clip_space = proj_m * vec4(position_view_space.xyz, 1.0);
-// 	vec2 position_ndc = position_clip_space.xy / position_clip_space.w;
-// 	return position_ndc.xy * 0.5 + 0.5;
-// }
+bool is_zero(float value) {
+    return abs(value) < EPSILON;
+}
 
-// vec3 get_view_position_from_uv(vec2 uv, float depth, mat4 inv_proj_m)
-// {
-// 	vec4 position_ndc = vec4((uv * 2.0) - 1.0, depth, 1.0);
-// 	vec4 view_position = inv_proj_m * position_ndc;
-// 	return view_position.xyz /= view_position.w;
-// }
+bool is_within_screen_boundaries(vec2 position) {
+	return position.x > 0.0 && position.x < 1.0 && position.y > 0.0 && position.y < 1.0;
+}
 
-// float get_screen_border_alpha(vec2 screen_position)
-// {
-//     vec2 shifted_screen_position = 4.0 * screen_position * (1.0 - screen_position);
-// 	float mask = shifted_screen_position.x * shifted_screen_position.y; // ranging from 0.0 at the edges to 1.0 in the center 
+vec2 get_uv_from_view_position(vec3 position_view_space, mat4 proj_m) {
+	vec4 position_clip_space = proj_m * vec4(position_view_space.xyz, 1.0);
+	vec2 position_ndc = position_clip_space.xy / position_clip_space.w;
+	return position_ndc.xy * 0.5 + 0.5;
+}
 
-// 	// An offset in the [0.0, 0.5] range for ssr_screen_border_fadeout values > 0.75
-// 	// which is subtracted from the result of smoothstep.
-// 	// This ensure alpha smoothly transitions to zero when ssr_screen_border_fadeout is approaching 1.0.	
-// 	float offset = mix(0.0, 0.5, (clamp(ssr_screen_border_fadeout, 0.75, 1.0)-0.75) / 0.25);
-// 	float alpha = clamp(smoothstep(0.0, 2.0 * ssr_screen_border_fadeout, mask) - offset, 0.0, 1.0);
+vec3 get_view_position_from_uv(vec2 uv, float depth, mat4 inv_proj_m) {
+	vec4 position_ndc = vec4((uv * 2.0) - 1.0, depth, 1.0);
+	vec4 view_position = inv_proj_m * position_ndc;
+	return view_position.xyz /= view_position.w;
+}
 
-// 	return is_zero(ssr_screen_border_fadeout) ? 1.0 : alpha;
-// }
+float get_screen_border_alpha(vec2 screen_position) {
+    vec2 shifted_screen_position = 4.0 * screen_position * (1.0 - screen_position);
+	float mask = shifted_screen_position.x * shifted_screen_position.y; // ranging from 0.0 at the edges to 1.0 in the center 
 
-// vec4 get_ssr_color(vec3 surface_view_position, vec3 normal_view_space, vec3 view_view_space, mat4 proj_m, mat4 inv_proj_m)
-// {
-// 	if (ssr_max_travel < EPSILON)
-// 	{
-// 		return vec4(0);
-// 	}
+	// An offset in the [0.0, 0.5] range for ssr_screen_border_fadeout values > 0.75
+	// which is subtracted from the result of smoothstep.
+	// This ensure alpha smoothly transitions to zero when ssr_screen_border_fadeout is approaching 1.0.	
+	float offset = mix(0.0, 0.5, (clamp(ssr_screen_border_fadeout, 0.75, 1.0)-0.75) / 0.25);
+	float alpha = clamp(smoothstep(0.0, 2.0 * ssr_screen_border_fadeout, mask) - offset, 0.0, 1.0);
+
+	return is_zero(ssr_screen_border_fadeout) ? 1.0 : alpha;
+}
+
+vec4 get_ssr_color(vec3 surface_view_position, vec3 normal_view_space, vec3 view_view_space, mat4 proj_m, mat4 inv_proj_m) {
+	if (ssr_max_travel < EPSILON)
+	{
+		return vec4(0);
+	}
 	
-// 	vec3 current_position_view_space = surface_view_position;
-// 	vec3 view_direction_view_space = view_view_space * -1.0;
-// 	vec3 reflect_vector_view_space = normalize(reflect(view_direction_view_space.xyz, normal_view_space.xyz));
+	vec3 current_position_view_space = surface_view_position;
+	vec3 view_direction_view_space = view_view_space * -1.0;
+	vec3 reflect_vector_view_space = normalize(reflect(view_direction_view_space.xyz, normal_view_space.xyz));
 	
-// 	vec2 current_screen_position = vec2(0.0);
+	vec2 current_screen_position = vec2(0.0);
 	
-// 	vec3 resulting_color = vec3(-1.0);
-// 	for(float travel=0.0; resulting_color.x < 0.0 && travel < ssr_max_travel; travel = travel + ssr_resolution)
-// 	{
-// 		current_position_view_space += reflect_vector_view_space * ssr_resolution;
-// 		current_screen_position = get_uv_from_view_position(current_position_view_space, proj_m);
+	vec3 resulting_color = vec3(-1.0);
+	for(float travel=0.0; resulting_color.x < 0.0 && travel < ssr_max_travel; travel = travel + ssr_resolution)
+	{
+		current_position_view_space += reflect_vector_view_space * ssr_resolution;
+		current_screen_position = get_uv_from_view_position(current_position_view_space, proj_m);
 
-// 		float depth_texture_probe_raw = texture(depth_texture, current_screen_position).x;
-// 		vec3 depth_texture_probe_view_position = get_view_position_from_uv(current_screen_position, depth_texture_probe_raw, inv_proj_m);
+		float depth_texture_probe_raw = texture(depth_texture, current_screen_position).x;
+		vec3 depth_texture_probe_view_position = get_view_position_from_uv(current_screen_position, depth_texture_probe_raw, inv_proj_m);
 		
-// 		float depth_diff = depth_texture_probe_view_position.z - current_position_view_space.z;
+		float depth_diff = depth_texture_probe_view_position.z - current_position_view_space.z;
 		
-// 		vec3 ssr_screen_color = texture(screen_texture, current_screen_position.xy).rgb;
-// 		resulting_color = (is_within_screen_boundaries(current_screen_position) && depth_diff >= 0.0 && depth_diff < ssr_max_diff) ? ssr_screen_color : vec3(-1.0);
-// 	}
+		vec3 ssr_screen_color = texture(screen_texture, current_screen_position.xy).rgb;
+		resulting_color = (is_within_screen_boundaries(current_screen_position) && depth_diff >= 0.0 && depth_diff < ssr_max_diff) ? ssr_screen_color : vec3(-1.0);
+	}
 
-// 	float alpha = get_screen_border_alpha(current_screen_position);
-// 	return vec4(resulting_color,alpha);
-// }
+	float alpha = get_screen_border_alpha(current_screen_position);
+	return vec4(resulting_color,alpha);
+}
 
 void vertex() {
 	for (int i = 0; i < waves.length(); i++) {
@@ -155,8 +150,10 @@ void fragment() {
 
 	deriv *= normal_strength;
 	
-	NORMAL_MAP = normalize(vec3(deriv.x, deriv.y, 1.0));
-	NORMAL_MAP = NORMAL_MAP * 0.5 + 0.5;
+	mat3 tbn = mat3(TANGENT, BINORMAL, NORMAL);
+	NORMAL = tbn * normalize(vec3(deriv.x, deriv.y, 1.0));
+	// NORMAL_MAP = normalize(vec3(deriv.x, deriv.y, 1.0));
+	// NORMAL_MAP = NORMAL_MAP * 0.5 + 0.5;
 
 	ROUGHNESS = roughness;
 	SPECULAR = specular;
@@ -179,16 +176,22 @@ void fragment() {
 	vec4 world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	world.xyz /= world.w;
 
+	if (ssr_enabled) {
+		vec3 surface_view_position 	= get_view_position_from_uv(SCREEN_UV, FRAGCOORD.z, INV_PROJECTION_MATRIX);
+
+		vec4 ssr_color 					= get_ssr_color(surface_view_position, NORMAL, VIEW, PROJECTION_MATRIX, INV_PROJECTION_MATRIX);
+
+		vec3 surface_color_ssr_mix		= (ssr_max_travel > EPSILON) ? mix(ALBEDO, ssr_color.rgb, ssr_mix_strength * ssr_color.a) : vec3(0);
+		vec3 water_color 				= (ssr_color.x >= 0.0) ? surface_color_ssr_mix : ALBEDO;
+
+		ALBEDO = water_color;
+	}
+
 	if (world_pos.y - world.y < 15.0) {
 		ALBEDO = mix(shoreline_color, ALBEDO, clamp(pow((world_pos.y - world.y) / 15.0, 0.2), 0.0, 1.0));
 	}
 
-	// vec3 surface_view_position 	= get_view_position_from_uv(SCREEN_UV, FRAGCOORD.z, INV_PROJECTION_MATRIX);
-
-	// vec4 ssr_color 					= get_ssr_color(surface_view_position, NORMAL, VIEW, PROJECTION_MATRIX, INV_PROJECTION_MATRIX);
-
-	// vec3 surface_color_ssr_mix		= (ssr_max_travel > EPSILON) ? mix(ALBEDO, ssr_color.rgb, ssr_mix_strength * ssr_color.a) : vec3(0);
-	// vec3 water_color 				= (ssr_color.x >= 0.0) ? surface_color_ssr_mix : ALBEDO;
-
-	// ALBEDO = water_color;
+	float fac = dot(NORMAL, vec3(0.0, 0.0, 1.0)) * pow(1.0 - dot(VIEW, NORMAL), 5.0);
+	IRRADIANCE = vec4(0.0, 0.0, 0.0, 1.0 - fac);
+	RADIANCE = vec4(0.0, 0.0, 0.0, 1.0 - fac);
 }
