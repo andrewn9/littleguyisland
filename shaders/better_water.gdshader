@@ -15,6 +15,7 @@ uniform sampler2D screen_texture : hint_screen_texture;
 
 uniform vec3 color : source_color = vec3(0.2, 0.3, 0.6);
 uniform vec3 shoreline_color : source_color = vec3(1.0, 1.0, 1.0);
+uniform float shoreline_depth = 15.0;
 uniform float normal_strength = 1.0;
 uniform float specular = 0.3;
 uniform float roughness = 0.3;
@@ -161,6 +162,17 @@ void fragment() {
 	
 	ALBEDO = color;
 
+	if (ssr_enabled) {
+		vec3 surface_view_position 	= get_view_position_from_uv(SCREEN_UV, FRAGCOORD.z, INV_PROJECTION_MATRIX);
+
+		vec4 ssr_color 					= get_ssr_color(surface_view_position, NORMAL, VIEW, PROJECTION_MATRIX, INV_PROJECTION_MATRIX);
+
+		vec3 surface_color_ssr_mix		= (ssr_max_travel > EPSILON) ? mix(ALBEDO, ssr_color.rgb, ssr_mix_strength * ssr_color.a) : vec3(0);
+		vec3 water_color 				= (ssr_color.x >= 0.0) ? surface_color_ssr_mix : ALBEDO;
+
+		ALBEDO = water_color;
+	}
+
 	float depth = texture(depth_texture, SCREEN_UV).x;
 
 	#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
@@ -176,19 +188,8 @@ void fragment() {
 	vec4 world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	world.xyz /= world.w;
 
-	if (ssr_enabled) {
-		vec3 surface_view_position 	= get_view_position_from_uv(SCREEN_UV, FRAGCOORD.z, INV_PROJECTION_MATRIX);
-
-		vec4 ssr_color 					= get_ssr_color(surface_view_position, NORMAL, VIEW, PROJECTION_MATRIX, INV_PROJECTION_MATRIX);
-
-		vec3 surface_color_ssr_mix		= (ssr_max_travel > EPSILON) ? mix(ALBEDO, ssr_color.rgb, ssr_mix_strength * ssr_color.a) : vec3(0);
-		vec3 water_color 				= (ssr_color.x >= 0.0) ? surface_color_ssr_mix : ALBEDO;
-
-		ALBEDO = water_color;
-	}
-
-	if (world_pos.y - world.y < 15.0) {
-		ALBEDO = mix(shoreline_color, ALBEDO, clamp(pow((world_pos.y - world.y) / 15.0, 0.2), 0.0, 1.0));
+	if (world_pos.y - world.y < shoreline_depth) {
+		ALBEDO = mix(shoreline_color, ALBEDO, clamp(pow((world_pos.y - world.y) / shoreline_depth, 0.2), 0.0, 1.0));
 	}
 
 	float fac = dot(NORMAL, vec3(0.0, 0.0, 1.0)) * pow(1.0 - dot(VIEW, NORMAL), 5.0);
