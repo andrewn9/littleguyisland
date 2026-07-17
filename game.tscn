@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://cbtff2g0rblin"]
 
+[ext_resource type="Script" uid="uid://dwasfm7auf75p" path="res://scripts/world.gd" id="1_7sc4i"]
 [ext_resource type="Script" uid="uid://cba0w7iu3m4ge" path="res://scripts/camera.gd" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://cy5dtkudlsf2e" path="res://scripts/day_night_cycle.gd" id="1_215e1"]
 [ext_resource type="Material" uid="uid://4mc4ktvjal3e" path="res://materials/ocean_water.tres" id="1_iotsf"]
@@ -163,11 +164,13 @@ shader_parameter/color_offset = 0.16
 shader_parameter/blur = 0.0
 
 [node name="Game2" type="Node3D" unique_id=556122064]
+script = ExtResource("1_7sc4i")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1294957651]
 environment = SubResource("Environment_7sc4i")
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=34043254 node_paths=PackedStringArray("environment")]
+unique_name_in_owner = true
 transform = Transform3D(0.877983, 0.47869185, 2.0924285e-08, 0, -4.371139e-08, 1, 0.47869185, -0.877983, -3.8377856e-08, 0, 100, 0)
 shadow_enabled = true
 directional_shadow_mode = 0
@@ -179,6 +182,7 @@ gradient = SubResource("Gradient_mhi6y")
 [node name="Island" type="Node" parent="." unique_id=847606793]
 
 [node name="Water" type="MeshInstance3D" parent="Island" unique_id=1387438961]
+unique_name_in_owner = true
 transform = Transform3D(830, 0, 0, 0, 830, 0, 0, 0, 830, 0, 14.235, 0)
 material_override = ExtResource("1_iotsf")
 mesh = ExtResource("1_lc2xo")
