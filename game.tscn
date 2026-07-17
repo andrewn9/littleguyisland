@@ -102,7 +102,7 @@ colors = PackedColorArray(0, 0, 0, 1, 0.73, 0.30076, 0.116800025, 1, 0.91, 0.639
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yltck"]
 shader = ExtResource("5_7jktm")
 shader_parameter/weight = 0.017
-shader_parameter/line_thickness = 0.4010000190475
+shader_parameter/line_thickness = 0.1610000076475
 shader_parameter/color = Color(0.00016593076, 0.1341582, 0.487368, 1)
 shader_parameter/opacity = 0.5999999865888
 shader_parameter/scale = Vector2(200, 200)
@@ -235,11 +235,6 @@ enabled = false
 [node name="DrawDebug" type="MeshInstance3D" parent="." unique_id=292471862]
 visible = false
 mesh = SubResource("PlaneMesh_xbydb")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=296268514]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92.10134, 31.531723, -678.284)
-light_color = Color(0.8150196, 3.5857408e-06, 7.70092e-07, 1)
-omni_range = 101.811
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=2010596024]
 

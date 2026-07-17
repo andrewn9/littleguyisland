@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bd4xdretw51km"
-path="res://.godot/imported/haybale1.png-3bf94edd7eedb209d19dd08c18c4d86e.ctex"
+uid="uid://bs81a4yw7jjrk"
+path="res://.godot/imported/torch.png-adfe09cc5a0b295e5be6e46ad6e97c64.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/various/haybale1.png"
-dest_files=["res://.godot/imported/haybale1.png-3bf94edd7eedb209d19dd08c18c4d86e.ctex"]
+source_file="res://sprites/hat boat tool rock torch/torch.png"
+dest_files=["res://.godot/imported/torch.png-adfe09cc5a0b295e5be6e46ad6e97c64.ctex"]
 
 [params]
 

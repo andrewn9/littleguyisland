@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dl81hicp6ducq"
-path="res://.godot/imported/flower10.png-9a0433a20343ad673baee0f6cff49c69.ctex"
+uid="uid://c730yjk6hsb2a"
+path="res://.godot/imported/minercap.png-97e197518d70fdbeddd96a6d38ed9e39.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/various/flower10.png"
-dest_files=["res://.godot/imported/flower10.png-9a0433a20343ad673baee0f6cff49c69.ctex"]
+source_file="res://sprites/hat boat tool rock torch/minercap.png"
+dest_files=["res://.godot/imported/minercap.png-97e197518d70fdbeddd96a6d38ed9e39.ctex"]
 
 [params]
 
