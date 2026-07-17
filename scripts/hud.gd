@@ -502,3 +502,7 @@ func _on_monkey_anim_done(_anim: StringName) -> void:
 
 func _on_reflections_button_toggled(toggled_on: bool):
 	World.reflections = toggled_on
+
+
+func _on_vol_slider_value_changed(value: float):
+	World.volume = value

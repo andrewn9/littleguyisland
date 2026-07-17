@@ -19,15 +19,15 @@ static var low_gfx: bool:
 			ProjectSettings.set_setting("rendering/shading/overrides/force_lambert_over_burley", false)
 
 		if _instance:
-			_instance._update_gfx(value)
+			_instance._update_gfx()
 
-func _update_gfx(value: bool):
+func _update_gfx():
 	if not get_viewport():
 		await RenderingServer.frame_post_draw
 
 	var viewport = get_viewport().get_viewport_rid()
 
-	if value:
+	if low_gfx:
 		(%Water as MeshInstance3D).material_override = null
 		(%Sun as DirectionalLight3D).shadow_enabled = false
 		RenderingServer.viewport_set_msaa_2d(viewport, RenderingServer.VIEWPORT_MSAA_DISABLED)
@@ -47,13 +47,30 @@ static var reflections: bool:
 	get:
 		return _reflections
 	set(value):
+		_reflections = value
 		if _instance:
-			_instance._update_reflections(value)
+			_instance._update_reflections()
 
-func _update_reflections(value):
+func _update_reflections():
 		var material = (%Water as MeshInstance3D).material_override
 		if material is ShaderMaterial:
-			material.set_shader_parameter("ssr_enabled", value)
+			material.set_shader_parameter("ssr_enabled", reflections)
+
+static var _volume = 0.75
+static var volume: float:
+	get:
+		return _volume
+	set(value):
+		_volume = value
+		if _instance:
+			_instance._update_volume()
+
+func _update_volume():
+	%Music.volume_db = (volume - 1.0) * 80.0
 
 func _ready():
 	_instance = self
+
+	_update_gfx()
+	_update_reflections()
+	_update_volume()

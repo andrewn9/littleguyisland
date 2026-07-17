@@ -170,9 +170,10 @@ script = ExtResource("1_7sc4i")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1294957651]
 environment = SubResource("Environment_7sc4i")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=536539044]
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=536539044]
+unique_name_in_owner = true
 stream = ExtResource("2_215e1")
-volume_db = -0.5
+volume_db = -20.0
 autoplay = true
 parameters/looping = true
 
