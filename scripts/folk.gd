@@ -3,14 +3,43 @@ class_name Folk extends Entity
 enum FolkState { IDLE, WANDER, WALKING, SWIMMING, INTERACTING, DEAD }
 enum Goal { ROAM, GATHER, BUILD, GO_HOME, FARM, HARVEST, MINE, BUILD_WELL, BUILD_FARM }
 
-const STATUS_TEXT := {
-	FolkState.IDLE: "resting",
-	FolkState.WANDER: "folking around",
-	FolkState.WALKING: "travelling",
-	FolkState.SWIMMING: "swimming",
-	FolkState.INTERACTING: "tasking",
-	FolkState.DEAD: "decomissioned",
+const DOING_TEXT := {
+	Goal.GATHER: "chopping a tree",
+	Goal.MINE: "mining rock",
+	Goal.BUILD: "building a house",
+	Goal.FARM: "planting a crop",
+	Goal.HARVEST: "harvesting the crops",
+	Goal.BUILD_WELL: "digging a well",
+	Goal.BUILD_FARM: "raising a farm building",
 }
+const HEADING_TEXT := {
+	Goal.GO_HOME: "heading home",
+	Goal.GATHER: "off to chop a tree",
+	Goal.MINE: "off to the rocks",
+	Goal.BUILD: "off to a building site",
+	Goal.FARM: "off to plant a crop",
+	Goal.HARVEST: "off to the harvest",
+	Goal.BUILD_WELL: "off to dig a well",
+	Goal.BUILD_FARM: "off to raise a farm building",
+}
+
+func _status_text() -> String:
+	match state:
+		FolkState.DEAD:
+			return "decomissioned"
+		FolkState.IDLE:
+			if _at_home:
+				return "sleeping at home"
+			return "resting" if _grown else "playing"
+		FolkState.INTERACTING:
+			return DOING_TEXT.get(goal, "tasking")
+		FolkState.WALKING, FolkState.SWIMMING:
+			var moving: String = HEADING_TEXT.get(goal,
+					"sailing about" if state == FolkState.SWIMMING else "folking around")
+			if state == FolkState.SWIMMING and goal in HEADING_TEXT:
+				moving += " (by boat)"
+			return moving
+	return "up to something"
 
 const PICKAXE := preload("res://sprites/folk/tools/pickaxe.png")
 const PITCHFORK := preload("res://sprites/folk/tools/pitchfork.png")
@@ -160,7 +189,7 @@ func _on_new_day():
 
 func _update_outfit() -> void:
 	var night = Game.is_night()
-	var swim := state == FolkState.SWIMMING
+	var swim: bool = _height_at(pos) < water_level
 	if goal == _fit_goal and night == _fit_night and swim == _fit_swim:
 		return
 	_fit_goal = goal
@@ -249,7 +278,7 @@ func _update_profile():
 	Hud.name_label.text = name
 	Hud.happiness_bar.value = happiness * 100
 	Hud.homeless_label.text = "homeless? nah" if is_instance_valid(home) else "homeless? yeah"
-	Hud.status_label.text = "status: %s" % STATUS_TEXT[state]
+	Hud.status_label.text = "status: %s" % _status_text()
 	Hud.age_label.text = "age: %d%s" % [age, " days old" if age != 1 else " day old"]
 
 
