@@ -20,6 +20,10 @@ enum EntityType {
 	FARM_BUILDING,
 }
 
+func is_built(t: EntityType) -> bool:
+	return t == EntityType.HOUSING or t == EntityType.FARM \
+			or t == EntityType.WELL or t == EntityType.FARM_BUILDING
+
 var day_fraction := 0.375
 var day := 0  # whole days passed
 

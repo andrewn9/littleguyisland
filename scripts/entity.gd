@@ -66,9 +66,9 @@ func _height_from_map() -> float:
 	return h * MapData.HEIGHT_SCALE
 
 func update_world_pos():
-	var wx := pos.x * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2
-	var wz := pos.y * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2
-	var wy := _height_from_map()
+	var wx = pos.x * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2
+	var wz = pos.y * MapData.WORLD_SIZE / MapData.RESOLUTION - MapData.WORLD_SIZE / 2
+	var wy = _height_from_map()
 
 	if Game.is_built(type) \
 			and wy <= MapData.NAV_WATER_LEVEL * MapData.HEIGHT_SCALE:
