@@ -345,13 +345,15 @@ var focus_cam: Camera3D = null
 var _prev_cam: Camera3D = null
 var _pov_dir := Vector3.FORWARD
 
-const POV_EYE_HEIGHT := 8.0
+const POV_EYE_HEIGHT := 9.0
 
 
 func _on_pov_button_pressed():
 	if not focus_cam:
 		if not focused_folk:
 			return
+
+		tracking_folk = false
 
 		_prev_cam = get_viewport().get_camera_3d()
 		focus_cam = Camera3D.new()
@@ -395,6 +397,8 @@ func _on_deallocate_button_pressed():
 func _on_track_button_pressed():
 	if focused_folk:
 		tracking_folk = not tracking_folk
+		if tracking_folk and focus_cam:
+			_exit_pov()
 
 func _on_gfx_button_toggled(toggled_on: bool):
 	World.low_gfx = toggled_on
