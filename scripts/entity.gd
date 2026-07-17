@@ -79,6 +79,9 @@ func update_world_pos():
 	var wy = _height_from_map()
 
 	if Game.is_built(type) and wy <= MapData.NAV_WATER_LEVEL * MapData.HEIGHT_SCALE:
+		for r in residents:
+			if is_instance_valid(r) and r.has_method("lose_home"):
+				r.lose_home()
 		queue_free()
 		return
 
