@@ -739,6 +739,14 @@ func _claim_home():
 	_maybe_birth()
 
 
+func lose_home() -> void:
+	home = null
+	_at_home = false
+	visible = true
+	if state == FolkState.IDLE:
+		_idle_left = minf(_idle_left, randf_range(0.1, 0.4))
+
+
 func _maybe_birth():
 	if not (Game.is_night() and is_instance_valid(home) and _grown):
 		return

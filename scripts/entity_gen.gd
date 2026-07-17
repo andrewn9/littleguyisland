@@ -76,6 +76,15 @@ func load_textures(path: StringName) -> Array[Texture2D]:
 	return textures
 
 
+func set_low_gfx_alpha(low: bool) -> void:
+	var mode := BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR if low \
+			else BaseMaterial3D.TRANSPARENCY_ALPHA_HASH
+	var base: BaseMaterial3D = PROP_MAT
+	base.transparency = mode
+	for m in prop_materials.values():
+		m.transparency = mode
+
+
 func get_prop_material(texture: Texture2D, flipped := false) -> StandardMaterial3D:
 	var key := texture.get_instance_id() * 2 + int(flipped)
 	var cached = prop_materials.get(key)

@@ -27,6 +27,9 @@ func _update_gfx():
 
 	var viewport = get_viewport().get_viewport_rid()
 
+	if Game.model:
+		Game.model.entity_gen.set_low_gfx_alpha(low_gfx)
+
 	if low_gfx:
 		(%Water as MeshInstance3D).material_override = null
 		(%Sun as DirectionalLight3D).shadow_enabled = false
@@ -56,6 +59,30 @@ func _update_reflections():
 		if material is ShaderMaterial:
 			material.set_shader_parameter("ssr_enabled", reflections)
 
+static var _outlines := true
+static var outlines: bool:
+	get:
+		return _outlines
+	set(value):
+		_outlines = value
+		if _instance:
+			_instance._update_outlines()
+
+func _update_outlines():
+	(%Outlines as ColorRect).visible = outlines
+
+static var _crt := true
+static var crt: bool:
+	get:
+		return _crt
+	set(value):
+		_crt = value
+		if _instance:
+			_instance._update_crt()
+
+func _update_crt():
+	(%RetroFitler as ColorRect).visible = crt
+
 static var _volume = 0.75
 static var volume: float:
 	get:
@@ -73,4 +100,6 @@ func _ready():
 
 	_update_gfx()
 	_update_reflections()
+	_update_outlines()
+	_update_crt()
 	_update_volume()

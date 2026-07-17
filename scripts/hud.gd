@@ -18,6 +18,10 @@ const NOTIFICATION = preload("res://ui/notification.tscn")
 @onready var sens_slider: HSlider = %SensSlider
 @onready var vol_slider: HSlider = %VolSlider
 @onready var cam_button: CheckButton = %CamButton
+@onready var gfx_button: CheckButton = %GFXButton
+@onready var reflections_button: CheckButton = %ReflectionsButton
+@onready var outlines_button: CheckButton = %OutlinesButton
+@onready var crt_button: CheckButton = %CRTButton
 
 @onready var notifications = %Notifications
 
@@ -39,10 +43,52 @@ const cursor_openhand = preload("res://ui/cursors/openhand.png")
 const cursor_closehand = preload("res://ui/cursors/closehand.png")
 const HAND_HOTSPOT := Vector2(16, 16)
 
-# the folk currently under the cursor (folk report this via set_hovered)
 var hovered_folk: Folk = null
 
+const SETTINGS_PATH := "user://settings.cfg"
+
+func _load_settings() -> void:
+	var cfg := ConfigFile.new()
+	if cfg.load(SETTINGS_PATH) != OK:
+		return
+		
+	sens_slider.set_value_no_signal(cfg.get_value("settings", "sensitivity", sens_slider.value))
+	%SensLabel.text = "sensitivity: " + str(sens_slider.value)
+
+	vol_slider.set_value_no_signal(cfg.get_value("settings", "volume", vol_slider.value))
+	World.volume = vol_slider.value
+	%VolLabel.text = "volume: " + str(vol_slider.value)
+
+	cam_button.set_pressed_no_signal(cfg.get_value("settings", "orthographic", cam_button.button_pressed))
+
+	gfx_button.set_pressed_no_signal(cfg.get_value("settings", "low_gfx", gfx_button.button_pressed))
+	World.low_gfx = gfx_button.button_pressed
+
+	reflections_button.set_pressed_no_signal(cfg.get_value("settings", "reflections", reflections_button.button_pressed))
+	World.reflections = reflections_button.button_pressed
+
+	outlines_button.set_pressed_no_signal(cfg.get_value("settings", "outlines", outlines_button.button_pressed))
+	World.outlines = outlines_button.button_pressed
+
+	crt_button.set_pressed_no_signal(cfg.get_value("settings", "crt", crt_button.button_pressed))
+	World.crt = crt_button.button_pressed
+
+
+func _save_settings() -> void:
+	var cfg := ConfigFile.new()
+	cfg.set_value("settings", "sensitivity", sens_slider.value)
+	cfg.set_value("settings", "volume", vol_slider.value)
+	cfg.set_value("settings", "orthographic", cam_button.button_pressed)
+	cfg.set_value("settings", "low_gfx", gfx_button.button_pressed)
+	cfg.set_value("settings", "reflections", reflections_button.button_pressed)
+	cfg.set_value("settings", "outlines", outlines_button.button_pressed)
+	cfg.set_value("settings", "crt", crt_button.button_pressed)
+	cfg.save(SETTINGS_PATH)
+
+
 func _ready() -> void:
+	_load_settings()
+
 	for button: TextureButton in wheel.get_children():
 		_wire_button(button)
 
@@ -438,6 +484,7 @@ func _on_track_button_pressed():
 
 func _on_gfx_button_toggled(toggled_on: bool):
 	World.low_gfx = toggled_on
+	_save_settings()
 
 func push_notification(msg: String):
 	var label = NOTIFICATION.instantiate()
@@ -502,7 +549,34 @@ func _on_monkey_anim_done(_anim: StringName) -> void:
 
 func _on_reflections_button_toggled(toggled_on: bool):
 	World.reflections = toggled_on
+	_save_settings()
+
+
+func _on_outlines_button_toggled(toggled_on: bool):
+	World.outlines = toggled_on
+	_save_settings()
+
+
+func _on_crt_button_toggled(toggled_on: bool):
+	World.crt = toggled_on
+	_save_settings()
+
+
+func _on_cam_button_toggled(_toggled_on: bool) -> void:
+	_save_settings()
 
 
 func _on_vol_slider_value_changed(value: float):
 	World.volume = value
+	%VolLabel.text = "volume: " + str(value)
+	_save_settings()
+
+
+func _on_sens_slider_value_changed(value: float) -> void:
+	%SensLabel.text = "sensitivity: " + str(value)
+	_save_settings()
+
+
+func _on_scale_slider_value_changed(value: float) -> void:
+	%ScaleValue.text = "render scale: " + str(value)
+	get_viewport().scaling_3d_scale = value

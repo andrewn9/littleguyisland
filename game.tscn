@@ -158,7 +158,7 @@ shader = SubResource("Shader_nso1x")
 shader_parameter/scanline_color = Color(0, 0, 0, 1)
 shader_parameter/flicker_color = Color(0, 0, 0, 1)
 shader_parameter/scanlines_count = 10.0
-shader_parameter/scanlines_intensity = 0.015
+shader_parameter/scanlines_intensity = 0.39
 shader_parameter/flicker_speed = 20.78
 shader_parameter/flicker_intensity = 0.006000000285
 shader_parameter/color_offset = 0.16
@@ -224,7 +224,8 @@ hair_colors = SubResource("Gradient_164tn")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=786883146]
 layer = 0
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=622731514]
+[node name="Outlines" type="ColorRect" parent="CanvasLayer" unique_id=622731514]
+unique_name_in_owner = true
 material = SubResource("ShaderMaterial_yltck")
 anchors_preset = 15
 anchor_right = 1.0
@@ -263,7 +264,8 @@ anchor_top = 0.352
 anchor_bottom = 1.0
 grow_vertical = 2
 
-[node name="ColorRect2" type="ColorRect" parent="CanvasLayer2" unique_id=172519826]
+[node name="RetroFitler" type="ColorRect" parent="CanvasLayer2" unique_id=172519826]
+unique_name_in_owner = true
 material = SubResource("ShaderMaterial_5jwjf")
 anchors_preset = 15
 anchor_right = 1.0
