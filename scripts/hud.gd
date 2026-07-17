@@ -462,3 +462,7 @@ func _tick_speech(delta: float) -> void:
 
 func _on_monkey_anim_done(_anim: StringName) -> void:
 	monkey_anim.play(TALKS.pick_random() if _speech_left > 0.0 else "idle")
+
+
+func _on_reflections_button_toggled(toggled_on: bool):
+	World.reflections = toggled_on

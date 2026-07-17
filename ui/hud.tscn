@@ -1375,7 +1375,6 @@ patch_margin_bottom = 10
 
 [node name="Settings" type="Panel" parent="CanvasLayer" unique_id=671094804]
 unique_name_in_owner = true
-visible = false
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
@@ -1406,10 +1405,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = -21.0
-offset_right = 8.0
-offset_bottom = -21.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 6
@@ -1513,9 +1508,24 @@ tick_count = 5
 ticks_on_borders = true
 ticks_position = 2
 
+[node name="Reflections" type="HFlowContainer" parent="CanvasLayer/Settings/Control/VBoxContainer" unique_id=1217242533]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Settings/Control/VBoxContainer/Reflections" unique_id=1555356909]
+layout_mode = 2
+size_flags_vertical = 1
+text = "water reflections"
+vertical_alignment = 1
+
+[node name="ReflectionsButton" type="CheckButton" parent="CanvasLayer/Settings/Control/VBoxContainer/Reflections" unique_id=1079373667]
+layout_mode = 2
+button_pressed = true
+
 [connection signal="pressed" from="CanvasLayer/NinePatchRect/HFlowContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="CanvasLayer/Bottom/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/HBoxContainer2/TrackButton" to="." method="_on_track_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/HBoxContainer2/POVButton" to="." method="_on_pov_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/HBoxContainer2/DeallocateButton" to="." method="_on_deallocate_button_pressed"]
 [connection signal="toggled" from="CanvasLayer/Settings/Control/VBoxContainer/GFX/GFXButton" to="." method="_on_gfx_button_toggled"]
+[connection signal="toggled" from="CanvasLayer/Settings/Control/VBoxContainer/Reflections/ReflectionsButton" to="." method="_on_reflections_button_toggled"]
