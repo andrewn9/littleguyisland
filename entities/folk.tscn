@@ -5,6 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://d0qbtsipfo1he" path="res://sprites/folk/shirt/shirt1.png" id="3_2npkq"]
 [ext_resource type="Texture2D" uid="uid://dynh0shhdb3tc" path="res://sprites/folk/hair/hair1.png" id="4_0yu4h"]
 [ext_resource type="Texture2D" uid="uid://cjf7t4tnyncj6" path="res://sprites/folk/light/torch.png" id="5_nx1ui"]
+[ext_resource type="Texture2D" uid="uid://rxlh76eodfkn" path="res://sprites/folk/tools/pitchfork.png" id="6_obovc"]
+[ext_resource type="Texture2D" uid="uid://jum8j8i0h1dr" path="res://sprites/folk/boat.png" id="7_0yu4h"]
+[ext_resource type="Texture2D" uid="uid://lv4oxd12swpn" path="res://sprites/folk/hat/minercap.png" id="8_nx1ui"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_jhlna"]
 viewport_path = NodePath("Pivot/Sprite/SubViewport")
@@ -25,7 +28,7 @@ texture = SubResource("ViewportTexture_jhlna")
 
 [node name="SubViewport" type="SubViewport" parent="Pivot/Sprite" unique_id=1431067027]
 transparent_bg = true
-size = Vector2i(208, 303)
+size = Vector2i(389, 303)
 
 [node name="body" type="TextureRect" parent="Pivot/Sprite/SubViewport" unique_id=1851019620]
 z_index = 12
@@ -35,6 +38,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_obovc")
+stretch_mode = 5
 
 [node name="shirt" type="TextureRect" parent="Pivot/Sprite/SubViewport" unique_id=213465718]
 z_index = 12
@@ -44,6 +48,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_2npkq")
+stretch_mode = 5
 
 [node name="hair" type="TextureRect" parent="Pivot/Sprite/SubViewport" unique_id=104920491]
 z_index = 12
@@ -53,17 +58,63 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_0yu4h")
+stretch_mode = 5
 
-[node name="ColorRect" type="TextureRect" parent="Pivot/Sprite/SubViewport" unique_id=723307075]
+[node name="light_tool" type="TextureRect" parent="Pivot/Sprite/SubViewport" unique_id=723307075]
+visible = false
 z_index = 13
 offset_left = 100.0
 offset_top = 110.0
-offset_right = 337.89
+offset_right = 658.795
 offset_bottom = 354.03998
 scale = Vector2(0.51, 0.51)
 texture = ExtResource("5_nx1ui")
+stretch_mode = 5
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Pivot/Sprite" unique_id=1809132446]
+[node name="tool" type="TextureRect" parent="Pivot/Sprite/SubViewport" unique_id=525255952]
+visible = false
+z_index = 13
+offset_left = -10.885
+offset_top = 110.0
+offset_right = 547.91
+offset_bottom = 354.03998
+scale = Vector2(0.51, 0.51)
+texture = ExtResource("6_obovc")
+stretch_mode = 5
+
+[node name="boat" type="TextureRect" parent="Pivot/Sprite/SubViewport" unique_id=1428766975]
+visible = false
+z_index = 12
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -151.0
+offset_top = -150.0
+offset_right = 151.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("7_0yu4h")
+stretch_mode = 5
+
+[node name="hat" type="TextureRect" parent="Pivot/Sprite/SubViewport" unique_id=579841880]
+visible = false
+z_index = 12
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -151.0
+offset_top = 26.9
+offset_right = 151.0
+offset_bottom = 176.9
+grow_horizontal = 2
+scale = Vector2(0.41, 0.41)
+pivot_offset_ratio = Vector2(0.5, 0)
+texture = ExtResource("8_nx1ui")
+stretch_mode = 5
+
+[node name="light_source" type="OmniLight3D" parent="Pivot/Sprite" unique_id=1809132446]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0)
 light_color = Color(1, 0.8, 0.7, 1)
 light_energy = 11.19
