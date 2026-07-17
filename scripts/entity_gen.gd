@@ -2,6 +2,7 @@ class_name EntityGen extends Node
 
 const STATIC_PROP = preload("res://entities/static_prop.tscn")
 const PROP_MAT = preload("res://materials/prop.tres")
+const FOLK_FAB = preload("res://entities/folk.tscn")
 
 const CLOUD = preload("res://entities/cloud.tscn")
 
@@ -384,7 +385,7 @@ func _process(_delta: float) -> void:
 
 
 func spawn_little_guy(x: int, y: int, birth_home: Entity = null):
-	var ent = load("res://entities/folk.res").instantiate() as Entity
+	var ent = FOLK_FAB.instantiate() as Entity
 
 	ent.pos = Vector2(x, y)
 	ent.type = Game.EntityType.FOLK
