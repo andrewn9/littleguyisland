@@ -14,5 +14,6 @@ transform = Transform3D(2.19, 0, 0, 0, 2.19, 0, 0, 0, 2.19, 0, 1.6337824, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot" unique_id=418149708]
 transform = Transform3D(0.9999997, 0, 0, 0, 0.9999997, 0, 0, 0, 0.9999997, 0, 5.0574174, 0)
+cast_shadow = 2
 mesh = SubResource("QuadMesh_7522t")
 surface_material_override/0 = ExtResource("3_scpcv")

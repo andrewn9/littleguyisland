@@ -79,8 +79,12 @@ var drawing := false
 
 
 func project_screen_pos(pos: Vector2):
-	raycast.position = camera.to_local(camera.project_ray_origin(pos))
-	raycast.target_position = Vector3(0, 0, -99999)
+	if camera.projection == Camera3D.PROJECTION_ORTHOGONAL:
+		raycast.position = camera.to_local(camera.project_ray_origin(pos))
+		raycast.target_position = Vector3(0, 0, -9999)
+	else:
+		raycast.position = Vector3.ZERO
+		raycast.target_position = camera.project_local_ray_normal(pos) * 9999
 	raycast.force_raycast_update()
 	if raycast.get_collider():
 		var target_pos = Vector2(raycast.get_collision_point().x + MapData.WORLD_SIZE / 2, raycast.get_collision_point().z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE

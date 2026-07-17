@@ -230,6 +230,7 @@ max_angle = 1.24
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera" unique_id=921282201]
 unique_name_in_owner = true
+enabled = false
 
 [node name="DrawDebug" type="MeshInstance3D" parent="." unique_id=292471862]
 visible = false
