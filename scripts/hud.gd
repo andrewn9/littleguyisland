@@ -30,7 +30,6 @@ const cursor_smooth = preload("res://ui/cursors/cursorsmooth.png")
 const cursor_shovel = preload("res://ui/cursors/cursorshovel.png")
 const cursor_terrain = preload("res://ui/cursors/cursorterrain.png")
 
-
 func _ready() -> void:
 	for button: TextureButton in wheel.get_children():
 		_wire_button(button)
@@ -78,7 +77,7 @@ func _build_layers_menu() -> void:
 		var cb := CheckButton.new()
 		cb.text = key
 		cb.button_pressed = true  # ticked = solid
-		cb.add_theme_font_size_override("font_size", 15)
+		cb.add_theme_font_size_override("font_size", 12)
 		cb.tooltip_text = "%s\n(untick to make it see-through)" % LAYERS[key]
 		cb.toggled.connect(func(on: bool): Game.set_layer_opaque(key, on))
 		layers_list.add_child(cb)
@@ -444,8 +443,8 @@ func _fit_bubble() -> void:
 	var text_h = bubble_label.get_content_height()
 	bubble_label.size = Vector2(text_w, text_h)
 
-	var w := clampf(text_w + BUBBLE_PAD_L + BUBBLE_PAD_R, BUBBLE_MIN_WIDTH, BUBBLE_MAX_WIDTH)
-	var h := BUBBLE_PAD_T + text_h + BUBBLE_PAD_B
+	var w = clampf(text_w + BUBBLE_PAD_L + BUBBLE_PAD_R, BUBBLE_MIN_WIDTH, BUBBLE_MAX_WIDTH)
+	var h = BUBBLE_PAD_T + text_h + BUBBLE_PAD_B
 	bubble.size = Vector2(w, h)
 	bubble.position = Vector2(BUBBLE_TAIL_X, -bubble.size.y)
 
