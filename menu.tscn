@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://bcu3kmseq6sc6" path="res://ui/ui/window and box/miniscreen.png" id="13_jspdm"]
 [ext_resource type="AudioStream" uid="uid://056tjrsfvs83" path="res://sfx/click.ogg" id="14_jspdm"]
 [ext_resource type="AudioStream" uid="uid://bewvq1dg3cjva" path="res://sfx/tanweraman-horse-neigh-261131.mp3" id="15_oxnod"]
+[ext_resource type="Texture2D" uid="uid://csykegh1vqs4q" path="res://ui/ui/window and box/windowx.png" id="16_close"]
 
 [sub_resource type="Gradient" id="Gradient_mae5d"]
 offsets = PackedFloat32Array(0, 0.4979424, 0.8436214)
@@ -426,12 +427,12 @@ tracks/10/keys = {
 }
 tracks/11/type = "value"
 tracks/11/imported = false
-tracks/11/enabled = false
+tracks/11/enabled = true
 tracks/11/path = NodePath("Apps/readme:visible")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"times": PackedFloat32Array(0, 5.9666667),
+"times": PackedFloat32Array(0, 6.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -443,7 +444,7 @@ tracks/12/path = NodePath("Apps/credits:visible")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
-"times": PackedFloat32Array(0, 6.1666665),
+"times": PackedFloat32Array(0, 6.333333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -455,7 +456,7 @@ tracks/13/path = NodePath("Apps/horse:visible")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
-"times": PackedFloat32Array(0, 6.3333335),
+"times": PackedFloat32Array(0, 6.4333334),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -467,7 +468,7 @@ tracks/14/path = NodePath("Apps/sim:visible")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
-"times": PackedFloat32Array(0, 6.5),
+"times": PackedFloat32Array(0, 6.5333333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -904,9 +905,24 @@ parameters/looping = true
 [node name="readmepanel" type="Panel" parent="." unique_id=1420357723]
 visible = false
 layout_mode = 0
-offset_right = 235.0
-offset_bottom = 154.0
+offset_left = 250.0
+offset_top = 250.0
+offset_right = 485.00003
+offset_bottom = 404.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_7522t")
+
+[node name="Panel" type="NinePatchRect" parent="readmepanel" unique_id=762321728]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("13_jspdm")
+region_rect = Rect2(0, 0, 960, 544)
+patch_margin_left = 11
+patch_margin_right = 11
+patch_margin_bottom = 10
 
 [node name="Label" type="Label" parent="readmepanel" unique_id=1309086629]
 custom_minimum_size = Vector2(200, 0)
@@ -923,19 +939,6 @@ text = "how to operate:
 3. listen to the monkey"
 autowrap_mode = 2
 
-[node name="Panel" type="NinePatchRect" parent="readmepanel" unique_id=762321728]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("13_jspdm")
-region_rect = Rect2(0, 0, 960, 544)
-patch_margin_left = 11
-patch_margin_right = 11
-patch_margin_bottom = 10
-
 [node name="Label2" type="Label" parent="readmepanel" unique_id=86036104]
 layout_mode = 1
 anchors_preset = 10
@@ -948,6 +951,21 @@ theme_override_font_sizes/font_size = 10
 text = "README.txt"
 horizontal_alignment = 1
 
+[node name="Close" type="TextureButton" parent="readmepanel" unique_id=86036105]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -18.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = 18.0
+grow_horizontal = 0
+texture_normal = ExtResource("16_close")
+ignore_texture_size = true
+stretch_mode = 5
+
 [node name="ClickSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1337679198]
 stream = ExtResource("14_jspdm")
 max_polyphony = 3
@@ -955,6 +973,149 @@ max_polyphony = 3
 [node name="HorseSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1464277340]
 stream = ExtResource("15_oxnod")
 max_polyphony = 5
+
+[node name="NewWorldPopup" type="ColorRect" parent="." unique_id=700000001]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="Center" type="CenterContainer" parent="NewWorldPopup" unique_id=700000002]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="NewWorldPopup/Center" unique_id=700000003]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7522t")
+
+[node name="Margin" type="MarginContainer" parent="NewWorldPopup/Center/Panel" unique_id=700000004]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="VBox" type="VBoxContainer" parent="NewWorldPopup/Center/Panel/Margin" unique_id=700000005]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="NewWorldPopup/Center/Panel/Margin/VBox" unique_id=700000006]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.080783345, 0.080783345, 0.080783345, 1)
+theme_override_font_sizes/font_size = 22
+text = "new world"
+
+[node name="NameLabel" type="Label" parent="NewWorldPopup/Center/Panel/Margin/VBox" unique_id=700000007]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.080783345, 0.080783345, 0.080783345, 1)
+text = "world name"
+
+[node name="WorldNameEdit" type="LineEdit" parent="NewWorldPopup/Center/Panel/Margin/VBox" unique_id=700000008]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "my island"
+
+[node name="TutorialCheck" type="CheckBox" parent="NewWorldPopup/Center/Panel/Margin/VBox" unique_id=700000009]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.033853173, 0.033853333, 0.03385321, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_normal_color = Color(0, 0, 0, 1)
+button_pressed = true
+text = "enable tutorial"
+
+[node name="Experimental" type="FoldableContainer" parent="NewWorldPopup/Center/Panel/Margin/VBox" unique_id=700000010]
+layout_mode = 2
+folded = true
+title = "shenanigans"
+
+[node name="EVBox" type="VBoxContainer" parent="NewWorldPopup/Center/Panel/Margin/VBox/Experimental" unique_id=700000011]
+visible = false
+layout_mode = 2
+
+[node name="HeightRow" type="HBoxContainer" parent="NewWorldPopup/Center/Panel/Margin/VBox/Experimental/EVBox" unique_id=700000012]
+layout_mode = 2
+
+[node name="HeightLabel" type="Label" parent="NewWorldPopup/Center/Panel/Margin/VBox/Experimental/EVBox/HeightRow" unique_id=700000014]
+unique_name_in_owner = true
+layout_mode = 2
+text = "heightmap: (none)"
+
+[node name="HeightUpload" type="Button" parent="NewWorldPopup/Center/Panel/Margin/VBox/Experimental/EVBox/HeightRow" unique_id=700000013]
+unique_name_in_owner = true
+layout_mode = 2
+text = "upload heightmap"
+
+[node name="ValueRow" type="HBoxContainer" parent="NewWorldPopup/Center/Panel/Margin/VBox/Experimental/EVBox" unique_id=700000015]
+layout_mode = 2
+
+[node name="ValueLabel" type="Label" parent="NewWorldPopup/Center/Panel/Margin/VBox/Experimental/EVBox/ValueRow" unique_id=700000017]
+unique_name_in_owner = true
+layout_mode = 2
+text = "valuemap: (none)"
+
+[node name="ValueUpload" type="Button" parent="NewWorldPopup/Center/Panel/Margin/VBox/Experimental/EVBox/ValueRow" unique_id=700000016]
+unique_name_in_owner = true
+layout_mode = 2
+text = "upload valuemap"
+
+[node name="Buttons" type="HBoxContainer" parent="NewWorldPopup/Center/Panel/Margin/VBox" unique_id=700000018]
+layout_mode = 2
+alignment = 2
+
+[node name="CancelWorld" type="Button" parent="NewWorldPopup/Center/Panel/Margin/VBox/Buttons" unique_id=700000019]
+unique_name_in_owner = true
+layout_mode = 2
+text = "cancel"
+
+[node name="CreateWorld" type="Button" parent="NewWorldPopup/Center/Panel/Margin/VBox/Buttons" unique_id=700000020]
+unique_name_in_owner = true
+layout_mode = 2
+text = "create"
+
+[node name="Panel" type="NinePatchRect" parent="NewWorldPopup/Center/Panel" unique_id=790617699]
+layout_mode = 2
+texture = ExtResource("13_jspdm")
+region_rect = Rect2(0, 0, 960, 544)
+patch_margin_left = 11
+patch_margin_right = 11
+patch_margin_bottom = 10
+
+[node name="ResetConfirm" type="ConfirmationDialog" parent="." unique_id=700000021]
+unique_name_in_owner = true
+oversampling_override = 1.0
+title = "reset save"
+initial_position = 2
+size = Vector2i(300, 100)
+ok_button_text = "reset"
+dialog_text = "reset this save?"
+
+[node name="ImageDialog" type="FileDialog" parent="." unique_id=700000022]
+unique_name_in_owner = true
+oversampling_override = 1.0
+title = "Open a File"
+initial_position = 2
+size = Vector2i(500, 400)
+ok_button_text = "open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png,*.jpg,*.jpeg,*.webp,*.bmp;Images")
+use_native_dialog = true
 
 [connection signal="pressed" from="Apps/horse/TextureButton" to="." method="_on_texture_button_pressed"]
 [connection signal="pressed" from="Apps/sim/simexe" to="." method="_on_simexe_pressed"]

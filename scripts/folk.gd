@@ -262,6 +262,65 @@ func make_child(birth_home: Entity):
 	_birth_home_pos = birth_home.pos
 
 
+func _tex_path(node_name: String) -> String:
+	var tr := $Pivot/Sprite/SubViewport.get_node(node_name) as TextureRect
+	return tr.texture.resource_path if tr and tr.texture else ""
+
+
+func serialize() -> Dictionary:
+	var hair := $Pivot/Sprite/SubViewport/hair as TextureRect
+	return {
+		kind = "folk",
+		type = int(type),
+		px = pos.x,
+		py = pos.y,
+		fname = String(name),
+		age = age,
+		happiness = happiness,
+		adventurousness = adventurousness,
+		carried_wood = carried_wood,
+		carried_rock = carried_rock,
+		grown = _grown,
+		seeking = _seeking_new_village,
+		night_owl = _night_owl,
+		night_id = _night_id,
+		bhx = _birth_home_pos.x,
+		bhy = _birth_home_pos.y,
+		state = int(state),
+		goal = int(goal),
+		body = _tex_path("body"),
+		shirt = _tex_path("shirt"),
+		hair = _tex_path("hair"),
+		hair_mod = hair.modulate if hair else Color.WHITE,
+		light = _my_light.resource_path if _my_light else "",
+	}
+
+func load_state(d: Dictionary) -> void:
+	age = d.get("age", 0)
+	happiness = d.get("happiness", 0.6)
+	adventurousness = d.get("adventurousness", 0.5)
+	carried_wood = d.get("carried_wood", 0)
+	carried_rock = d.get("carried_rock", 0)
+	_grown = d.get("grown", true)
+	_seeking_new_village = d.get("seeking", false)
+	_night_owl = d.get("night_owl", false)
+	_night_id = d.get("night_id", -1)
+	_birth_home_pos = Vector2(d.get("bhx", INF), d.get("bhy", INF))
+	var lp: String = d.get("light", "")
+	if lp != "":
+		var lt = load(lp)
+		if lt:
+			_my_light = lt
+
+	state = FolkState.IDLE
+	goal = Goal.ROAM
+	_idle_left = randf_range(0.1, 0.6)
+	_fit_goal = -1
+
+	_apply_growth()
+	_update_outfit()
+
+
 func _become_adult():
 	if is_instance_valid(home):
 		home.residents.erase(self)

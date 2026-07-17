@@ -43,6 +43,32 @@ func _setup_processing() -> void:
 const TERRAIN_PINNED := "terrain_pinned"
 
 
+func serialize() -> Dictionary:
+	var d := {
+		kind = "prop",
+		type = int(type),
+		px = pos.x,
+		py = pos.y,
+		s = $Pivot.scale.x,
+	}
+	if type == Game.EntityType.FARM:
+		d["plant_day_f"] = plant_day_f
+		d["grow_days"] = grow_days
+		d["growth_stage"] = growth_stage
+	else:
+		var mat = $Pivot/MeshInstance3D.get_surface_override_material(0)
+		if mat is BaseMaterial3D and mat.albedo_texture:
+			d["tex"] = mat.albedo_texture.resource_path
+			d["flip"] = mat.uv1_scale.x < 0.0
+		else:
+			d["tex"] = ""
+			d["flip"] = false
+	if type == Game.EntityType.HOUSING:
+		d["capacity"] = capacity
+		d["last_birth_day"] = last_birth_day
+	return d
+
+
 func apply_scale(x):
 	$Pivot.scale *= x
 

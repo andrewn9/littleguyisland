@@ -9,6 +9,16 @@ var scaled_delta := 0.0
 
 var model: Model
 
+var active_slot := -1
+var pending_load := false
+var skip_boot := false
+var _autosave_timer := 0.0
+
+var world_name := ""
+var tutorial := false
+var new_world_height_img: Image = null
+var new_world_value_img: Image = null
+
 enum EntityType {
 	DECORATIVE,
 	HOUSING,
@@ -58,6 +68,18 @@ signal day_changed
 
 func _ready() -> void:
 	day_changed.connect(func(): build_fail_streak = 0)
+	get_tree().set_auto_accept_quit(false)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		autosave()
+		get_tree().quit()
+
+
+func autosave() -> void:
+	if active_slot >= 0 and is_instance_valid(model):
+		Save.save_slot(active_slot, model.entity_gen)
 
 
 var _stats_timer := 0.0
@@ -224,6 +246,11 @@ func _physics_process(delta: float) -> void:
 	if _stats_timer <= 0.0:
 		_stats_timer = 0.5
 		_refresh_stats()
+
+	_autosave_timer += delta
+	if _autosave_timer >= 60.0:
+		_autosave_timer = 0.0
+		autosave()
 
 	var water: MeshInstance3D = model.get_parent().get_node("Water")
 	var water_mat = water.material_overlay

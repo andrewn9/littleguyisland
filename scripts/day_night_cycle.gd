@@ -11,6 +11,10 @@ var DAY_LENGTH = 240.0
 
 func _ready():
 	sky = environment.environment.sky.sky_material as ProceduralSkyMaterial
+	add_to_group("clock")
+
+func apply_time() -> void:
+	time = (Game.day + Game.day_fraction) * DAY_LENGTH
 
 
 var last = 0

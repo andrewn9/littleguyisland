@@ -68,14 +68,24 @@ func _ready() -> void:
 		ui.texture = tex
 		%Debug.add_child(ui)
 
-	if Heightmap:
-		MapData.height.blit_rect(Rect2i(0, 0, MapData.RESOLUTION, MapData.RESOLUTION), Heightmap)
-	if Valuemap:
-		MapData.val.blit_rect(Rect2i(0, 0, MapData.RESOLUTION, MapData.RESOLUTION), Valuemap)
+	var rect := Rect2i(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
+	var h_tex := _initial_map(Game.new_world_height_img, Heightmap)
+	if h_tex:
+		MapData.height.blit_rect(rect, h_tex)
+	var v_tex := _initial_map(Game.new_world_value_img, Valuemap)
+	if v_tex:
+		MapData.val.blit_rect(rect, v_tex)
+	Game.new_world_height_img = null
+	Game.new_world_value_img = null
 	Game.model = self
 
 
 var drawing := false
+
+func _initial_map(img: Image, fallback: Texture2D) -> Texture2D:
+	if img != null:
+		return ImageTexture.create_from_image(img)
+	return fallback
 
 
 func project_screen_pos(pos: Vector2):

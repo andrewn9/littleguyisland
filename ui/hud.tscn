@@ -248,17 +248,10 @@ pivot_offset_ratio = Vector2(1, 0)
 theme_override_constants/h_separation = -5
 alignment = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/NinePatchRect/HFlowContainer" unique_id=388461272]
-custom_maximum_size = Vector2(24, 22)
-layout_mode = 2
-offset_transform_enabled = true
-offset_transform_pivot_ratio = Vector2(1, 0.5)
-offset_transform_visual_only = false
-texture = ExtResource("3_3ju8l")
-
 [node name="Quit" type="TextureButton" parent="CanvasLayer/NinePatchRect/HFlowContainer" unique_id=203080206]
 custom_maximum_size = Vector2(24, 22)
 layout_mode = 2
+tooltip_text = "back to desktop"
 texture_normal = ExtResource("4_b1px6")
 stretch_mode = 0
 

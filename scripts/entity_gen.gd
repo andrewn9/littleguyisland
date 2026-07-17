@@ -152,8 +152,14 @@ func _ready():
 	prop_batch.name = "PropBatch"
 	add_child(prop_batch)
 
-	plains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
-	mountains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
+	if Game.pending_load and Save.has_slot(Game.active_slot):
+		Save.apply_slot(Game.active_slot, self)
+	else:
+		plains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
+		mountains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
+		if Game.tutorial:
+			Hud.monkey_say("boy", 1.0)
+	Game.pending_load = false
 
 
 func spawn_static_prop(pos: Vector2, textures: Array[Texture2D], min_scale: float, max_scale: float):
@@ -443,3 +449,134 @@ func _announce(key, msg):
 		return
 	_announced[key] = true
 	Hud.push_notification(msg)
+
+
+const _GROUP_OF := {
+	Game.EntityType.TREE: "trees",
+	Game.EntityType.ROCK: "rocks",
+	Game.EntityType.HOUSING: "homes",
+	Game.EntityType.FARM: "farms",
+	Game.EntityType.WELL: "wells",
+	Game.EntityType.FARM_BUILDING: "farm_buildings",
+}
+const _NAME_OF := {
+	Game.EntityType.TREE: "Tree",
+	Game.EntityType.ROCK: "Rock",
+	Game.EntityType.HOUSING: "Home",
+	Game.EntityType.FARM: "Farm",
+	Game.EntityType.WELL: "Well",
+	Game.EntityType.FARM_BUILDING: "FarmBuilding",
+}
+
+func capture_world() -> Dictionary:
+	var node_id := {}
+	var order := []
+	for g in ["folk", "homes", "farms", "trees", "rocks", "wells", "farm_buildings"]:
+		for e in get_tree().get_nodes_in_group(g):
+			if not node_id.has(e):
+				node_id[e] = order.size()
+				order.append(e)
+
+	var entities := []
+	for e in order:
+		var rec: Dictionary = e.serialize()
+		rec["id"] = node_id[e]
+		if e is Folk and is_instance_valid(e.home) and node_id.has(e.home):
+			rec["home"] = node_id[e.home]
+		else:
+			rec["home"] = -1
+		entities.append(rec)
+
+	var decor := []
+	for key in prop_batch._records:
+		var r = prop_batch._records[key]
+		for it in r.items:
+			decor.append({tex = r.tex.resource_path, flip = r.flipped, px = it.p.x, py = it.p.y, s = it.s})
+
+	return {entities = entities, decor = decor}
+
+
+func restore_world(data: Dictionary) -> void:
+	var id_node := {}
+	var folk_links := []  # [folk_node, home_id]
+	for rec in data.get("entities", []):
+		var node
+		if rec.get("kind", "") == "folk":
+			node = _restore_folk(rec)
+			folk_links.append([node, rec.get("home", -1)])
+		else:
+			node = _restore_prop(rec)
+		if node:
+			id_node[rec.get("id", -1)] = node
+
+	for link in folk_links:
+		var h = id_node.get(link[1])
+		if is_instance_valid(h):
+			link[0].home = h
+	for h in get_tree().get_nodes_in_group("homes"):
+		h.residents.clear()
+	for fk in get_tree().get_nodes_in_group("folk"):
+		if is_instance_valid(fk.home):
+			fk.home.residents.append(fk)
+
+	for d in data.get("decor", []):
+		var tex = load(d.get("tex", ""))
+		if tex:
+			prop_batch.add_decor(tex, d.get("flip", false), Vector2(d.px, d.py), d.s)
+
+	MapData.rebuild_nav()
+	if is_instance_valid(Game.model) and is_instance_valid(Game.model.map_collision):
+		Game.model.map_collision.update()
+
+
+func _restore_prop(rec: Dictionary):
+	var ent = STATIC_PROP.instantiate() as Entity
+	ent.type = rec.type
+	ent.get_node("Pivot").scale = Vector3.ONE * float(rec.get("s", 1.0))
+
+	if ent.type == Game.EntityType.FARM:
+		ent.plant_day_f = rec.get("plant_day_f", 0.0)
+		ent.grow_days = rec.get("grow_days", 2.0)
+		ent.growth_stage = rec.get("growth_stage", 0)
+		var st: int = clampi(ent.growth_stage, 0, farm_textures.size() - 1)
+		ent.set_prop_mat(get_prop_material(farm_textures[st]))
+	else:
+		var tex = load(rec.get("tex", ""))
+		if tex:
+			ent.set_prop_mat(get_prop_material(tex, rec.get("flip", false)))
+
+	if ent.type == Game.EntityType.HOUSING:
+		ent.capacity = rec.get("capacity", 3)
+		ent.last_birth_day = rec.get("last_birth_day", -1)
+
+	ent.pos = Vector2(rec.px, rec.py)
+	ent.name = _NAME_OF.get(ent.type, "Prop")
+	add_child(ent)
+	_layer(ent, _GROUP_OF.get(ent.type, ""))
+	if ent.type == Game.EntityType.FARM:
+		_farms.append(ent)
+	return ent
+
+
+func _restore_folk(rec: Dictionary) -> Folk:
+	var ent = FOLK_FAB.instantiate() as Folk
+	ent.type = Game.EntityType.FOLK
+
+	var sv = ent.get_node("Pivot/Sprite/SubViewport")
+	var body = load(rec.get("body", ""))
+	if body:
+		(sv.get_node("body") as TextureRect).texture = body
+	var shirt = load(rec.get("shirt", ""))
+	if shirt:
+		(sv.get_node("shirt") as TextureRect).texture = shirt
+	var hair = load(rec.get("hair", ""))
+	if hair:
+		(sv.get_node("hair") as TextureRect).texture = hair
+	(sv.get_node("hair") as TextureRect).modulate = rec.get("hair_mod", Color.WHITE)
+
+	ent.pos = Vector2(rec.px, rec.py)
+	add_child(ent)
+	ent.name = rec.get("fname", "folk")
+	ent.load_state(rec)
+	_layer(ent, "folk")
+	return ent

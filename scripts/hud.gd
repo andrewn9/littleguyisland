@@ -348,7 +348,9 @@ func _update_island_stats() -> void:
 
 
 func _on_quit_pressed() -> void:
-	get_tree().quit()
+	Game.autosave()
+	Game.skip_boot = true
+	get_tree().change_scene_to_file("res://menu.tscn")
 
 
 @onready var name_label: Label = %NameLabel
