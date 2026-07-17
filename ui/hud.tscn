@@ -8,10 +8,13 @@
 [ext_resource type="Texture2D" uid="uid://c33bt3m1sx6x8" path="res://ui/monkefolk/monke/monke2.png" id="6_5jwjf"]
 [ext_resource type="Texture2D" uid="uid://d83g2fkmvp2j" path="res://ui/monkefolk/monke/monke4.png" id="7_nso1x"]
 [ext_resource type="Texture2D" uid="uid://drfvobfl543yf" path="res://ui/monkefolk/monke/monke3.png" id="8_hyw70"]
+[ext_resource type="Texture2D" uid="uid://d2aj82u5x4ey3" path="res://ui/logo.png" id="9_6y3bq"]
 [ext_resource type="Texture2D" uid="uid://bc2k0l0d16wrq" path="res://ui/ui/bars + box/bars.png" id="9_cxdcy"]
+[ext_resource type="Texture2D" uid="uid://dwhopxo6bmt86" path="res://sprites/props/better_houses/sickhouse1.png" id="10_4sr2e"]
 [ext_resource type="Script" uid="uid://5xvmkiaujo5l" path="res://scripts/bottom_bar.gd" id="10_6y3bq"]
 [ext_resource type="PackedScene" uid="uid://64qaq3b8m6kg" path="res://ui/notification.tscn" id="10_nso1x"]
 [ext_resource type="Texture2D" uid="uid://cujcgx2wus85x" path="res://ui/ui/bars + box/bars - Copy.png" id="11_5jwjf"]
+[ext_resource type="Texture2D" uid="uid://cqd6ppniuptvw" path="res://sprites/props/farmland/wheat2.png" id="11_vjpmv"]
 [ext_resource type="Texture2D" uid="uid://sie3s385wr4i" path="res://ui/ui/coloredbuttons/settings.png" id="12_exqf6"]
 [ext_resource type="FontFile" uid="uid://bc62mk63rr4vb" path="res://ui/Comic Sans MS.ttf" id="12_vjpmv"]
 [ext_resource type="Texture2D" uid="uid://cyj3a6ab0kgo1" path="res://ui/ui/uiwheel.png" id="13_o8st7"]
@@ -27,71 +30,6 @@
 [ext_resource type="Texture2D" uid="uid://b1t612syiu625" path="res://sprites/folk/body/skin1.png" id="23_c3smh"]
 [ext_resource type="Texture2D" uid="uid://d0qbtsipfo1he" path="res://sprites/folk/shirt/shirt1.png" id="24_5jwjf"]
 [ext_resource type="Texture2D" uid="uid://dynh0shhdb3tc" path="res://sprites/folk/hair/hair1.png" id="25_nso1x"]
-
-[sub_resource type="Gradient" id="Gradient_615i1"]
-offsets = PackedFloat32Array(0.35460994, 0.42553192, 0.4491726)
-colors = PackedColorArray(0.08235294, 0.49019608, 0.8235294, 1, 0.01810675, 0.09480762, 0.15714341, 0.6999999, 0, 0, 0, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_adaop"]
-gradient = SubResource("Gradient_615i1")
-width = 32
-height = 32
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-
-[sub_resource type="Gradient" id="Gradient_pw7dr"]
-offsets = PackedFloat32Array(0.35460994, 0.42553192, 0.4491726)
-colors = PackedColorArray(0.08235294, 0.49019608, 0.8235294, 1, 0.01810675, 0.09480762, 0.15714341, 0.6999999, 0, 0, 0, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ap7yk"]
-gradient = SubResource("Gradient_pw7dr")
-width = 32
-height = 32
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pw7dr"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.57254905, 0.57254905, 0.57254905, 1)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(0, 0, 0, 0.22745098)
-border_blend = true
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-corner_detail = 1
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_615i1"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(1, 1, 1, 0.22352941)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-corner_detail = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ap7yk"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(1, 1, 1, 0.75)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-corner_detail = 6
 
 [sub_resource type="GDScript" id="GDScript_st70h"]
 script/source = "extends Label
@@ -182,14 +120,76 @@ _data = {
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7522t"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_exqf6"]
-load_path = "res://.godot/imported/goodbox.png-49f145cd5fcaed2fef43509cb9d79cdb.ctex"
-
 [sub_resource type="LabelSettings" id="LabelSettings_st70h"]
 font = ExtResource("12_vjpmv")
 font_size = 15
 outline_size = 7
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_615i1"]
+offsets = PackedFloat32Array(0.35460994, 0.42553192, 0.4491726)
+colors = PackedColorArray(0.08235294, 0.49019608, 0.8235294, 1, 0.01810675, 0.09480762, 0.15714341, 0.6999999, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_adaop"]
+gradient = SubResource("Gradient_615i1")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_pw7dr"]
+offsets = PackedFloat32Array(0.35460994, 0.42553192, 0.4491726)
+colors = PackedColorArray(0.08235294, 0.49019608, 0.8235294, 1, 0.01810675, 0.09480762, 0.15714341, 0.6999999, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ap7yk"]
+gradient = SubResource("Gradient_pw7dr")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pw7dr"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.57254905, 0.57254905, 0.57254905, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 0.22745098)
+border_blend = true
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_615i1"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.22352941)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ap7yk"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
 
 [node name="Hud" type="Control" unique_id=1275586281]
 layout_mode = 3
@@ -215,7 +215,6 @@ theme_override_font_sizes/font_size = 22
 
 [node name="BrushSize" type="VBoxContainer" parent="CanvasLayer" unique_id=1744459680]
 unique_name_in_owner = true
-visible = false
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.761
@@ -244,17 +243,12 @@ custom_maximum_size = Vector2(150, -1)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-theme_override_constants/center_grabber = 1
-theme_override_icons/grabber = SubResource("GradientTexture2D_adaop")
-theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_ap7yk")
-theme_override_styles/slider = SubResource("StyleBoxFlat_pw7dr")
-theme_override_styles/grabber_area = SubResource("StyleBoxFlat_615i1")
-theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_ap7yk")
 min_value = 0.5
 max_value = 1.5
 step = 0.0
 value = 1.0
 scrollable = false
+tick_count = 7
 ticks_on_borders = true
 ticks_position = 2
 
@@ -344,6 +338,8 @@ size_flags_vertical = 0
 
 [node name="HBoxContainer3" type="HSplitContainer" parent="CanvasLayer/Panels/IslandStats/VBoxContainer2" unique_id=889648148]
 layout_mode = 2
+split_offsets = PackedInt32Array(57, 147)
+split_offset = 57
 
 [node name="Label" type="Label" parent="CanvasLayer/Panels/IslandStats/VBoxContainer2/HBoxContainer3" unique_id=52081308]
 layout_mode = 2
@@ -359,6 +355,12 @@ size_flags_vertical = 1
 text = "9"
 horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Panels/IslandStats/VBoxContainer2/HBoxContainer3" unique_id=355245959]
+layout_mode = 2
+texture = ExtResource("9_6y3bq")
+expand_mode = 3
+stretch_mode = 5
 
 [node name="HBoxContainer" type="HSplitContainer" parent="CanvasLayer/Panels/IslandStats/VBoxContainer2" unique_id=2092842126]
 layout_mode = 2
@@ -383,7 +385,7 @@ value = 33.22
 
 [node name="HBoxContainer4" type="HSplitContainer" parent="CanvasLayer/Panels/IslandStats/VBoxContainer2" unique_id=514681235]
 layout_mode = 2
-split_offsets = PackedInt32Array(35, 55, 101)
+split_offsets = PackedInt32Array(35, 55, 85, 131, 151)
 split_offset = 35
 
 [node name="Label" type="Label" parent="CanvasLayer/Panels/IslandStats/VBoxContainer2/HBoxContainer4" unique_id=881672725]
@@ -400,6 +402,12 @@ text = "0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Panels/IslandStats/VBoxContainer2/HBoxContainer4" unique_id=962126909]
+layout_mode = 2
+texture = ExtResource("10_4sr2e")
+expand_mode = 3
+stretch_mode = 5
+
 [node name="Label2" type="Label" parent="CanvasLayer/Panels/IslandStats/VBoxContainer2/HBoxContainer4" unique_id=1612956088]
 layout_mode = 2
 size_flags_vertical = 1
@@ -412,6 +420,12 @@ layout_mode = 2
 size_flags_vertical = 1
 text = "0"
 vertical_alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Panels/IslandStats/VBoxContainer2/HBoxContainer4" unique_id=1141077226]
+layout_mode = 2
+texture = ExtResource("11_vjpmv")
+expand_mode = 3
+stretch_mode = 5
 
 [node name="HBoxContainer6" type="HSplitContainer" parent="CanvasLayer/Panels/IslandStats/VBoxContainer2" unique_id=237655238]
 layout_mode = 2
@@ -510,21 +524,40 @@ custom_minimum_size = Vector2(0, 90)
 custom_maximum_size = Vector2(-1, 720)
 propagate_maximum_size = true
 layout_mode = 3
-anchor_top = 0.647
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 0
-grow_vertical = 2
+offset_top = -197.0
+grow_horizontal = 2
+grow_vertical = 0
 pivot_offset_ratio = Vector2(0.5, 0)
 mouse_filter = 2
+
+[node name="SettingsButton" type="TextureButton" parent="CanvasLayer/Bottom" unique_id=360644980]
+custom_minimum_size = Vector2(70, 70)
+custom_maximum_size = Vector2(40, 40)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.595
+anchor_right = 0.06
+anchor_bottom = 0.66
+offset_left = 16.205
+offset_top = -57.195
+offset_right = 86.205
+grow_vertical = 0
+tooltip_text = "settings"
+texture_normal = ExtResource("12_exqf6")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="Left" type="NinePatchRect" parent="CanvasLayer/Bottom" unique_id=1746489747]
 layout_mode = 0
 offset_left = -2.0
-offset_top = 144.02399
-offset_right = 533.4498
-offset_bottom = 261.388
-scale = Vector2(0.5945263, 0.5945263)
+offset_top = 133.96
+offset_right = 584.2482
+offset_bottom = 251.57677
+scale = Vector2(0.55298245, 0.55298245)
 pivot_offset = Vector2(1.025, -1)
 texture = ExtResource("9_cxdcy")
 region_rect = Rect2(21.014252, 0, 968.9857, 114)
@@ -538,12 +571,13 @@ tuck_ratio = 0.10499999999999998
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Bottom/Left" unique_id=1654785863]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.065
-anchor_right = 0.869
+anchor_left = 0.02
+anchor_top = 0.09
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -0.40020752
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.89, 0.89)
 theme_override_constants/separation = 11
 alignment = 1
 
@@ -714,13 +748,13 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -316.33902
-offset_top = -67.776
-offset_right = 219.11084
-offset_bottom = 49.588013
+offset_left = -322.185
+offset_top = -63.039993
+offset_right = 264.06323
+offset_bottom = 54.57675
 grow_horizontal = 0
 grow_vertical = 0
-scale = Vector2(0.5945263, 0.5945263)
+scale = Vector2(0.55298245, 0.55298245)
 pivot_offset = Vector2(-1, -1)
 texture = ExtResource("11_5jwjf")
 patch_margin_left = 12
@@ -733,12 +767,13 @@ tuck_ratio = 0.10499999999999998
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Bottom/Right" unique_id=392255040]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.0
+anchor_left = 0.195
+anchor_top = 0.09
+anchor_right = 0.97
 anchor_bottom = 1.0
-offset_left = 40.0
-offset_right = -100.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.89, 0.89)
 theme_override_constants/separation = 14
 alignment = 1
 
@@ -772,6 +807,8 @@ offset_right = 50.0
 offset_bottom = 22.786839
 grow_horizontal = 2
 grow_vertical = 0
+tooltip_text = "collected by cutting trees. used to build housing"
+mouse_filter = 0
 theme_override_font_sizes/font_size = 21
 text = "wood"
 horizontal_alignment = 1
@@ -822,6 +859,8 @@ offset_right = 50.0
 offset_bottom = 22.786839
 grow_horizontal = 2
 grow_vertical = 0
+tooltip_text = "harvested in folk plantations. folk need to eat to stay happy"
+mouse_filter = 0
 theme_override_font_sizes/font_size = 21
 text = "food"
 horizontal_alignment = 1
@@ -872,6 +911,8 @@ offset_right = 50.0
 offset_bottom = 22.786839
 grow_horizontal = 2
 grow_vertical = 0
+tooltip_text = "collected from mining mountain rocks. used to upgrade housing and build wells"
+mouse_filter = 0
 theme_override_font_sizes/font_size = 21
 text = "stone"
 horizontal_alignment = 1
@@ -922,6 +963,8 @@ offset_right = 50.0
 offset_bottom = 22.786839
 grow_horizontal = 2
 grow_vertical = 0
+tooltip_text = "livestock. provides happiness and can be used as emergency food"
+mouse_filter = 0
 theme_override_font_sizes/font_size = 21
 text = "animals"
 horizontal_alignment = 1
@@ -941,24 +984,6 @@ theme_override_font_sizes/font_size = 33
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="SettingsButton" type="TextureButton" parent="CanvasLayer/Bottom/Right" unique_id=360644980]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -58.5
-offset_right = -20.0
-offset_bottom = 58.5
-grow_horizontal = 0
-grow_vertical = 2
-tooltip_text = "settings"
-texture_normal = ExtResource("12_exqf6")
-ignore_texture_size = true
-stretch_mode = 5
 
 [node name="Wheel" type="TextureRect" parent="CanvasLayer/Bottom" unique_id=1529679700]
 custom_minimum_size = Vector2(-1, -1)
@@ -1066,17 +1091,13 @@ stretch_mode = 0
 [node name="Profile" type="Panel" parent="CanvasLayer" unique_id=1713301352]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2(215.975, 200)
+custom_minimum_size = Vector2(215.975, 257.07)
 custom_maximum_size = Vector2(252.28, 276.25)
 propagate_maximum_size = true
 anchors_preset = -1
-anchor_left = 0.216
-anchor_right = 0.216
+anchor_left = 0.5
+anchor_right = 0.5
 anchor_bottom = 0.868
-offset_left = -105.8
-offset_top = 136.0
-offset_right = 106.455
-offset_bottom = -136.79999
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
@@ -1280,31 +1301,25 @@ patch_margin_top = 11
 patch_margin_right = 11
 patch_margin_bottom = 10
 
-[node name="Settings" type="NinePatchRect" parent="CanvasLayer" unique_id=2001730921]
+[node name="Settings" type="Control" parent="CanvasLayer" unique_id=574423350]
 unique_name_in_owner = true
-visible = false
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 200.0
-offset_top = 100.0
-offset_right = -200.0003
-offset_bottom = -393.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("CompressedTexture2D_exqf6")
-patch_margin_left = 32
-patch_margin_top = 25
-patch_margin_right = 40
-patch_margin_bottom = 20
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Settings" unique_id=1734470655]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Settings" unique_id=1734470655]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -51.0
+offset_right = 51.0
+offset_bottom = 174.0
+grow_horizontal = 2
 
 [node name="Sens" type="HFlowContainer" parent="CanvasLayer/Settings/VBoxContainer" unique_id=44215137]
 layout_mode = 2
@@ -1387,7 +1402,7 @@ ticks_on_borders = true
 ticks_position = 2
 
 [connection signal="pressed" from="CanvasLayer/NinePatchRect/HFlowContainer/Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="CanvasLayer/Bottom/Right/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Bottom/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/HBoxContainer2/TrackButton" to="." method="_on_track_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/HBoxContainer2/POVButton" to="." method="_on_pov_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Profile/HBoxContainer2/DeallocateButton" to="." method="_on_deallocate_button_pressed"]

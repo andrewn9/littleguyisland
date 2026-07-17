@@ -11,9 +11,11 @@ config_version=5
 [application]
 
 config/name="little guy island"
+config/version="1.0"
 run/main_scene="res://game.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 run/max_fps=120
+config/icon="uid://d2aj82u5x4ey3"
 
 [autoload]
 

@@ -2,6 +2,76 @@
 
 [ext_resource type="FontFile" uid="uid://bc62mk63rr4vb" path="res://ui/Comic Sans MS.ttf" id="1_56gqf"]
 
+[sub_resource type="Gradient" id="Gradient_615i1"]
+offsets = PackedFloat32Array(0.35460994, 0.42553192, 0.4491726)
+colors = PackedColorArray(0.08235294, 0.49019608, 0.8235294, 1, 0.01810675, 0.09480762, 0.15714341, 0.6999999, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_adaop"]
+gradient = SubResource("Gradient_615i1")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_56gqf"]
+offsets = PackedFloat32Array(0.35460994, 0.42553192, 0.4491726)
+colors = PackedColorArray(0.08235294, 0.49019608, 0.8235294, 1, 0.01810675, 0.09480762, 0.15714341, 0.6999999, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_s8il0"]
+gradient = SubResource("Gradient_56gqf")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_615i1"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.22352941)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ap7yk"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pw7dr"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.57254905, 0.57254905, 0.57254905, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 0.22745098)
+border_blend = true
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+anti_aliasing = false
+
 [resource]
 default_font = ExtResource("1_56gqf")
 default_font_size = 12
+HSlider/icons/grabber = SubResource("GradientTexture2D_adaop")
+HSlider/icons/grabber_highlight = SubResource("GradientTexture2D_s8il0")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_615i1")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_ap7yk")
+HSlider/styles/slider = SubResource("StyleBoxFlat_pw7dr")

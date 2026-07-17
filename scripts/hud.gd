@@ -14,7 +14,7 @@ const NOTIFICATION = preload("res://ui/notification.tscn")
 
 @onready var size_slider: HSlider = %SizeSlider
 
-@onready var settings: NinePatchRect = %Settings
+@onready var settings: Control = %Settings
 @onready var sens_slider: HSlider = %SensSlider
 @onready var vol_slider: HSlider = %VolSlider
 @onready var cam_button: CheckButton = %CamButton
