@@ -152,13 +152,14 @@ func _ready():
 
 	MapData.update()
 
-	if Game.pending_load and Save.has_slot(Game.active_slot):
+	var loading := Game.pending_load and Save.has_slot(Game.active_slot)
+	if loading:
 		Save.apply_slot(Game.active_slot, self)
 	else:
 		plains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 		mountains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 	Game.pending_load = false
-	Hud.begin_world()
+	Hud.begin_world(not loading)
 
 
 func spawn_static_prop(pos: Vector2, textures: Array[Texture2D], min_scale: float, max_scale: float):

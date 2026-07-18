@@ -131,8 +131,8 @@ func start_tutorial() -> void:
 	tutorial.start()
 
 
-func begin_world() -> void:
-	tutorial.begin_world()
+func begin_world(fresh: bool) -> void:
+	tutorial.begin_world(fresh)
 
 
 func _build_layers_menu() -> void:

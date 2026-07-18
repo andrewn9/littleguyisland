@@ -7,23 +7,27 @@ var _world := 0
 func _ready() -> void:
 	pass
 
-
-func begin_world() -> void:
+func begin_world(fresh := false) -> void:
 	_world += 1
 	_active = false
 	_ambient_on = false
 	Hud.monkey_clear()
 	if Game.tutorial:
 		start()
+	elif fresh:
+		var w := _world
+		await _pause(1.2)
+		if w != _world or not is_instance_valid(Game.model):
+			return
+		_spawn_starter_folk(5)
+		Hud.monkey_say("here's five little guys to get you started. hit PLAY when you're ready!", 6.0)
 	_start_ambient()
-
 
 func start() -> void:
 	if _active:
 		return
 	_active = true
 	_run()
-
 
 func _finish() -> void:
 	_active = false
