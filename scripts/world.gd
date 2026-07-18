@@ -93,7 +93,7 @@ static var volume: float:
 			_instance._update_volume()
 
 func _update_volume():
-	%Music.volume_db = (volume - 1.0) * 80.0
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(volume))
 
 func _ready():
 	_instance = self

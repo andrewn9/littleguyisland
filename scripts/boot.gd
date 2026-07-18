@@ -70,10 +70,10 @@ func _label_slot(slot: int) -> void:
 		return
 	var meta := Save.slot_meta(slot)
 	if meta.is_empty():
-		button.text = "slot %d — new world" % [slot + 1]
+		button.text = "new world"
 	else:
 		var world: String = meta.name if meta.name != "" else "world"
-		button.text = "slot %d — %s (day %d, %d folk)" % [slot + 1, world, meta.day, meta.population]
+		button.text = "%s (day %d, %d folk)" % [world, meta.day, meta.population]
 
 func _on_slot_pressed(slot: int) -> void:
 	if Save.has_slot(slot):
@@ -85,7 +85,7 @@ func _on_slot_input(event: InputEvent, slot: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if Save.has_slot(slot):
 			_confirm_slot = slot
-			reset_confirm.dialog_text = "Reset slot %d? This deletes the saved world." % [slot + 1]
+			reset_confirm.dialog_text = "reset slot?"
 			reset_confirm.popup_centered()
 
 func _on_reset_confirmed() -> void:

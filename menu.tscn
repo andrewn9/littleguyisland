@@ -292,7 +292,7 @@ tracks/17/keys = {
 
 [sub_resource type="Animation" id="Animation_4hy44"]
 resource_name = "boot"
-length = 10.0
+length = 13.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -492,7 +492,7 @@ tracks/16/path = NodePath("boot2:playing")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
-"times": PackedFloat32Array(0, 1.4667, 7.766667),
+"times": PackedFloat32Array(0, 1.4667, 10.566667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [false, true, false]
@@ -504,10 +504,10 @@ tracks/17/path = NodePath("boot2:volume_db")
 tracks/17/interp = 1
 tracks/17/loop_wrap = true
 tracks/17/keys = {
-"times": PackedFloat32Array(2, 2.0333333, 3.583078),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(1.3667, 2.0333333, 7.4333334, 13.466666),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [-10.0, -10.0, -10.0]
+"values": [-80.0, -10.0, -10.0, -80.0]
 }
 tracks/18/type = "value"
 tracks/18/imported = false
@@ -791,7 +791,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 text = "Save 1"
-icon = ExtResource("1_lti8b")
+icon = ExtResource("5_l48gv")
 expand_icon = true
 
 [node name="Button2" type="Button" parent="SaveModal/VFlowContainer" unique_id=252218592]
@@ -800,7 +800,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 text = "Save 2"
-icon = ExtResource("1_lti8b")
+icon = ExtResource("5_l48gv")
 expand_icon = true
 
 [node name="Button3" type="Button" parent="SaveModal/VFlowContainer" unique_id=898548057]
@@ -809,7 +809,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 text = "Save 3"
-icon = ExtResource("1_lti8b")
+icon = ExtResource("5_l48gv")
 expand_icon = true
 
 [node name="Button4" type="Button" parent="SaveModal/VFlowContainer" unique_id=536491938]
@@ -818,7 +818,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 text = "Save 3"
-icon = ExtResource("1_lti8b")
+icon = ExtResource("5_l48gv")
 expand_icon = true
 
 [node name="Modal" type="NinePatchRect" parent="." unique_id=823499308]

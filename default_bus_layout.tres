@@ -1,0 +1,28 @@
+[gd_resource type="AudioBusLayout" format=3 uid="uid://ckakwmxeokyc0"]
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_j3pel"]
+resource_name = "Compressor"
+ratio = 48.0
+gain = 1.0
+attack_us = 745.0
+release_ms = 280.0
+
+[sub_resource type="AudioEffectDistortion" id="AudioEffectDistortion_j3pel"]
+resource_name = "Distortion"
+mode = 1
+
+[sub_resource type="AudioEffectBandPassFilter" id="AudioEffectBandPassFilter_j3pel"]
+resource_name = "BandPassFilter"
+
+[sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_j3pel"]
+resource_name = "Limiter"
+
+[resource]
+bus/0/effect/0/effect = SubResource("AudioEffectCompressor_j3pel")
+bus/0/effect/0/enabled = true
+bus/0/effect/1/effect = SubResource("AudioEffectDistortion_j3pel")
+bus/0/effect/1/enabled = true
+bus/0/effect/2/effect = SubResource("AudioEffectBandPassFilter_j3pel")
+bus/0/effect/2/enabled = true
+bus/0/effect/3/effect = SubResource("AudioEffectLimiter_j3pel")
+bus/0/effect/3/enabled = true
