@@ -152,14 +152,14 @@ func _ready():
 
 	MapData.update()
 
-	if Game.pending_load and Save.has_slot(Game.active_slot):
+	var loading := Game.pending_load and Save.has_slot(Game.active_slot)
+	if loading:
 		Save.apply_slot(Game.active_slot, self)
 	else:
 		plains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 		mountains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
-		if Game.tutorial:
-			Hud.monkey_say("boy", 1.0)
 	Game.pending_load = false
+	Hud.begin_world(not loading)
 
 
 func spawn_static_prop(pos: Vector2, textures: Array[Texture2D], min_scale: float, max_scale: float):
@@ -290,6 +290,10 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 
 
 func generate(x1: int, y1: int, x2: int, y2: int):
+	if MapData.height_img == null or tree_cluster.get_image() == null \
+			or mountain_cluster.get_image() == null:
+		return
+
 	for child: Node3D in get_children():
 		var x_pos = (child.position.x + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE
 		var y_pos = (child.position.z + MapData.WORLD_SIZE / 2) * MapData.RESOLUTION / MapData.WORLD_SIZE

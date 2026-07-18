@@ -16,8 +16,11 @@ var _autosave_timer := 0.0
 
 var world_name := ""
 var tutorial := false
+var tips_fired := {}
 var new_world_height_img: Image = null
 var new_world_value_img: Image = null
+
+var edit_count := 0
 
 enum EntityType {
 	DECORATIVE,

@@ -29,6 +29,7 @@
 [ext_resource type="Texture2D" uid="uid://b1t612syiu625" path="res://sprites/folk/body/skin1.png" id="23_c3smh"]
 [ext_resource type="Texture2D" uid="uid://d0qbtsipfo1he" path="res://sprites/folk/shirt/shirt1.png" id="24_5jwjf"]
 [ext_resource type="Texture2D" uid="uid://dynh0shhdb3tc" path="res://sprites/folk/hair/hair1.png" id="25_nso1x"]
+[ext_resource type="Script" path="res://scripts/tutorial.gd" id="26_tut"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6y3bq"]
 bg_color = Color(0.5082, 0.7089134, 0.77, 0.12156863)
@@ -1566,6 +1567,10 @@ alignment = 1
 layout_mode = 2
 tooltip_text = "Hide all UI elements"
 text = "Hide UI"
+
+[node name="Tutorial" type="Node" parent="CanvasLayer" unique_id=710000001]
+unique_name_in_owner = true
+script = ExtResource("26_tut")
 
 [connection signal="pressed" from="CanvasLayer/NinePatchRect/HFlowContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="CanvasLayer/Bottom/SettingsButton" to="." method="_on_settings_button_pressed"]

@@ -41,6 +41,7 @@ func save_slot(slot: int, gen) -> bool:
 		game = {
 			world_name = Game.world_name,
 			tutorial = Game.tutorial,
+			tips_fired = Game.tips_fired,
 			day = Game.day,
 			day_fraction = Game.day_fraction,
 			food = Game.food,
@@ -84,6 +85,7 @@ func apply_slot(slot: int, gen) -> bool:
 	var g: Dictionary = data.get("game", {})
 	Game.world_name = g.get("world_name", "")
 	Game.tutorial = g.get("tutorial", false)
+	Game.tips_fired = g.get("tips_fired", {})
 	Game.day = g.get("day", 0)
 	Game.day_fraction = g.get("day_fraction", 0.375)
 	Game.food = g.get("food", 0.0)
