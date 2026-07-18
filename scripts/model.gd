@@ -165,6 +165,7 @@ func draw_at(tex_pos: Vector2, to: DrawableTexture2D, color: Color, brush_size: 
 		to.blit_rect(Rect2i(roundi(tex_pos.x - s * 0.5), roundi(tex_pos.y - s * 0.5), s, s), tex, color, 0, _add_mat if additive else null)
 
 	MapData.mark_dirty()
+	Game.edit_count += 1
 
 	if min_stroke:
 		min_stroke = min_stroke.min(Vector2i(roundi(tex_pos.x - brush_size * 0.5), roundi(tex_pos.y - brush_size * 0.5)))

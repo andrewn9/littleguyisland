@@ -124,6 +124,15 @@ const LAYERS := {
 }
 
 @onready var layers_list: VBoxContainer = %LayersList
+@onready var tutorial := %Tutorial
+
+
+func start_tutorial() -> void:
+	tutorial.start()
+
+
+func begin_world() -> void:
+	tutorial.begin_world()
 
 
 func _build_layers_menu() -> void:
@@ -528,27 +537,49 @@ const BUBBLE_PAD_B := 14.0
 const TALKS := ["talk1", "talk2"]
 
 var _speech_left := 0.0
+var _flap_left := 0.0
+
+func _flap_time(text: String) -> float:
+	return clampf(0.6 + text.split(" ").size() * 0.18, 0.8, 5.0)
 
 func monkey_say(text: String, seconds := 4.0) -> void:
 	bubble_label.text = text
 	_fit_bubble()
 	bubble.visible = true
 	_speech_left = seconds
+	_flap_left = _flap_time(text)
 	monkey_anim.play(TALKS.pick_random())
 
+
+func monkey_hold(text: String) -> void:
+	monkey_say(text, 0.0)
+
+
+func monkey_clear() -> void:
+	_speech_left = 0.0
+	_flap_left = 0.0
+	bubble.visible = false
+	monkey_anim.play("idle")
+
 func _fit_bubble() -> void:
+	var max_text_w := BUBBLE_MAX_WIDTH - BUBBLE_PAD_L - BUBBLE_PAD_R
 	bubble_label.position = Vector2(BUBBLE_PAD_L, BUBBLE_PAD_T)
-	bubble_label.size = Vector2(BUBBLE_MAX_WIDTH - BUBBLE_PAD_L - BUBBLE_PAD_R, 0)
-	var text_w = bubble_label.get_content_width()
+	bubble_label.size = Vector2(max_text_w, 0)
+	var text_w = minf(bubble_label.get_content_width(), max_text_w)
+	text_w = maxf(text_w, BUBBLE_MIN_WIDTH - BUBBLE_PAD_L - BUBBLE_PAD_R)
+
+	bubble_label.size = Vector2(text_w, 0)
 	var text_h = bubble_label.get_content_height()
 	bubble_label.size = Vector2(text_w, text_h)
 
-	var w = clampf(text_w + BUBBLE_PAD_L + BUBBLE_PAD_R, BUBBLE_MIN_WIDTH, BUBBLE_MAX_WIDTH)
+	var w = text_w + BUBBLE_PAD_L + BUBBLE_PAD_R
 	var h = BUBBLE_PAD_T + text_h + BUBBLE_PAD_B
 	bubble.size = Vector2(w, h)
 	bubble.position = Vector2(BUBBLE_TAIL_X, -bubble.size.y)
 
 func _tick_speech(delta: float) -> void:
+	if _flap_left > 0.0:
+		_flap_left -= delta
 	if _speech_left <= 0.0:
 		return
 	_speech_left -= delta
@@ -557,7 +588,7 @@ func _tick_speech(delta: float) -> void:
 		monkey_anim.play("idle")
 
 func _on_monkey_anim_done(_anim: StringName) -> void:
-	monkey_anim.play(TALKS.pick_random() if _speech_left > 0.0 else "idle")
+	monkey_anim.play(TALKS.pick_random() if _flap_left > 0.0 else "idle")
 
 
 func _on_reflections_button_toggled(toggled_on: bool):

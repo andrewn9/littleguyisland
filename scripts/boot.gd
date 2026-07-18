@@ -28,10 +28,10 @@ func _ready() -> void:
 	if !cfg.get_value("game", "first_game", false):
 		var popup = %GraphicsInitial as ConfirmationDialog
 		popup.popup_centered()
-		var use_low = false
-		popup.confirmed.connect(func(): use_low = true, CONNECT_ONE_SHOT)
+		var use_low := [false]
+		popup.confirmed.connect(func(): use_low[0] = true, CONNECT_ONE_SHOT)
 		await popup.visibility_changed
-		Hud.gfx_button.button_pressed = use_low
+		Hud.gfx_button.button_pressed = use_low[0]
 		Hud.first_play = true
 		Hud._save_settings()
 	$boot3.play()
@@ -116,6 +116,7 @@ func _on_create_world() -> void:
 	if Game.world_name == "":
 		Game.world_name = "island %d" % [_nw_slot + 1]
 	Game.tutorial = tutorial_check.button_pressed
+	Game.tips_fired = {} 
 	Game.new_world_height_img = _height_img
 	Game.new_world_value_img = _value_img
 	new_world_popup.visible = false

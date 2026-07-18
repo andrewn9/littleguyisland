@@ -681,7 +681,7 @@ uri = "https://auyease.itch.io/little-guy-island"
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 21
-text = "credits"
+text = "credits.lnk"
 horizontal_alignment = 1
 
 [node name="horse" type="VBoxContainer" parent="Apps" unique_id=1379080693]
