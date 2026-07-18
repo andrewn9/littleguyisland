@@ -263,7 +263,6 @@ func _physics_process(delta: float) -> void:
 
 func _refresh_stats() -> void:
 	var folks := get_tree().get_nodes_in_group("folk")
-	population = folks.size()
 	total_wood = 0
 	rock = 0.0
 	homeless = 0
