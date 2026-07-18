@@ -165,8 +165,9 @@ shader_parameter/flicker_intensity = 0.006000000285
 shader_parameter/color_offset = 0.16
 shader_parameter/blur = 0.0
 
-[node name="Game2" type="Node3D" unique_id=556122064]
+[node name="Game2" type="Node3D" unique_id=556122064 node_paths=PackedStringArray("entity_gen")]
 script = ExtResource("1_7sc4i")
+entity_gen = NodePath("Entities")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1294957651]
 environment = SubResource("Environment_7sc4i")

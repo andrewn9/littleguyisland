@@ -2,6 +2,8 @@ class_name World extends Node3D
 
 @onready var ocean_water = preload("res://materials/ocean_water.tres")
 
+@export var entity_gen: EntityGen
+
 static var _instance: World = null
 
 static var _low_gfx := false
@@ -33,15 +35,15 @@ func _update_gfx():
 	if low_gfx:
 		(%Water as MeshInstance3D).material_override = null
 		(%Sun as DirectionalLight3D).shadow_enabled = false
-		RenderingServer.viewport_set_msaa_2d(viewport, RenderingServer.VIEWPORT_MSAA_DISABLED)
 		RenderingServer.viewport_set_msaa_3d(viewport, RenderingServer.VIEWPORT_MSAA_DISABLED)
 		RenderingServer.viewport_set_screen_space_aa(viewport, RenderingServer.VIEWPORT_SCREEN_SPACE_AA_DISABLED)
+		entity_gen.generate(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 	else:
 		(%Water as MeshInstance3D).material_override = ocean_water
 		(%Sun as DirectionalLight3D).shadow_enabled = true
-		RenderingServer.viewport_set_msaa_2d(viewport, RenderingServer.VIEWPORT_MSAA_2X)
 		RenderingServer.viewport_set_msaa_3d(viewport, RenderingServer.VIEWPORT_MSAA_2X)
 		RenderingServer.viewport_set_screen_space_aa(viewport, RenderingServer.VIEWPORT_SCREEN_SPACE_AA_SMAA)
+		entity_gen.generate(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 
 		reflections = reflections
 

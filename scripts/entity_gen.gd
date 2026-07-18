@@ -98,6 +98,10 @@ func get_prop_material(texture: Texture2D, flipped := false) -> StandardMaterial
 	prop_materials[key] = mat
 	return mat
 
+func _init():
+	prop_batch = PropBatch.new()
+	prop_batch.name = "PropBatch"
+	add_child(prop_batch)
 
 func _ready():
 	mountain_textures = load_textures("res://sprites/props/mountains/")
@@ -147,10 +151,6 @@ func _ready():
 		tree_noise.append(rng.randf())
 
 	MapData.update()
-
-	prop_batch = PropBatch.new()
-	prop_batch.name = "PropBatch"
-	add_child(prop_batch)
 
 	if Game.pending_load and Save.has_slot(Game.active_slot):
 		Save.apply_slot(Game.active_slot, self)
@@ -273,7 +273,7 @@ func mountains(x1: int, y1: int, x2: int, y2: int):
 					rock.type = Game.EntityType.ROCK
 					_layer(rock, "rocks")
 
-				if elevation > 0.7:
+				if elevation > 0.7 and not World.low_gfx:
 					if height_map.get_pixel(max(x - 1, 0), y).r > elevation or height_map.get_pixel(max(x + 1, MapData.RESOLUTION - 1), y).r > elevation or height_map.get_pixel(x, max(y - 1, 0)).r > elevation or height_map.get_pixel(x, max(y + 1, MapData.RESOLUTION - 1)).r > elevation:
 						continue
 
@@ -307,6 +307,10 @@ func generate(x1: int, y1: int, x2: int, y2: int):
 
 func free_cloud(cloud: GPUParticles3D):
 	if not cloud.emitting:
+		return
+	
+	if World.low_gfx:
+		cloud.queue_free()
 		return
 	
 	cloud.emitting = false
