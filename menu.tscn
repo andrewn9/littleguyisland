@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bnv0s0boheps6" path="res://ui/goodbox.png" id="8_g7jxm"]
 [ext_resource type="AudioStream" uid="uid://bwxkxy1oy5yp8" path="res://sfx/boot.mp3" id="9_nrnbx"]
 [ext_resource type="AudioStream" uid="uid://cbyvghltoleav" path="res://sfx/PS2 Startup Sound.mp3" id="10_h1wq0"]
+[ext_resource type="Script" uid="uid://hit8gfdn6aiv" path="res://scripts/color_rect.gd" id="11_3ls4m"]
 [ext_resource type="AudioStream" uid="uid://cpbkgif2v063o" path="res://sfx/Computer Fan Ambient Sounds.mp3" id="11_dwrpx"]
 [ext_resource type="Texture2D" uid="uid://bcu3kmseq6sc6" path="res://ui/ui/window and box/miniscreen.png" id="13_jspdm"]
 [ext_resource type="AudioStream" uid="uid://056tjrsfvs83" path="res://sfx/click.ogg" id="14_jspdm"]
@@ -205,7 +206,7 @@ shader_parameter/scanlines_opacity = 0.4
 shader_parameter/scanlines_width = 0.25
 shader_parameter/grille_opacity = 0.3
 shader_parameter/resolution = Vector2(400, 300)
-shader_parameter/pixelate = true
+shader_parameter/pixelate = false
 shader_parameter/roll = true
 shader_parameter/roll_speed = 8.0
 shader_parameter/roll_size = 15.0
@@ -214,7 +215,7 @@ shader_parameter/distort_intensity = 0.0
 shader_parameter/noise_opacity = 0.0
 shader_parameter/noise_speed = 5.0
 shader_parameter/static_noise_intensity = 0.02000000095
-shader_parameter/aberration = 0.010000047974999982
+shader_parameter/aberration = 0.01000004797499998
 shader_parameter/brightness = 1.4
 shader_parameter/discolor = true
 shader_parameter/warp_amount = 0.0
@@ -1053,6 +1054,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("11_3ls4m")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1629861286]
 libraries/ = SubResource("AnimationLibrary_ytr4m")
