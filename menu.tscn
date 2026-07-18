@@ -2,9 +2,10 @@
 
 [ext_resource type="Script" uid="uid://5di6h38n6c27" path="res://scripts/boot.gd" id="1_4hy44"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_lti8b"]
-[ext_resource type="Texture2D" uid="uid://ci7v6wvi1q7ok" path="res://ui/bg - Copy.png" id="1_mae5d"]
 [ext_resource type="Texture2D" uid="uid://ikh4qw7n0wv5" path="res://ui/ui/bars + box/box.png" id="2_ouk20"]
 [ext_resource type="Texture2D" uid="uid://b5eay0mlm2f4u" path="res://ui/computa.png" id="2_ytr4m"]
+[ext_resource type="Texture2D" uid="uid://d2jadg5ay07l0" path="res://ui/bg.png" id="3_gd0jp"]
+[ext_resource type="Texture2D" uid="uid://dpr262m6ik4fb" path="res://ui/vignette.png" id="4_4ndjb"]
 [ext_resource type="Texture2D" uid="uid://d2aj82u5x4ey3" path="res://ui/logo.png" id="5_l48gv"]
 [ext_resource type="Texture2D" uid="uid://bqi2n86mlcyjs" path="res://ui/tachyon.webp" id="6_kk3ma"]
 [ext_resource type="Texture2D" uid="uid://c082xjjw5jx5r" path="res://ui/ui/paper.png" id="7_nrnbx"]
@@ -28,48 +29,198 @@ fill_to = Vector2(0.4957265, 0)
 
 [sub_resource type="Shader" id="Shader_nso1x"]
 code = "shader_type canvas_item;
-uniform sampler2D ST : hint_screen_texture, filter_linear_mipmap_anisotropic;
-uniform vec4 scanline_color : source_color = vec4(0, 0, 0, 1);
-uniform vec4 flicker_color : source_color = vec4(0, 0, 0, 1);
-uniform float scanlines_count = 10.0;
-uniform float scanlines_intensity = 0.05;
-uniform float flicker_speed = 30.0;
-uniform float flicker_intensity : hint_range(0.0, 1.0, 0.001) = 0.025;
-uniform float color_offset = 1.5;
-uniform float blur = 0.15;
 
-void fragment() {
-	vec2 pixel_size = 1.0 / vec2(textureSize(ST, 0));
-	float offset = color_offset * pixel_size.x;
-	
-	// chromatic aberration
-	float channel_r = textureLod(ST, SCREEN_UV + vec2(offset, 0.0), blur).r;
-	float channel_g = textureLod(ST, SCREEN_UV, blur).g;
-	float channel_b = textureLod(ST, SCREEN_UV + vec2(-offset, 0.0), blur).b;
-	vec4 aberrate = vec4(channel_r, channel_g, channel_b, 1.0);
-	
-	// scanline flicker
-	float mix_value = sin((UV.y - (TIME * flicker_speed)) * 10.0) * flicker_intensity;
-	vec4 flicker = mix(aberrate, flicker_color, mix_value);
 
-	// scanlines
-	float scanlines = sin(FRAGCOORD.y * scanlines_count) * scanlines_intensity;
-	vec4 final = mix(flicker, scanline_color, scanlines);
-	
-	COLOR = final;
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+
+
+uniform bool overlay = false;
+
+uniform float scanlines_opacity : hint_range(0.0, 1.0) = 0.4;
+uniform float scanlines_width : hint_range(0.0, 0.5) = 0.25;
+uniform float grille_opacity : hint_range(0.0, 1.0) = 0.3;
+uniform vec2 resolution = vec2(640.0, 480.0);
+
+uniform bool pixelate = true;
+
+uniform bool roll = true;
+uniform float roll_speed = 8.0;
+uniform float roll_size : hint_range(0.0, 100.0) = 15.0;
+uniform float roll_variation : hint_range(0.1, 5.0) = 1.8;
+uniform float distort_intensity : hint_range(0.0, 0.2) = 0.05;
+
+uniform float noise_opacity : hint_range(0.0, 1.0) = 0.4;
+uniform float noise_speed = 5.0;
+
+uniform float static_noise_intensity : hint_range(0.0, 1.0) = 0.06;
+
+uniform float aberration : hint_range(-1.0, 1.0) = 0.03;
+uniform float brightness = 1.4;
+uniform bool discolor = true;
+
+uniform float warp_amount : hint_range(0.0, 5.0) = 1.0;
+uniform bool clip_warp = false;
+
+uniform float vignette_intensity = 0.4;
+uniform float vignette_opacity : hint_range(0.0, 1.0) = 0.5;
+
+
+
+vec2 random(vec2 uv){
+    uv = vec2(dot(uv, vec2(127.1,311.7)), dot(uv, vec2(269.5,183.3)));
+    return -1.0 + 2.0 * fract(sin(uv) * 43758.5453123);
+}
+
+float noise(vec2 uv) {
+    vec2 uv_index = floor(uv);
+    vec2 uv_fract = fract(uv);
+    vec2 blur = smoothstep(0.0, 1.0, uv_fract);
+
+    return mix(
+        mix(dot(random(uv_index + vec2(0.0,0.0)), uv_fract - vec2(0.0,0.0)),
+            dot(random(uv_index + vec2(1.0,0.0)), uv_fract - vec2(1.0,0.0)), blur.x),
+        mix(dot(random(uv_index + vec2(0.0,1.0)), uv_fract - vec2(0.0,1.0)),
+            dot(random(uv_index + vec2(1.0,1.0)), uv_fract - vec2(1.0,1.0)), blur.x), 
+        blur.y
+    ) * 0.5 + 0.5;
+}
+
+vec2 warp(vec2 uv){
+    vec2 delta = uv - 0.5;
+    float delta2 = dot(delta.xy, delta.xy);
+    float delta4 = delta2 * delta2;
+    float delta_offset = delta4 * warp_amount;
+    return uv + delta * delta_offset;
+}
+
+float border (vec2 uv){
+    float radius = min(warp_amount, 0.08);
+    radius = max(min(min(abs(radius * 2.0), abs(1.0)), abs(1.0)), 1e-5);
+    vec2 abs_uv = abs(uv * 2.0 - 1.0) - vec2(1.0, 1.0) + radius;
+    float dist = length(max(vec2(0.0), abs_uv)) / radius;
+    float square = smoothstep(0.96, 1.0, dist);
+    return clamp(1.0 - square, 0.0, 1.0);
+}
+
+float vignette(vec2 uv){
+    uv *= 1.0 - uv.xy;
+    float vignette = uv.x * uv.y * 15.0;
+    return pow(vignette, vignette_intensity * vignette_opacity);
+}
+
+
+void fragment()
+{
+    vec2 uv = overlay ? warp(SCREEN_UV) : warp(UV);
+    vec2 text_uv = uv;
+    vec2 roll_uv = vec2(0.0);
+    float time = roll ? TIME : 0.0;
+
+    if (pixelate){
+        text_uv = ceil(uv * resolution) / resolution;
+    }
+
+    float roll_line = 0.0;
+    if (roll || noise_opacity > 0.0){
+        roll_line = smoothstep(0.3, 0.9, sin(uv.y * roll_size - (time * roll_speed)));
+        roll_line *= roll_line * smoothstep(0.3, 0.9, sin(uv.y * roll_size * roll_variation - (time * roll_speed * roll_variation)));
+        roll_uv = vec2((roll_line * distort_intensity * (1.-UV.x)), 0.0);
+    }
+
+    vec4 text;
+    if (roll){
+        text.r = texture(SCREEN_TEXTURE, text_uv + roll_uv * 0.8 + vec2(aberration, 0.0) * .1).r;
+        text.g = texture(SCREEN_TEXTURE, text_uv + roll_uv * 1.2 - vec2(aberration, 0.0) * .1).g;
+        text.b = texture(SCREEN_TEXTURE, text_uv + roll_uv).b;
+        text.a = 1.0;
+    } else {
+        text.r = texture(SCREEN_TEXTURE, text_uv + vec2(aberration, 0.0) * .1).r;
+        text.g = texture(SCREEN_TEXTURE, text_uv - vec2(aberration, 0.0) * .1).g;
+        text.b = texture(SCREEN_TEXTURE, text_uv).b;
+        text.a = 1.0;
+    }
+
+    float r = text.r;
+    float g = text.g;
+    float b = text.b;
+
+    uv = warp(UV);
+
+    if (grille_opacity > 0.0){
+        float g_r = smoothstep(0.85, 0.95, abs(sin(uv.x * (resolution.x * 3.14159265))));
+        r = mix(r, r * g_r, grille_opacity);
+
+        float g_g = smoothstep(0.85, 0.95, abs(sin(1.05 + uv.x * (resolution.x * 3.14159265))));
+        g = mix(g, g * g_g, grille_opacity);
+
+        float b_b = smoothstep(0.85, 0.95, abs(sin(2.1 + uv.x * (resolution.x * 3.14159265))));
+        b = mix(b, b * b_b, grille_opacity);
+    }
+
+    text.r = clamp(r * brightness, 0.0, 1.0);
+    text.g = clamp(g * brightness, 0.0, 1.0);
+    text.b = clamp(b * brightness, 0.0, 1.0);
+
+    float scanlines = 0.5;
+    if (scanlines_opacity > 0.0){
+        scanlines = smoothstep(scanlines_width, scanlines_width + 0.5, abs(sin(uv.y * (resolution.y * 3.14159265))));
+        text.rgb = mix(text.rgb, text.rgb * vec3(scanlines), scanlines_opacity);
+    }
+
+    if (noise_opacity > 0.0){
+        float n = smoothstep(0.4, 0.5, noise(uv * vec2(2.0, 200.0) + vec2(10.0, (TIME * (noise_speed)))));
+        roll_line *= n * scanlines * clamp(random((ceil(uv * resolution) / resolution) + vec2(TIME * 0.8, 0.0)).x + 0.8, 0.0, 1.0);
+        text.rgb = clamp(mix(text.rgb, text.rgb + roll_line, noise_opacity), vec3(0.0), vec3(1.0));
+    }
+
+    if (static_noise_intensity > 0.0){
+        text.rgb += clamp(random((ceil(uv * resolution) / resolution) + fract(TIME)).x, 0.0, 1.0) * static_noise_intensity;
+    }
+
+    text.rgb *= border(uv);
+    text.rgb *= vignette(uv);
+
+    if (clip_warp){
+        text.a = border(uv);
+    }
+
+    if (discolor){
+        float saturation = 0.5;
+        float contrast = 1.2;
+        vec3 greyscale = vec3(text.r + text.g + text.b) / 3.;
+        text.rgb = mix(text.rgb, greyscale, saturation);
+
+        float midpoint = pow(0.5, 2.2);
+        text.rgb = (text.rgb - vec3(midpoint)) * contrast + midpoint;
+    }
+
+    COLOR = text;
 }
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mae5d"]
 shader = SubResource("Shader_nso1x")
-shader_parameter/scanline_color = Color(0, 0, 0, 1)
-shader_parameter/flicker_color = Color(0, 0, 0, 1)
-shader_parameter/scanlines_count = 10.0
-shader_parameter/scanlines_intensity = 0.165
-shader_parameter/flicker_speed = 20.78
-shader_parameter/flicker_intensity = 0.006000000285
-shader_parameter/color_offset = 1.5
-shader_parameter/blur = 0.0
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.4
+shader_parameter/scanlines_width = 0.25
+shader_parameter/grille_opacity = 0.3
+shader_parameter/resolution = Vector2(400, 300)
+shader_parameter/pixelate = true
+shader_parameter/roll = true
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.0
+shader_parameter/noise_opacity = 0.0
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.02000000095
+shader_parameter/aberration = 0.010000047974999982
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = true
+shader_parameter/warp_amount = 0.0
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.2
+shader_parameter/vignette_opacity = 0.2000000095
 
 [sub_resource type="Animation" id="Animation_mae5d"]
 length = 0.001
@@ -584,8 +735,22 @@ offset_right = 112.0
 offset_bottom = 84.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_mae5d")
-stretch_mode = 6
+texture = ExtResource("3_gd0jp")
+stretch_mode = 1
+
+[node name="Background2" type="TextureRect" parent="." unique_id=2074047378]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -112.0
+offset_top = -84.0
+offset_right = 112.0
+offset_bottom = 84.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_4ndjb")
 
 [node name="TaskBar" type="TextureRect" parent="." unique_id=1729360705]
 visible = false
@@ -651,8 +816,8 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Apps/readme" unique_id=799046215]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 21
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 16
 text = "README.txt"
 horizontal_alignment = 1
 
@@ -679,8 +844,8 @@ uri = "https://auyease.itch.io/little-guy-island"
 
 [node name="Label" type="Label" parent="Apps/credits" unique_id=23955046]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 21
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 16
 text = "credits.lnk"
 horizontal_alignment = 1
 
@@ -698,8 +863,8 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Apps/horse" unique_id=73279372]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 21
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 16
 text = "horse.png"
 horizontal_alignment = 1
 
@@ -717,8 +882,8 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="Apps/sim" unique_id=865767862]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 21
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 16
 text = "sim.exe"
 horizontal_alignment = 1
 
