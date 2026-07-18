@@ -178,6 +178,10 @@ func _ready():
 	is_static = false
 	Game.day_changed.connect(_on_new_day)
 
+	Game.population += 1
+
+func _exit_tree():
+	Game.population -= 1
 
 func _on_new_day():
 	age += 1
