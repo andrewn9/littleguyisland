@@ -364,6 +364,7 @@ func _update_island_stats() -> void:
 func _on_quit_pressed() -> void:
 	Game.autosave()
 	Game.skip_boot = true
+	monkey_clear()
 	get_tree().change_scene_to_file("res://menu.tscn")
 
 
@@ -556,7 +557,7 @@ func _play_talk_sfx() -> void:
 
 
 func _on_talk_sound_finished() -> void:
-	if _flap_left > 0.0:
+	if _flap_left > 0.0 and is_instance_valid(Game.model):
 		_play_talk_sfx()
 
 var _speech_left := 0.0

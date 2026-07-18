@@ -1103,7 +1103,6 @@ offset_right = 218.0
 offset_bottom = 154.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "how to operate:
-
 1. open sim.exe
 2. create or select a new world
 3. listen to the monkey"
