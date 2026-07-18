@@ -21,6 +21,20 @@ var _value_img: Image = null
 var _slot_buttons := {}
 
 func _ready() -> void:
+	var cfg := ConfigFile.new()
+	if cfg.load(Hud.SETTINGS_PATH) != OK:
+		return
+
+	if !cfg.get_value("game", "first_game", false):
+		var popup = %GraphicsInitial as ConfirmationDialog
+		popup.popup_centered()
+		var use_low = false
+		popup.confirmed.connect(func(): use_low = true, CONNECT_ONE_SHOT)
+		await popup.visibility_changed
+		Hud.gfx_button.button_pressed = use_low
+		Hud.first_play = true
+		Hud._save_settings()
+	$boot3.play()
 	$AnimationPlayer.play("boot")
 	if Game.skip_boot:
 		Game.skip_boot = false

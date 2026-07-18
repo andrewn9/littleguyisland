@@ -83,7 +83,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -95,7 +95,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -107,7 +107,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -131,7 +131,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -555,6 +555,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="TextureRect" type="TextureRect" parent="Screen" unique_id=1222347267]
+visible = false
 custom_maximum_size = Vector2(64, 64)
 layout_mode = 1
 anchors_preset = 8
@@ -571,6 +572,7 @@ grow_vertical = 2
 texture = ExtResource("2_ytr4m")
 
 [node name="Background" type="TextureRect" parent="." unique_id=646608950]
+visible = false
 z_index = -1
 layout_mode = 1
 anchors_preset = 15
@@ -586,6 +588,7 @@ texture = ExtResource("1_mae5d")
 stretch_mode = 6
 
 [node name="TaskBar" type="TextureRect" parent="." unique_id=1729360705]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
@@ -622,6 +625,7 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Apps" type="VFlowContainer" parent="." unique_id=414753089]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -899,7 +903,6 @@ volume_db = -10.0
 [node name="boot3" type="AudioStreamPlayer" parent="." unique_id=1456455270]
 stream = ExtResource("11_dwrpx")
 volume_db = -10.0
-autoplay = true
 parameters/looping = true
 
 [node name="readmepanel" type="Panel" parent="." unique_id=1420357723]
@@ -1116,6 +1119,23 @@ file_mode = 0
 access = 2
 filters = PackedStringArray("*.png,*.jpg,*.jpeg,*.webp,*.bmp;Images")
 use_native_dialog = true
+
+[node name="GraphicsInitial" type="ConfirmationDialog" parent="." unique_id=1440494376]
+unique_name_in_owner = true
+oversampling_override = 1.0
+title = ""
+initial_position = 1
+size = Vector2i(300, 175)
+max_size = Vector2i(300, 16384)
+ok_button_text = "yes"
+dialog_text = "this game may be resource intensive on lower end hardware (ex. integrated graphics).
+
+would you like to enable low graphics mode? 
+
+this can be changed in settings later."
+dialog_close_on_escape = false
+dialog_autowrap = true
+cancel_button_text = "no, let me see the full graphics"
 
 [connection signal="pressed" from="Apps/horse/TextureButton" to="." method="_on_texture_button_pressed"]
 [connection signal="pressed" from="Apps/sim/simexe" to="." method="_on_simexe_pressed"]

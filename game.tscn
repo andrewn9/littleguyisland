@@ -157,7 +157,7 @@ void fragment() {
 shader = SubResource("Shader_nso1x")
 shader_parameter/scanline_color = Color(0, 0, 0, 1)
 shader_parameter/flicker_color = Color(0, 0, 0, 1)
-shader_parameter/scanlines_count = 10.0
+shader_parameter/scanlines_count = 10.375
 shader_parameter/scanlines_intensity = 0.39
 shader_parameter/flicker_speed = 20.78
 shader_parameter/flicker_intensity = 0.006000000285

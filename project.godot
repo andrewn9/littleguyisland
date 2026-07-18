@@ -29,6 +29,7 @@ Save="*res://scripts/save_system.gd"
 
 window/size/viewport_width=800
 window/size/viewport_height=600
+window/stretch/mode="canvas_items"
 window/stretch/aspect="keep_height"
 window/stretch/scale=1.2
 window/vsync/vsync_mode=0

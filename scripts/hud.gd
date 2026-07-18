@@ -38,6 +38,7 @@ const cursor_closehand = preload("res://ui/cursors/closehand.png")
 const HAND_HOTSPOT := Vector2(16, 16)
 
 var hovered_folk: Folk = null
+var first_play = false
 
 const SETTINGS_PATH := "user://settings.cfg"
 
@@ -45,7 +46,7 @@ func _load_settings() -> void:
 	var cfg := ConfigFile.new()
 	if cfg.load(SETTINGS_PATH) != OK:
 		return
-		
+
 	sens_slider.set_value_no_signal(cfg.get_value("settings", "sensitivity", sens_slider.value))
 	%SensLabel.text = "sensitivity: " + str(sens_slider.value)
 
@@ -77,6 +78,7 @@ func _save_settings() -> void:
 	cfg.set_value("settings", "reflections", reflections_button.button_pressed)
 	cfg.set_value("settings", "outlines", outlines_button.button_pressed)
 	cfg.set_value("settings", "crt", crt_button.button_pressed)
+	cfg.set_value("game", "first_game", first_play)
 	cfg.save(SETTINGS_PATH)
 
 
