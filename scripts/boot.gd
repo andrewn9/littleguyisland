@@ -161,10 +161,9 @@ func _on_readme_input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion and _dragging_readme:
 		readme_panel.global_position = readme_panel.get_global_mouse_position() - _readme_grab
 
-func _input(event):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		$ClickSoundPlayer.play()
-
+# func _input(event):
+# 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+# 		$ClickSoundPlayer.play()
 
 func _on_texture_button_pressed() -> void:
 	$HorseSoundPlayer.play()
