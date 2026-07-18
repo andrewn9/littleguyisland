@@ -453,11 +453,15 @@ func _on_pov_button_pressed():
 		_pov_dir = _folk_heading(focused_folk)
 		_place_pov_cam()
 		focus_cam.make_current()
+
+		focused_folk.visible = false
 	else:
 		_exit_pov()
 
 
 func _exit_pov():
+	focused_folk.visible = true
+	
 	if is_instance_valid(focus_cam):
 		focus_cam.queue_free()
 	focus_cam = null

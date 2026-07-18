@@ -376,6 +376,9 @@ func _update_profile():
 
 
 func _unhandled_input(event):
+	if not visible:
+		return
+
 	if event is InputEventMouseMotion:
 		if Hud.active.name == "Click" and Hud.grabbed_folk == null:
 			set_hovered(_screen_hit(event.position))
