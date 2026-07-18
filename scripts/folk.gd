@@ -26,6 +26,8 @@ const HEADING_TEXT := {
 }
 
 func _status_text() -> String:
+	if starving_days > starve_grace_days:
+		return "starving"
 	match state:
 		FolkState.DEAD:
 			return "decomissioned"
@@ -119,6 +121,14 @@ var night_home_range := 30.0
 var takeover_radius := 45.0
 var neighbour_home_radius := 10.0  # I got x neighbors -> happy
 
+
+var belly_size := 10.0
+var share_reserve := 4.0
+var food_share_radius := 30.0
+
+var starve_grace_days := 2
+var starve_death_chance := 0.45
+
 var birth_chance := 0.9  # chance a prosperous home makes a child on a night
 var adulthood_age := 3
 var child_scale := 0.5
@@ -144,6 +154,8 @@ var age := 0
 var home: Entity = null
 var carried_wood := 0
 var carried_rock := 0
+var carried_food := 6.0
+var starving_days := 0
 
 var _grown := true
 var _night_owl := false  # staying out to work this particular night?
@@ -197,6 +209,64 @@ func _on_new_day():
 	if not _grown and age >= adulthood_age:
 		_grown = true
 		_become_adult()
+	_tick_starvation()
+
+
+func _eat(dt: float) -> void:
+	carried_food = maxf(0.0, carried_food - Game.food_consumption * dt)
+
+func _gain_food(amount: float) -> void:
+	carried_food += amount
+	_share_food()
+	carried_food = minf(belly_size, carried_food)  # the rest spoils
+
+
+func _share_food() -> void:
+	var surplus := carried_food - share_reserve
+	if surplus <= 0.01:
+		return
+	var needy: Array = []
+	var me := _pos
+	var r2 := food_share_radius * food_share_radius
+	for other in _group("folk"):
+		if other == self or other.state == FolkState.DEAD:
+			continue
+		if other.carried_food < share_reserve and me.distance_squared_to(other._pos) < r2:
+			needy.append(other)
+	if needy.is_empty():
+		return
+
+	for _pass in 3:
+		if surplus <= 0.01 or needy.is_empty():
+			break
+		var each := surplus / needy.size()
+		var still_needy: Array = []
+		for other in needy:
+			var give: float = minf(each, share_reserve - other.carried_food)
+			if give > 0.0:
+				other.carried_food = minf(other.belly_size, other.carried_food + give)
+				surplus -= give
+			if other.carried_food < share_reserve - 0.01:
+				still_needy.append(other)
+		needy = still_needy
+	carried_food = share_reserve + maxf(0.0, surplus)
+
+
+func _tick_starvation() -> void:
+	_share_food()
+	if carried_food > 0.0:
+		starving_days = 0
+		return
+	starving_days += 1
+	if starving_days > starve_grace_days and randf() < starve_death_chance:
+		_starve()
+
+
+func _starve() -> void:
+	if is_instance_valid(home):
+		home.residents.erase(self)
+	Hud.push_notification("%s starved" % name)
+	queue_free()
 
 
 func _update_outfit() -> void:
@@ -292,6 +362,8 @@ func serialize() -> Dictionary:
 		adventurousness = adventurousness,
 		carried_wood = carried_wood,
 		carried_rock = carried_rock,
+		carried_food = carried_food,
+		starving_days = starving_days,
 		grown = _grown,
 		seeking = _seeking_new_village,
 		night_owl = _night_owl,
@@ -313,6 +385,8 @@ func load_state(d: Dictionary) -> void:
 	adventurousness = d.get("adventurousness", 0.5)
 	carried_wood = d.get("carried_wood", 0)
 	carried_rock = d.get("carried_rock", 0)
+	carried_food = d.get("carried_food", 6.0)
+	starving_days = d.get("starving_days", 0)
 	_grown = d.get("grown", true)
 	_seeking_new_village = d.get("seeking", false)
 	_night_owl = d.get("night_owl", false)
@@ -342,6 +416,7 @@ func _become_adult():
 
 
 func tick(dt: float):
+	_eat(dt)
 	_update_happiness(dt)
 	_update_outfit()
 
@@ -393,14 +468,25 @@ func _physics_process(_delta: float):
 	if Hud.focused_folk == self:
 		_update_profile()
 
-
 func _update_profile():
 	Hud.name_label.text = name
 	Hud.happiness_bar.value = happiness * 100
+	Hud.food_bar.value = clampf(carried_food / belly_size, 0.0, 1.0) * 100
+	Hud.food_bar.tooltip_text = _food_text()
 	Hud.homeless_label.text = "homeless? nah" if is_instance_valid(home) else "homeless? yeah"
 	Hud.status_label.text = "status: %s" % _status_text()
 	Hud.age_label.text = "age: %d%s" % [age, " days old" if age != 1 else " day old"]
 
+
+func _food_text() -> String:
+	if starving_days > 0:
+		var left := starve_grace_days - starving_days + 1
+		if left <= 0:
+			return "starving — could drop any day now"
+		return "starving for %d %s" % [starving_days, "day" if starving_days == 1 else "days"]
+	if carried_food < share_reserve * 0.5:
+		return "hungry (%.1f food)" % carried_food
+	return "fed (%.1f food)" % carried_food
 
 func _unhandled_input(event):
 	if not visible:
@@ -677,7 +763,7 @@ func _finish_interact():
 			_target_entity = null
 		Goal.HUNT:
 			if is_instance_valid(_target_entity):
-				Game.food += Animal.MEAT
+				_gain_food(Animal.MEAT)
 				_target_entity.queue_free()
 			_target_entity = null
 		Goal.BUILD:
@@ -692,7 +778,7 @@ func _finish_interact():
 				carried_wood -= wood_to_build_farm_building
 		Goal.HARVEST:
 			if is_instance_valid(_target_entity) and get_parent().farm_is_ripe(_target_entity):
-				Game.food += Game.crop_yield
+				_gain_food(Game.crop_yield)
 				_target_entity.queue_free()  # reaped; claim dies with it
 			_target_entity = null
 	_rest()
@@ -860,6 +946,8 @@ func _maybe_birth():
 		return
 	if home.last_birth_day == Game.day or not Game.prosperous():
 		return
+	if carried_food < share_reserve:
+		return
 	if _count_adults_near(breed_radius) < 2:
 		return
 	if randf() < birth_chance:
@@ -880,7 +968,7 @@ func _update_happiness(dt: float):
 		drift -= 0.05
 	if state == FolkState.SWIMMING:
 		drift -= 0.08
-	if Game.food <= 0.0:
+	if carried_food <= 0.0:
 		drift -= 0.06  # hungry -> unhappy
 
 	happiness = clampf(happiness + drift * dt, 0.0, 1.0)
@@ -899,10 +987,12 @@ func _share_rock(target := rock_to_build_well) -> void:
 
 func _share(prop: StringName, target: int) -> void:
 	var need: int = target - get(prop)
+	var me := _pos
+	var r2 := share_radius * share_radius
 	for other in _group("folk"):
 		if need <= 0:
 			break
-		if other == self or pos.distance_to(other.pos) >= share_radius:
+		if other == self or me.distance_squared_to(other._pos) >= r2:
 			continue
 		var spare: int = other.get(prop) - target
 		if spare > 0:
@@ -998,7 +1088,7 @@ func _farm_too_close(p: Vector2, r: float) -> bool:
 
 
 func _group(_name: String) -> Array:
-	return get_tree().get_nodes_in_group(_name)
+	return Game.nodes_in(_name)
 
 
 func _group_of(t: Game.EntityType) -> String:
@@ -1020,24 +1110,31 @@ func _group_of(t: Game.EntityType) -> String:
 
 func _nearest_in(group: String, radius: float, ok := Callable()) -> Entity:
 	var best: Entity = null
-	var best_d := radius
+	var me := _pos
+	var best_d := radius * radius
+	var has_filter := ok.is_valid()
 	for e in _group(group):
-		if ok.is_valid() and not ok.call(e):
+		var d: float = me.distance_squared_to(e._pos)
+		if d >= best_d:
 			continue
-		var d: float = pos.distance_to(e.pos)
-		if d < best_d:
-			best_d = d
-			best = e
+		if has_filter and not ok.call(e):
+			continue
+		best_d = d
+		best = e
 	return best
 
 
 func _count_near(group: String, radius: float, ok := Callable()) -> int:
 	var c := 0
+	var me := _pos
+	var r2 := radius * radius
+	var has_filter := ok.is_valid()
 	for e in _group(group):
-		if ok.is_valid() and not ok.call(e):
+		if me.distance_squared_to(e._pos) >= r2:
 			continue
-		if pos.distance_to(e.pos) < radius:
-			c += 1
+		if has_filter and not ok.call(e):
+			continue
+		c += 1
 	return c
 
 
@@ -1090,13 +1187,17 @@ func _nearest_dist(group: String, p: Vector2) -> float:
 func _count_in_radius(group: String, center: Vector2, radius: float) -> int:
 	return Game.count_in_radius(group, center, radius)
 
-
 func _flock_center() -> Vector2:
 	var sum := Vector2.ZERO
 	var count := 0
+	var me := _pos
+	var r2 := social_radius * social_radius
 	for f in _group("folk"):
-		if f != self and f.state != FolkState.DEAD and pos.distance_to(f.pos) < social_radius:
-			sum += f.pos
+		if f == self or f.state == FolkState.DEAD:
+			continue
+		var p: Vector2 = f._pos
+		if me.distance_squared_to(p) < r2:
+			sum += p
 			count += 1
 	_neighbors = count
 	return sum / count if count > 0 else Vector2.INF

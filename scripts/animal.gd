@@ -18,6 +18,9 @@ var _wander_angle := randf() * TAU
 var _age := 0
 var _last_breed_day := -99
 var _fleeing := false
+const THREAT_RECHECK := 0.12   # seconds of real time between folk scans
+var _threat_timer := randf() * THREAT_RECHECK  # staggered so they don't all scan together
+var _threat := Vector2.INF
 var _flip := false
 var _tex: Texture2D = null
 
@@ -28,7 +31,7 @@ func _ready() -> void:
 	add_to_group("animals")
 	Game.day_changed.connect(_on_new_day)
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	var dt: float = Game.scaled_delta
 	if dt <= 0.0:
 		return
@@ -36,7 +39,11 @@ func _physics_process(_delta: float) -> void:
 		queue_free()
 		return
 
-	var threat := _nearest_folk()
+	_threat_timer -= delta
+	if _threat_timer <= 0.0:
+		_threat_timer = THREAT_RECHECK
+		_threat = _nearest_folk()
+	var threat := _threat
 	if threat != Vector2.INF:
 		_flee_from(threat)
 	elif _graze_left > 0.0:

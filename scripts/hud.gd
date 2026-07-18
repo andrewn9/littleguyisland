@@ -372,6 +372,7 @@ func _on_quit_pressed() -> void:
 @onready var homeless_label: Label = %HomelessLabel
 @onready var status_label: Label = %StatusLabel
 @onready var happiness_bar: ProgressBar = %HappinessProgressBar
+@onready var food_bar: ProgressBar = %FoodProgress
 @onready var profile: Control = %Profile
 @onready var age_label: Label = %AgeLabel
 var focused_folk: Folk
@@ -566,7 +567,7 @@ var _flap_left := 0.0
 func _flap_time(text: String) -> float:
 	return clampf(0.6 + text.split(" ").size() * 0.18, 0.8, 5.0)
 
-func monkey_say(text: String, seconds := 4.0) -> void:
+func monkey_say(text: String, seconds := 8.0) -> void:
 	bubble_label.text = text
 	_fit_bubble()
 	bubble.visible = true

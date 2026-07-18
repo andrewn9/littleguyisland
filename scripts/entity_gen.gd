@@ -36,7 +36,7 @@ var farm_building_textures: Array[Texture2D] = []
 
 var farm_textures: Array[Texture2D] = []
 var animal_textures: Array[Texture2D] = []
-var wildlife_capacity := 40
+var wildlife_capacity := 80
 var _farms: Array = []
 var crop_grow_days := Vector2(1.0, 2.5)
 
@@ -165,6 +165,7 @@ func _ready():
 		wildlife()
 	Game.pending_load = false
 	Game.day_changed.connect(_wildlife_day)
+	Game.day_changed.connect(_settlers_day)
 	Hud.begin_world(not loading)
 
 
@@ -469,6 +470,50 @@ func _wildlife_target() -> int:
 	if hits == 0:
 		return 0
 	return clampi(int((float(hits) / SAMPLES) * 120.0), 2, 40)
+
+const SETTLER_DELAY := 1
+const SETTLER_PARTY := Vector2i(2, 3)
+const SETTLER_RATIONS := 8.0
+
+var _empty_days := 0
+
+func _settlers_day() -> void:
+	if Game.population > 0:
+		_empty_days = 0
+		return
+	if MapData.height_img == null or MapData.val_img == null:
+		return
+	_empty_days += 1
+	if _empty_days < SETTLER_DELAY:
+		return
+	var spot := _find_landing()
+	if spot == Vector2.INF:
+		return
+	_empty_days = 0
+	for _n in rng.randi_range(SETTLER_PARTY.x, SETTLER_PARTY.y):
+		var at := spot + Vector2.from_angle(randf() * TAU) * randf_range(0.0, 6.0)
+		if _habitable(at):
+			var f = spawn_little_guy(int(at.x), int(at.y))
+			if f:
+				f.carried_food = SETTLER_RATIONS
+	Hud.push_notification("settlers have landed on the island")
+
+func _find_landing() -> Vector2:
+	var spot := _find_pasture()
+	if spot != Vector2.INF:
+		return spot
+	for _try in 60:
+		var p := Vector2(randf() * MapData.RESOLUTION, randf() * MapData.RESOLUTION)
+		if _habitable(p):
+			return p
+	return Vector2.INF
+
+func _habitable(p: Vector2) -> bool:
+	if p.x < 2.0 or p.y < 2.0 or p.x > MapData.RESOLUTION - 3 or p.y > MapData.RESOLUTION - 3:
+		return false
+	var h: float = MapData.height_img.get_pixelv(p.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))).r
+	return h > MapData.NAV_WATER_LEVEL and h < MapData.NAV_MOUNTAIN_LEVEL
+
 
 func _find_pasture() -> Vector2:
 	for _try in 40:

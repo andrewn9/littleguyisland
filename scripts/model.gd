@@ -40,6 +40,8 @@ var min_stroke = null
 var max_stroke = null
 
 func _enter_tree() -> void:
+	MapData.reset_layers()
+
 	var rect := Rect2i(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 	var h_tex := _initial_map(Game.new_world_height_img, Heightmap)
 	if h_tex:

@@ -40,6 +40,23 @@ func _make_layer(fill: Color) -> DrawableTexture2D:
 	return tex
 
 
+const BASE_HEIGHT := Color.BLACK
+const BASE_VALUE := Color.ANTIQUE_WHITE
+
+func reset_layers() -> void:
+	var rect := Rect2i(0, 0, RESOLUTION, RESOLUTION)
+	height.blit_rect(rect, _solid(BASE_HEIGHT))
+	val.blit_rect(rect, _solid(BASE_VALUE))
+	update()
+	mark_dirty()
+
+
+func _solid(c: Color) -> ImageTexture:
+	var img := Image.create_empty(RESOLUTION, RESOLUTION, false, Image.FORMAT_RGBA8)
+	img.fill(c)
+	return ImageTexture.create_from_image(img)
+
+
 var _dirty := true
 var changed = false
 
@@ -153,10 +170,28 @@ func _longest_water_run(path: PackedVector2Array):
 	return mx
 
 
+const PATH_BUDGET_PER_FRAME := 3
+var _paths_this_frame := 0
+var _path_frame := -1
+
+
+func _path_budget_ok() -> bool:
+	var frame := Engine.get_physics_frames()
+	if frame != _path_frame:
+		_path_frame = frame
+		_paths_this_frame = 0
+	if _paths_this_frame >= PATH_BUDGET_PER_FRAME:
+		return false
+	_paths_this_frame += 1
+	return true
+
+
 func find_path(from: Vector2, to: Vector2):
 	if astar == null:
 		rebuild_nav()
 	if astar == null:
+		return PackedVector2Array()
+	if not _path_budget_ok():
 		return PackedVector2Array()
 	var a = _nearest_land(Vector2i(from.round()))
 	if a == null:
