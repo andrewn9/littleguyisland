@@ -198,6 +198,10 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_x3e77")
 
+[node name="TalkSound" type="AudioStreamPlayer" parent="." unique_id=710000002]
+unique_name_in_owner = true
+volume_db = -6.0
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1081389851]
 
 [node name="Stats" type="Label" parent="CanvasLayer" unique_id=528747438]

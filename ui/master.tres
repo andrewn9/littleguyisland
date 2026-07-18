@@ -67,6 +67,12 @@ corner_radius_bottom_left = 4
 corner_detail = 1
 anti_aliasing = false
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_56gqf"]
+bg_color = Color(0.0885599, 0.08855992, 0.08855986, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wa3wn"]
+bg_color = Color(0.0003465414, 0.21755934, 0.72033113, 1)
+
 [resource]
 default_font = ExtResource("1_56gqf")
 default_font_size = 12
@@ -75,3 +81,5 @@ HSlider/icons/grabber_highlight = SubResource("GradientTexture2D_s8il0")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_615i1")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_ap7yk")
 HSlider/styles/slider = SubResource("StyleBoxFlat_pw7dr")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_56gqf")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_wa3wn")

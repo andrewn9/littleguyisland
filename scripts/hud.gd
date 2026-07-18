@@ -115,6 +115,8 @@ func _ready() -> void:
 	monkey_anim.animation_finished.connect(_on_monkey_anim_done)
 	monkey_anim.play("idle")
 
+	talk_sound.finished.connect(_on_talk_sound_finished)
+
 
 const LAYERS := {
 	"island": "terrain geometry",
@@ -536,6 +538,26 @@ const BUBBLE_PAD_T := 8.0
 const BUBBLE_PAD_B := 14.0
 const TALKS := ["talk1", "talk2"]
 
+@onready var talk_sound: AudioStreamPlayer = %TalkSound
+var talk_sfx: Array[AudioStream] = [
+	preload("res://sfx/talk1.ogg"),
+	preload("res://sfx/talk2.ogg"),
+	preload("res://sfx/talk3.ogg"),
+	preload("res://sfx/talk4.ogg"),
+	preload("res://sfx/talk5.ogg"),
+]
+const TALK_PITCH := Vector2(0.92, 1.12)
+
+func _play_talk_sfx() -> void:
+	talk_sound.stream = talk_sfx.pick_random()
+	talk_sound.pitch_scale = randf_range(TALK_PITCH.x, TALK_PITCH.y)
+	talk_sound.play()
+
+
+func _on_talk_sound_finished() -> void:
+	if _flap_left > 0.0:
+		_play_talk_sfx()
+
 var _speech_left := 0.0
 var _flap_left := 0.0
 
@@ -549,6 +571,7 @@ func monkey_say(text: String, seconds := 4.0) -> void:
 	_speech_left = seconds
 	_flap_left = _flap_time(text)
 	monkey_anim.play(TALKS.pick_random())
+	_play_talk_sfx()
 
 
 func monkey_hold(text: String) -> void:
@@ -560,6 +583,7 @@ func monkey_clear() -> void:
 	_flap_left = 0.0
 	bubble.visible = false
 	monkey_anim.play("idle")
+	talk_sound.stop()
 
 func _fit_bubble() -> void:
 	var max_text_w := BUBBLE_MAX_WIDTH - BUBBLE_PAD_L - BUBBLE_PAD_R
@@ -588,6 +612,7 @@ func _tick_speech(delta: float) -> void:
 		monkey_anim.play("idle")
 
 func _on_monkey_anim_done(_anim: StringName) -> void:
+	# flap only for the spoken duration, then rest — even if the bubble stays up
 	monkey_anim.play(TALKS.pick_random() if _flap_left > 0.0 else "idle")
 
 
