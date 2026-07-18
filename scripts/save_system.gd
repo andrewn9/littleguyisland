@@ -89,7 +89,7 @@ func apply_slot(slot: int, gen) -> bool:
 	Game.day = g.get("day", 0)
 	Game.day_fraction = g.get("day_fraction", 0.375)
 	Game.food = g.get("food", 0.0)
-	Game.animals = g.get("animals", 0)
+	Game.animals = 0
 	Game.time_scale = g.get("time_scale", 1.0)
 	get_tree().call_group("clock", "apply_time")
 

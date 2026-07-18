@@ -31,6 +31,7 @@ enum EntityType {
 	ROCK,
 	WELL,
 	FARM_BUILDING,
+	ANIMAL,
 }
 
 
@@ -163,6 +164,7 @@ func count_in_radius(group: String, center: Vector2, radius: float) -> int:
 const LAYER_FADE := 0.75
 const LAYER_GROUPS := {
 	"nature": ["trees", "rocks", "clouds"],
+	"animals": ["animals"],
 	"buildings": ["homes", "farms", "farm_buildings", "wells"],
 	"folk": ["folk"],
 }
@@ -288,3 +290,4 @@ func _refresh_stats() -> void:
 	tree_count = get_tree().get_nodes_in_group("trees").size()
 	well_count = get_tree().get_nodes_in_group("wells").size()
 	farm_building_count = get_tree().get_nodes_in_group("farm_buildings").size()
+	animals = get_tree().get_nodes_in_group("animals").size()

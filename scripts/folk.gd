@@ -1,7 +1,7 @@
 class_name Folk extends Entity
 
 enum FolkState { IDLE, WANDER, WALKING, SWIMMING, INTERACTING, DEAD }
-enum Goal { ROAM, GATHER, BUILD, GO_HOME, FARM, HARVEST, MINE, BUILD_WELL, BUILD_FARM }
+enum Goal { ROAM, GATHER, BUILD, GO_HOME, FARM, HARVEST, MINE, BUILD_WELL, BUILD_FARM, HUNT }
 
 const DOING_TEXT := {
 	Goal.GATHER: "chopping a tree",
@@ -11,6 +11,7 @@ const DOING_TEXT := {
 	Goal.HARVEST: "harvesting the crops",
 	Goal.BUILD_WELL: "digging a well",
 	Goal.BUILD_FARM: "raising a farm building",
+	Goal.HUNT: "hunting",
 }
 const HEADING_TEXT := {
 	Goal.GO_HOME: "heading home",
@@ -21,6 +22,7 @@ const HEADING_TEXT := {
 	Goal.HARVEST: "off to the harvest",
 	Goal.BUILD_WELL: "off to dig a well",
 	Goal.BUILD_FARM: "off to raise a farm building",
+	Goal.HUNT: "chasing down an animal",
 }
 
 func _status_text() -> String:
@@ -53,8 +55,8 @@ const LIGHTS := [
 var wander_radius := 30.0
 var idle_time_range := Vector2(0.20, 0.5)
 var water_level := 0.05
-var walk_speed := 5.1
-var swim_speed := 2.55
+var walk_speed := 2.5
+var swim_speed := 0.55
 var climb_slowdown := 14.0
 var meander := 2.4  # width of wander cone
 var roam_rest_chance := 0.5
@@ -85,6 +87,12 @@ var well_water_radius := 12.0
 var well_spacing := 30.0
 var well_max_elevation := 0.45
 var well_reach := 70.0  # dist from home
+
+var hunt_search_radius := 85.0
+var hunt_time := 1.6
+var hunt_sprint := 1.18
+var hunt_length := 22.0
+var hunt_reach := 2.2
 
 var wood_to_build_farm_building := 3
 var farm_building_time := 2.5
@@ -123,8 +131,6 @@ var breed_radius := 30.0
 @onready var _boat: TextureRect = $Pivot/Sprite/SubViewport/boat
 @onready var _light_tool: TextureRect = $Pivot/Sprite/SubViewport/light_tool
 @onready var _light: OmniLight3D = $Pivot/Sprite/light_source
-
-# whichever light this folk carries after dark — picked once so they keep it
 var _my_light: Texture2D
 
 # last outfit we applied, so we only touch the nodes when something changes
@@ -159,6 +165,8 @@ var _target_entity: Entity = null
 var _pending_tree: Entity = null
 var _pending_crop: Entity = null
 var _pending_rock: Entity = null
+var _pending_animal: Entity = null
+var _hunt_left := 0.0
 var _farm_spot := Vector2.INF
 var _well_spot := Vector2.INF
 var _farm_building_spot := Vector2.INF
@@ -346,6 +354,9 @@ func tick(dt: float):
 			state = FolkState.SWIMMING if _height_at(pos) < water_level else FolkState.WALKING
 			var base = swim_speed if state == FolkState.SWIMMING else walk_speed
 			speed = base * _climb_factor() * lerpf(0.85, 1.1, happiness)
+			if goal == Goal.HUNT:
+				_chase(dt)
+				return
 			var last := _path_i >= _path.size() - 1
 			var arrive_radius = (3.5 if goal == Goal.GO_HOME else 1.5) if last else 1.5
 			if pos.distance_to(target_pos) < arrive_radius:
@@ -360,6 +371,18 @@ func tick(dt: float):
 				_finish_interact()
 		FolkState.DEAD:
 			target_pos = pos
+
+func _chase(dt: float) -> void:
+	_hunt_left -= dt
+	if not is_instance_valid(_target_entity) or _hunt_left <= 0.0:
+		_release_claim()
+		_target_entity = null
+		_rest()
+		return
+	speed *= hunt_sprint
+	target_pos = _target_entity.pos
+	if pos.distance_to(target_pos) < hunt_reach:
+		_arrive()
 
 
 func _physics_process(_delta: float):
@@ -435,6 +458,9 @@ func _decide():
 				_rest()
 		Goal.GATHER:
 			_go_claim(_pending_tree, _roam)
+		Goal.HUNT:
+			_hunt_left = hunt_length
+			_go_claim(_pending_animal, _roam)
 		Goal.HARVEST:
 			_go_claim(_pending_crop, _rest)
 		Goal.MINE:
@@ -502,6 +528,11 @@ func _choose_goal() -> Goal:
 	_pending_crop = _find_ripe_crop(farm_search_radius)
 	if _pending_crop:
 		return Goal.HARVEST
+
+	if Game.hungry():
+		_pending_animal = _find_prey(hunt_search_radius)
+		if _pending_animal:
+			return Goal.HUNT
 
 	if not is_instance_valid(home):
 		return _build_or_gather()
@@ -606,6 +637,12 @@ func _arrive():
 			else:
 				_release_claim()
 				_rest()
+		Goal.HUNT:
+			if is_instance_valid(_target_entity) and _target_entity.type == Game.EntityType.ANIMAL:
+				_interact(hunt_time)
+			else:
+				_release_claim()
+				_rest()
 		Goal.BUILD:
 			_interact(build_time)
 		Goal.FARM:
@@ -636,7 +673,12 @@ func _finish_interact():
 		Goal.MINE:
 			if is_instance_valid(_target_entity):
 				carried_rock += rock_per_node
-				_target_entity.queue_free()  # claim dies with the rock
+				_target_entity.queue_free()
+			_target_entity = null
+		Goal.HUNT:
+			if is_instance_valid(_target_entity):
+				Game.food += Animal.MEAT
+				_target_entity.queue_free()
 			_target_entity = null
 		Goal.BUILD:
 			_make_house()
@@ -1014,6 +1056,9 @@ func _find_nearest(entity_type: Game.EntityType, radius: float, skip_reserved :=
 func _find_ripe_crop(radius: float) -> Entity:
 	return _nearest_in("farms", radius, func(f): return get_parent().farm_is_ripe(f) and not (is_instance_valid(f.reserved_by) and f.reserved_by != self))
 
+
+func _find_prey(radius: float) -> Entity:
+	return _nearest_in("animals", radius, func(a): return not (is_instance_valid(a.reserved_by) and a.reserved_by != self))
 
 func _find_joinable_home() -> Entity:
 	return _nearest_in(

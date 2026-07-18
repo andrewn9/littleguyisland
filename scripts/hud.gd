@@ -121,6 +121,7 @@ func _ready() -> void:
 const LAYERS := {
 	"island": "terrain geometry",
 	"nature": "trees, rocks, grass, bushes and clouds",
+	"animals": "the wildlife",
 	"buildings": "homes, farms, farmsteads and wells",
 	"folk": "the little guys",
 }
@@ -347,7 +348,7 @@ func _update_island_stats() -> void:
 	wood_value.text = str(Game.total_wood)
 	food_value.text = str(roundi(Game.food))
 	stone_value.text = str(roundi(Game.rock))
-	animal_value.text = str(Game.animals)  # placeholder until livestock exist
+	animal_value.text = str(Game.animals)
 
 	var starving := Game.food <= 0.0 and Game.population > 0
 	flag_starving.visible = starving
@@ -611,11 +612,6 @@ func _tick_speech(delta: float) -> void:
 		bubble.visible = false
 		monkey_anim.play("idle")
 
-func _on_monkey_anim_done(_anim: StringName) -> void:
-	# flap only for the spoken duration, then rest — even if the bubble stays up
-	monkey_anim.play(TALKS.pick_random() if _flap_left > 0.0 else "idle")
-
-
 func _on_reflections_button_toggled(toggled_on: bool):
 	World.reflections = toggled_on
 	_save_settings()
@@ -652,3 +648,6 @@ func _on_hide_button_pressed():
 func _unhandled_input(event):
 	if hide_ui_setting and event is InputEventMouseButton and event.button_mask & MOUSE_BUTTON_MASK_LEFT and event.pressed:
 		hide_ui_setting = false
+
+func _on_monkey_anim_done(_anim: StringName) -> void:
+	monkey_anim.play(TALKS.pick_random() if _flap_left > 0.0 else "idle")

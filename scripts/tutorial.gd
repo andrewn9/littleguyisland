@@ -115,8 +115,8 @@ func _milestones() -> Array:
 		{"key": "unhappy", "cond": func(): return Game.population >= 4 and Game.avg_happiness < 0.35,
 		 "line": "morale is sinking. check the overview flags, usually it's food or housing. a happy island is a growing island."},
 
-		{"key": "animals", "cond": func(): return Game.animals >= 1,
-		 "line": "wildlife has moved in. animals are another food source, and a sign your island is healthy."},
+		{"key": "animals", "cond": func(): return Game.animals >= 1 and Game.population > 0 and Game.hungry(),
+		 "line": "your folk are hungry, and there are animals about. they'll hunt when the crops fall short, though a spooked animal takes some chasing."},
 	]
 
 const TIPS := [
@@ -131,7 +131,9 @@ const TIPS := [
 	"tip: the DIG tool lowers land. dig deep enough near the sea and you'll flood it.",
 	"tip: overview flags are your early warning. !hungry and !homeless both mean it's time to reshape something.",
 	"tip: settings has graphics, outlines, CRT and volume, if you want to change the vibe.",
-	"tip: an island doesn't have to be one blob. multiple islands work fine, folk like to spread out."
+	"tip: an island doesn't have to be one blob. multiple islands work fine, folk like to spread out.",
+	"tip: animals graze on grassland, more grass attracts more animals. keep some grass and they'll keep coming.",
+	"tip: hungry folk hunt. animals run away when folk get close."
 ]
 
 const AMBIENT_FIRST := 45.0
