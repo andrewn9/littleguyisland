@@ -25,14 +25,14 @@ func _ready() -> void:
 	_setup_saves()
 	_setup_readme()
 
+	if not Hud.first_play:
+		await _ask_graphics()
+
 	$boot3.play()
 	$AnimationPlayer.play("boot")
 	if Game.skip_boot:
 		Game.skip_boot = false
 		$AnimationPlayer.seek($AnimationPlayer.get_animation("boot").length, true)
-
-	if not Hud.first_play:
-		await _ask_graphics()
 
 func _ask_graphics() -> void:
 	var popup := %GraphicsInitial as ConfirmationDialog
