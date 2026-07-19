@@ -31,6 +31,7 @@ enum EntityType {
 	ROCK,
 	WELL,
 	FARM_BUILDING,
+	ANIMAL,
 }
 
 
@@ -54,15 +55,16 @@ var tree_count := 0
 var well_count := 0
 var farm_building_count := 0
 var homeless := 0
+var starving := 0  # folk currently with an empty belly
 var build_fail_streak := 0
 
-var food_per_person := 4.0  # stockpile buffer target per folk
+var food_per_person := 8.0  # stockpile buffer target per folk
 var food_consumption := 0.012  # eaten per folk per second
 var crop_yield := 5.0
 
 var housing_slack := 4  # extra home multiplier to prepare
 var wood_per_house := 4
-var homeless_birth_limit := 0.25  # stop breeding when this amout homeless
+var homeless_birth_limit := 0.1  # stop breeding when this amout homeless
 var birth_food_ratio := 1.15  # how much food to make new children
 var birth_happiness := 0.5
 
@@ -126,6 +128,21 @@ func prosperous():
 
 var _pos_cache := {}  # each group is a packed vector2 array for speed
 
+var _group_cache := {}
+var _group_frame := -1
+
+
+func nodes_in(group: String) -> Array:
+	var frame := Engine.get_physics_frames()
+	if frame != _group_frame:
+		_group_frame = frame
+		_group_cache.clear()
+	var cached = _group_cache.get(group)
+	if cached == null:
+		cached = get_tree().get_nodes_in_group(group)
+		_group_cache[group] = cached
+	return cached
+
 
 func positions(group: String) -> PackedVector2Array:
 	if not _pos_cache.has(group):
@@ -163,6 +180,7 @@ func count_in_radius(group: String, center: Vector2, radius: float) -> int:
 const LAYER_FADE := 0.75
 const LAYER_GROUPS := {
 	"nature": ["trees", "rocks", "clouds"],
+	"animals": ["animals"],
 	"buildings": ["homes", "farms", "farm_buildings", "wells"],
 	"folk": ["folk"],
 }
@@ -242,9 +260,6 @@ func _physics_process(delta: float) -> void:
 	if not model:
 		return
 
-	if scaled_delta > 0.0:
-		food = maxf(0.0, food - population * food_consumption * scaled_delta)
-
 	_stats_timer -= delta
 	if _stats_timer <= 0.0:
 		_stats_timer = 0.5
@@ -265,11 +280,16 @@ func _refresh_stats() -> void:
 	var folks := get_tree().get_nodes_in_group("folk")
 	total_wood = 0
 	rock = 0.0
+	food = 0.0
 	homeless = 0
+	starving = 0
 	var happy_sum := 0.0
 	for f in folks:
 		total_wood += f.carried_wood
 		rock += f.carried_rock
+		food += f.carried_food
+		if f.starving_days > 0:
+			starving += 1
 		happy_sum += f.happiness
 		if not is_instance_valid(f.home):
 			homeless += 1
@@ -288,3 +308,4 @@ func _refresh_stats() -> void:
 	tree_count = get_tree().get_nodes_in_group("trees").size()
 	well_count = get_tree().get_nodes_in_group("wells").size()
 	farm_building_count = get_tree().get_nodes_in_group("farm_buildings").size()
+	animals = get_tree().get_nodes_in_group("animals").size()

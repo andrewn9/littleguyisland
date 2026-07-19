@@ -5,6 +5,7 @@ const PROP_MAT = preload("res://materials/prop.tres")
 const FOLK_FAB = preload("res://entities/folk.tscn")
 
 const CLOUD = preload("res://entities/cloud.tscn")
+const ANIMAL_FAB = preload("res://entities/animal.tscn")
 
 var rng = RandomNumberGenerator.new()
 
@@ -34,6 +35,8 @@ var well_texture: Texture2D
 var farm_building_textures: Array[Texture2D] = []
 
 var farm_textures: Array[Texture2D] = []
+var animal_textures: Array[Texture2D] = []
+var wildlife_capacity := 80
 var _farms: Array = []
 var crop_grow_days := Vector2(1.0, 2.5)
 
@@ -113,6 +116,7 @@ func _ready():
 		farm_textures.append(load(p))
 	well_texture = load(WELL_PATH)
 	farm_building_textures = load_textures("res://sprites/props/farm_buildings/")
+	animal_textures = load_textures("res://sprites/props/animal/")
 
 	body_textures = load_textures("res://sprites/folk/body/")
 	shirt_textures = load_textures("res://sprites/folk/shirt/")
@@ -158,7 +162,10 @@ func _ready():
 	else:
 		plains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
 		mountains(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
+		wildlife()
 	Game.pending_load = false
+	Game.day_changed.connect(_wildlife_day)
+	Game.day_changed.connect(_settlers_day)
 	Hud.begin_world(not loading)
 
 
@@ -412,6 +419,120 @@ func _process(_delta: float) -> void:
 			f.set_prop_mat(get_prop_material(farm_textures[stage]))
 	_farms = alive
 
+const ANIMAL_SCALE := 1.0
+
+func spawn_animal(p: Vector2):
+	if animal_textures.is_empty():
+		return null
+	var ent = ANIMAL_FAB.instantiate()
+	ent.type = Game.EntityType.ANIMAL
+	ent.pos = p
+	add_child(ent)
+	ent.apply_scale(ANIMAL_SCALE)
+	var tex: Texture2D = animal_textures.pick_random()
+	ent.apply_scale(tex.get_width() / float(pixel_size))
+	ent.set_animal_tex(tex, randf() < 0.5)
+	ent.name = "Animal"
+	_layer(ent, "animals")
+	return ent
+
+func wildlife(attempts := 7) -> void:
+	if animal_textures.is_empty() or MapData.height_img == null or MapData.val_img == null:
+		return
+	for _i in attempts:
+		_spawn_group()
+
+func _spawn_group() -> void:
+	var spot := _find_pasture()
+	if spot == Vector2.INF:
+		return
+	for _n in rng.randi_range(1, 3):
+		var at := spot + Vector2.from_angle(randf() * TAU) * randf_range(0.0, 8.0)
+		if _pasture_ok(at):
+			spawn_animal(at)
+
+func _wildlife_day() -> void:
+	if animal_textures.is_empty() or MapData.height_img == null or MapData.val_img == null:
+		return
+	wildlife_capacity = _wildlife_target()
+	if Game.animals >= wildlife_capacity:
+		return
+	var chance := 0.9 if Game.animals == 0 else 0.3
+	if randf() <= chance:
+		_spawn_group()
+
+func _wildlife_target() -> int:
+	var hits := 0
+	const SAMPLES := 240
+	for _i in SAMPLES:
+		if _pasture_ok(Vector2(randf() * MapData.RESOLUTION, randf() * MapData.RESOLUTION)):
+			hits += 1
+	if hits == 0:
+		return 0
+	return clampi(int((float(hits) / SAMPLES) * 120.0), 2, 40)
+
+const SETTLER_DELAY := 1
+const SETTLER_PARTY := Vector2i(2, 3)
+const SETTLER_RATIONS := 8.0
+
+var _empty_days := 0
+
+func _settlers_day() -> void:
+	if Game.population > 0:
+		_empty_days = 0
+		return
+	if MapData.height_img == null or MapData.val_img == null:
+		return
+	_empty_days += 1
+	if _empty_days < SETTLER_DELAY:
+		return
+	var spot := _find_landing()
+	if spot == Vector2.INF:
+		return
+	_empty_days = 0
+	for _n in rng.randi_range(SETTLER_PARTY.x, SETTLER_PARTY.y):
+		var at := spot + Vector2.from_angle(randf() * TAU) * randf_range(0.0, 6.0)
+		if _habitable(at):
+			var f = spawn_little_guy(int(at.x), int(at.y))
+			if f:
+				f.carried_food = SETTLER_RATIONS
+	Hud.push_notification("settlers have landed on the island")
+
+func _find_landing() -> Vector2:
+	var spot := _find_pasture()
+	if spot != Vector2.INF:
+		return spot
+	for _try in 60:
+		var p := Vector2(randf() * MapData.RESOLUTION, randf() * MapData.RESOLUTION)
+		if _habitable(p):
+			return p
+	return Vector2.INF
+
+func _habitable(p: Vector2) -> bool:
+	if p.x < 2.0 or p.y < 2.0 or p.x > MapData.RESOLUTION - 3 or p.y > MapData.RESOLUTION - 3:
+		return false
+	var h: float = MapData.height_img.get_pixelv(p.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))).r
+	return h > MapData.NAV_WATER_LEVEL and h < MapData.NAV_MOUNTAIN_LEVEL
+
+
+func _find_pasture() -> Vector2:
+	for _try in 40:
+		var p := Vector2(randf() * MapData.RESOLUTION, randf() * MapData.RESOLUTION)
+		if _pasture_ok(p):
+			return p
+	return Vector2.INF
+
+func _pasture_ok(p: Vector2) -> bool:
+	if p.x < 2.0 or p.y < 2.0 or p.x > MapData.RESOLUTION - 3 or p.y > MapData.RESOLUTION - 3:
+		return false
+	var q := p.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))
+	var h: float = MapData.height_img.get_pixelv(q).r
+	if h <= MapData.NAV_WATER_LEVEL or h >= MapData.NAV_MOUNTAIN_LEVEL:
+		return false
+	var c: Color = MapData.val_img.get_pixelv(q)
+	var d := Vector3(c.r - MapData.GRASS_KEY.r, c.g - MapData.GRASS_KEY.g, c.b - MapData.GRASS_KEY.b)
+	return d.length_squared() < 0.08
+
 
 func spawn_little_guy(x: int, y: int, birth_home: Entity = null) -> Folk:
 	var ent = FOLK_FAB.instantiate() as Entity
@@ -479,7 +600,7 @@ const _NAME_OF := {
 func capture_world() -> Dictionary:
 	var node_id := {}
 	var order := []
-	for g in ["folk", "homes", "farms", "trees", "rocks", "wells", "farm_buildings"]:
+	for g in ["folk", "homes", "farms", "trees", "rocks", "wells", "farm_buildings", "animals"]:
 		for e in get_tree().get_nodes_in_group(g):
 			if not node_id.has(e):
 				node_id[e] = order.size()
@@ -512,6 +633,8 @@ func restore_world(data: Dictionary) -> void:
 		if rec.get("kind", "") == "folk":
 			node = _restore_folk(rec)
 			folk_links.append([node, rec.get("home", -1)])
+		elif rec.get("kind", "") == "animal":
+			node = _restore_animal(rec)
 		else:
 			node = _restore_prop(rec)
 		if node:
@@ -563,6 +686,16 @@ func _restore_prop(rec: Dictionary):
 	_layer(ent, _GROUP_OF.get(ent.type, ""))
 	if ent.type == Game.EntityType.FARM:
 		_farms.append(ent)
+	return ent
+
+func _restore_animal(rec: Dictionary):
+	var ent = spawn_animal(Vector2(rec.get("px", 0.0), rec.get("py", 0.0)))
+	if ent == null:
+		return null
+	ent.load_state(rec)
+	var tex = load(rec.get("tex", ""))
+	if tex:
+		ent.set_animal_tex(tex, rec.get("flip", false))
 	return ent
 
 

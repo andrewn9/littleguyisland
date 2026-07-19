@@ -39,6 +39,21 @@ var _add_mat := BlitMaterial.new()
 var min_stroke = null
 var max_stroke = null
 
+func _enter_tree() -> void:
+	MapData.reset_layers()
+
+	var rect := Rect2i(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
+	var h_tex := _initial_map(Game.new_world_height_img, Heightmap)
+	if h_tex:
+		MapData.height.blit_rect(rect, h_tex)
+	var v_tex := _initial_map(Game.new_world_value_img, Valuemap)
+	if v_tex:
+		MapData.val.blit_rect(rect, v_tex)
+	Game.new_world_height_img = null
+	Game.new_world_value_img = null
+	MapData.update()
+	MapData.mark_dirty()
+
 
 func _ready() -> void:
 	var quad = QuadMesh.new()
@@ -68,15 +83,6 @@ func _ready() -> void:
 		ui.texture = tex
 		%Debug.add_child(ui)
 
-	var rect := Rect2i(0, 0, MapData.RESOLUTION, MapData.RESOLUTION)
-	var h_tex := _initial_map(Game.new_world_height_img, Heightmap)
-	if h_tex:
-		MapData.height.blit_rect(rect, h_tex)
-	var v_tex := _initial_map(Game.new_world_value_img, Valuemap)
-	if v_tex:
-		MapData.val.blit_rect(rect, v_tex)
-	Game.new_world_height_img = null
-	Game.new_world_value_img = null
 	Game.model = self
 
 

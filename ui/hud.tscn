@@ -347,7 +347,7 @@ anchor_bottom = 0.998
 offset_top = -131.0
 offset_bottom = 0.036376953
 pivot_offset_ratio = Vector2(1, 1)
-tooltip_text = "suzzie"
+tooltip_text = "suzanne"
 texture = ExtResource("5_c3smh")
 expand_mode = 3
 stretch_mode = 5
@@ -1276,7 +1276,7 @@ text = "status:"
 vertical_alignment = 1
 autowrap_mode = 1
 
-[node name="WantLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1979162048]
+[node name="LikesLabel" type="Label" parent="CanvasLayer/Profile/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1979162048]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -1284,7 +1284,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0.8346143, 0.8346143, 0.8346143, 1)
 theme_override_font_sizes/font_size = 13
-text = "wants: "
+text = "likes:"
 vertical_alignment = 1
 
 [node name="VSeparator" type="HSeparator" parent="CanvasLayer/Profile/VBoxContainer" unique_id=1239742557]
@@ -1305,6 +1305,25 @@ text = "happiness"
 vertical_alignment = 1
 
 [node name="HappinessProgressBar" type="ProgressBar" parent="CanvasLayer/Profile/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=734158698]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(121.125, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 19
+value = 33.22
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Profile/VBoxContainer/VBoxContainer2" unique_id=766204004]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Profile/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=2085638609]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 14
+text = "food"
+vertical_alignment = 1
+
+[node name="FoodProgress" type="ProgressBar" parent="CanvasLayer/Profile/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=923287310]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(121.125, 0)
 layout_mode = 2

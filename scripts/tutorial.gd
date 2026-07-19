@@ -36,7 +36,7 @@ func _finish() -> void:
 
 func _run() -> void:
 	await _pause(0.8)
-	if not await _say("welcome !! I'm your new personal assistant, suzzie. I'll be giving you helpful tips and tricks! "):
+	if not await _say("welcome !! I'm your new personal assistant, suuzane. I'll be giving you helpful tips and tricks! "):
 		return
 
 	var cam0 := _cam_xform()
@@ -109,14 +109,20 @@ func _milestones() -> Array:
 		{"key": "hungry", "cond": func(): return Game.population > 0 and Game.food < Game.population * 1.0,
 		 "line": "food is running low! build more grassy areas near water. hungry folk get unhappy fast."},
 
+		{"key": "starving", "cond": func(): return Game.starving > 0,
+		 "line": "someone's gone hungry. folk carry their own food and share with whoever is close by, so a village far from the farms can starve while another eats fine. they hold out a few days, then they start dying."},
+
 		{"key": "no_wood", "cond": func(): return Game.build_fail_streak > 6 and Game.total_wood < 4,
 		 "line": "the folk are trying to build, but there's not enough wood. make sure there are trees available for them to chop."},
 
 		{"key": "unhappy", "cond": func(): return Game.population >= 4 and Game.avg_happiness < 0.35,
 		 "line": "morale is sinking. check the overview flags, usually it's food or housing. a happy island is a growing island."},
 
-		{"key": "animals", "cond": func(): return Game.animals >= 1,
-		 "line": "wildlife has moved in. animals are another food source, and a sign your island is healthy."},
+		{"key": "animals", "cond": func(): return Game.animals >= 1 and Game.population > 0 and Game.hungry(),
+		 "line": "your folk are hungry, and there are animals about. they'll hunt when the crops fall short, though animals may run away"},
+
+		{"key": "extinction", "cond": func(): return Game.population <= 0,
+		 "line": "all your folk have perished. a new batch of settlers will arrive in a few days to start over."}
 	]
 
 const TIPS := [
@@ -131,7 +137,11 @@ const TIPS := [
 	"tip: the DIG tool lowers land. dig deep enough near the sea and you'll flood it.",
 	"tip: overview flags are your early warning. !hungry and !homeless both mean it's time to reshape something.",
 	"tip: settings has graphics, outlines, CRT and volume, if you want to change the vibe.",
-	"tip: an island doesn't have to be one blob. multiple islands work fine, folk like to spread out."
+	"tip: an island doesn't have to be one blob. multiple islands work fine, folk like to spread out.",
+	"tip: animals graze on grassland, more grass attracts more animals. keep some grass and they'll keep coming.",
+	"tip: hungry folk hunt. animals run away when folk get close.",
+	"tip: even if every folk dies out, new settlers will land in a few days.",
+	"boy"
 ]
 
 const AMBIENT_FIRST := 45.0

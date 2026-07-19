@@ -121,6 +121,7 @@ func _ready() -> void:
 const LAYERS := {
 	"island": "terrain geometry",
 	"nature": "trees, rocks, grass, bushes and clouds",
+	"animals": "the wildlife",
 	"buildings": "homes, farms, farmsteads and wells",
 	"folk": "the little guys",
 }
@@ -347,7 +348,7 @@ func _update_island_stats() -> void:
 	wood_value.text = str(Game.total_wood)
 	food_value.text = str(roundi(Game.food))
 	stone_value.text = str(roundi(Game.rock))
-	animal_value.text = str(Game.animals)  # placeholder until livestock exist
+	animal_value.text = str(Game.animals)
 
 	var starving := Game.food <= 0.0 and Game.population > 0
 	flag_starving.visible = starving
@@ -363,6 +364,7 @@ func _update_island_stats() -> void:
 func _on_quit_pressed() -> void:
 	Game.autosave()
 	Game.skip_boot = true
+	monkey_clear()
 	get_tree().change_scene_to_file("res://menu.tscn")
 
 
@@ -370,6 +372,7 @@ func _on_quit_pressed() -> void:
 @onready var homeless_label: Label = %HomelessLabel
 @onready var status_label: Label = %StatusLabel
 @onready var happiness_bar: ProgressBar = %HappinessProgressBar
+@onready var food_bar: ProgressBar = %FoodProgress
 @onready var profile: Control = %Profile
 @onready var age_label: Label = %AgeLabel
 var focused_folk: Folk
@@ -555,7 +558,7 @@ func _play_talk_sfx() -> void:
 
 
 func _on_talk_sound_finished() -> void:
-	if _flap_left > 0.0:
+	if _flap_left > 0.0 and is_instance_valid(Game.model):
 		_play_talk_sfx()
 
 var _speech_left := 0.0
@@ -564,7 +567,7 @@ var _flap_left := 0.0
 func _flap_time(text: String) -> float:
 	return clampf(0.6 + text.split(" ").size() * 0.18, 0.8, 5.0)
 
-func monkey_say(text: String, seconds := 4.0) -> void:
+func monkey_say(text: String, seconds := 8.0) -> void:
 	bubble_label.text = text
 	_fit_bubble()
 	bubble.visible = true
@@ -611,11 +614,6 @@ func _tick_speech(delta: float) -> void:
 		bubble.visible = false
 		monkey_anim.play("idle")
 
-func _on_monkey_anim_done(_anim: StringName) -> void:
-	# flap only for the spoken duration, then rest — even if the bubble stays up
-	monkey_anim.play(TALKS.pick_random() if _flap_left > 0.0 else "idle")
-
-
 func _on_reflections_button_toggled(toggled_on: bool):
 	World.reflections = toggled_on
 	_save_settings()
@@ -652,3 +650,6 @@ func _on_hide_button_pressed():
 func _unhandled_input(event):
 	if hide_ui_setting and event is InputEventMouseButton and event.button_mask & MOUSE_BUTTON_MASK_LEFT and event.pressed:
 		hide_ui_setting = false
+
+func _on_monkey_anim_done(_anim: StringName) -> void:
+	monkey_anim.play(TALKS.pick_random() if _flap_left > 0.0 else "idle")
