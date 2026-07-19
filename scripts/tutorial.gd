@@ -122,7 +122,7 @@ func _milestones() -> Array:
 		 "line": "your folk are hungry, and there are animals about. they'll hunt when the crops fall short, though animals may run away"},
 
 		{"key": "extinction", "cond": func(): return Game.population <= 0,
-		 "line": "all your folk have perished. a new batch of settlers will arrive in a few days to start over."}
+		 "line": "all your folk have perished. if there's open land, a new batch of settlers will arrive in a few days to start over."}
 	]
 
 const TIPS := [

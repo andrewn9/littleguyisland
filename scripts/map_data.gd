@@ -13,6 +13,16 @@ var val_img: Image
 var GRASS_KEY: Color = Color.from_rgba8(85, 130, 0, 255)
 var MOUNTAIN_KEY: Color = Color.GRAY
 
+const GRASS_TOLERANCE := 0.16
+
+
+func is_grass(p: Vector2) -> bool:
+	if val_img == null:
+		return false
+	var c: Color = val_img.get_pixelv(p.round().clamp(Vector2.ZERO, Vector2.ONE * (RESOLUTION - 1)))
+	var d := Vector3(c.r - GRASS_KEY.r, c.g - GRASS_KEY.g, c.b - GRASS_KEY.b)
+	return d.length_squared() < GRASS_TOLERANCE
+
 const NAV_WATER_LEVEL := 0.05
 const NAV_MOUNTAIN_LEVEL := 0.50
 

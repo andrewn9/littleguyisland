@@ -21,27 +21,28 @@ var _value_img: Image = null
 var _slot_buttons := {}
 
 func _ready() -> void:
-	var cfg := ConfigFile.new()
-	if cfg.load(Hud.SETTINGS_PATH) != OK:
-		return
+	_wire_dialogs()
+	_setup_saves()
+	_setup_readme()
 
-	if !cfg.get_value("game", "first_game", false):
-		var popup = %GraphicsInitial as ConfirmationDialog
-		popup.popup_centered()
-		var use_low := [false]
-		popup.confirmed.connect(func(): use_low[0] = true, CONNECT_ONE_SHOT)
-		await popup.visibility_changed
-		Hud.gfx_button.button_pressed = use_low[0]
-		Hud.first_play = true
-		Hud._save_settings()
 	$boot3.play()
 	$AnimationPlayer.play("boot")
 	if Game.skip_boot:
 		Game.skip_boot = false
 		$AnimationPlayer.seek($AnimationPlayer.get_animation("boot").length, true)
-	_wire_dialogs()
-	_setup_saves()
-	_setup_readme()
+
+	if not Hud.first_play:
+		await _ask_graphics()
+
+func _ask_graphics() -> void:
+	var popup := %GraphicsInitial as ConfirmationDialog
+	var use_low := [false]
+	popup.confirmed.connect(func(): use_low[0] = true, CONNECT_ONE_SHOT)
+	popup.popup_centered()
+	await popup.visibility_changed
+	Hud.gfx_button.button_pressed = use_low[0]
+	Hud.first_play = true
+	Hud._save_settings()
 
 func _wire_dialogs() -> void:
 	%CreateWorld.pressed.connect(_on_create_world)

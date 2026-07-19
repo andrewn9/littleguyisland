@@ -70,7 +70,7 @@ func serialize() -> Dictionary:
 
 
 func apply_scale(x):
-	$Pivot.scale *= x
+	$Pivot.scale *= x	
 
 
 func set_prop_tex(tex):

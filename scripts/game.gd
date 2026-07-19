@@ -58,8 +58,8 @@ var homeless := 0
 var starving := 0  # folk currently with an empty belly
 var build_fail_streak := 0
 
-var food_per_person := 8.0  # stockpile buffer target per folk
-var food_consumption := 0.012  # eaten per folk per second
+var food_per_person := 4.0  # stockpile buffer target per folk
+var food_consumption := 0.010  # eaten per folk per second
 var crop_yield := 5.0
 
 var housing_slack := 4  # extra home multiplier to prepare

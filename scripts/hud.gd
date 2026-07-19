@@ -68,6 +68,8 @@ func _load_settings() -> void:
 	crt_button.set_pressed_no_signal(cfg.get_value("settings", "crt", crt_button.button_pressed))
 	World.crt = crt_button.button_pressed
 
+	first_play = cfg.get_value("game", "first_game", false)
+
 
 func _save_settings() -> void:
 	var cfg := ConfigFile.new()
@@ -322,6 +324,8 @@ func _process(delta: float) -> void:
 	_update_island_stats()
 	_refresh_hover_cursor()
 	_tick_speech(delta)
+	if profile.visible and not is_instance_valid(focused_folk):
+		hide_profile()
 
 	day_count_label.text = str(Game.day)
 	var hr = fmod(Game.day_fraction * 24, 12)
@@ -330,8 +334,9 @@ func _process(delta: float) -> void:
 	day_time_label.text = "%02d:%02d " % [hr, fmod(Game.day_fraction * 24 * 60, 60)]
 	day_time_label.text += "AM" if Game.day_fraction < 0.5 else "PM"
 
-	if focus_cam:
-		if is_instance_valid(focused_folk):
+
+	if _in_pov:
+		if is_instance_valid(focused_folk) and is_instance_valid(focus_cam):
 			var heading := _folk_heading(focused_folk)
 			_pov_dir = _pov_dir.slerp(heading, 1.0 - pow(0.002, delta))
 			_place_pov_cam()
@@ -448,16 +453,18 @@ func hide_profile():
 
 var focus_cam: Camera3D = null
 var _prev_cam: Camera3D = null
+var _in_pov := false
 var _pov_dir := Vector3.FORWARD
 
 const POV_EYE_HEIGHT := 9.0
 
 
 func _on_pov_button_pressed():
-	if not focus_cam:
-		if not focused_folk:
+	if not _in_pov:
+		if not is_instance_valid(focused_folk):
 			return
 
+		_in_pov = true
 		tracking_folk = false
 
 		_prev_cam = get_viewport().get_camera_3d()
@@ -474,8 +481,10 @@ func _on_pov_button_pressed():
 
 
 func _exit_pov():
-	focused_folk.visible = true
-	
+	_in_pov = false
+	if is_instance_valid(focused_folk):
+		focused_folk.visible = true
+
 	if is_instance_valid(focus_cam):
 		focus_cam.queue_free()
 	focus_cam = null
@@ -498,7 +507,7 @@ func _place_pov_cam() -> void:
 
 func _on_deallocate_button_pressed():
 	if focused_folk:
-		push_notification(focused_folk.name + " was deallocated")
+		push_alert(focused_folk.name + " was deallocated")
 		focused_folk.queue_free()
 		hide_profile()
 
@@ -506,16 +515,25 @@ func _on_deallocate_button_pressed():
 func _on_track_button_pressed():
 	if focused_folk:
 		tracking_folk = not tracking_folk
-		if tracking_folk and focus_cam:
+		if tracking_folk and _in_pov:
 			_exit_pov()
 
 func _on_gfx_button_toggled(toggled_on: bool):
 	World.low_gfx = toggled_on
 	_save_settings()
 
-func push_notification(msg: String):
+const ALERT_COLOR := Color("#ff4d4d")
+
+
+func push_alert(msg: String):
+	push_notification(msg, ALERT_COLOR)
+
+
+func push_notification(msg: String, color := Color.WHITE):
 	var label = NOTIFICATION.instantiate()
 
+	if color != Color.WHITE:
+		msg = "[color=#%s]%s[/color]" % [color.to_html(false), msg]
 	label.text = msg
 	notifications.add_child(label)
 	notifications.move_child(label, 0)

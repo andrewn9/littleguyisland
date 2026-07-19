@@ -157,6 +157,9 @@ var carried_rock := 0
 var carried_food := 6.0
 var starving_days := 0
 
+const LIFESPAN_RANGE := Vector2i(25, 50)
+var lifespan := randi_range(LIFESPAN_RANGE.x, LIFESPAN_RANGE.y)
+
 var _grown := true
 var _night_owl := false  # staying out to work this particular night?
 var _night_id := -1  # which night that decision was made for
@@ -205,6 +208,9 @@ func _exit_tree():
 
 func _on_new_day():
 	age += 1
+	if age >= lifespan:
+		_die("died of old age")
+		return
 	_apply_growth()
 	if not _grown and age >= adulthood_age:
 		_grown = true
@@ -263,9 +269,14 @@ func _tick_starvation() -> void:
 
 
 func _starve() -> void:
+	_die("starved")
+
+
+func _die(cause: String) -> void:
 	if is_instance_valid(home):
 		home.residents.erase(self)
-	Hud.push_notification("%s starved" % name)
+	_release_claim()
+	Hud.push_alert("%s %s" % [name, cause])
 	queue_free()
 
 
@@ -358,6 +369,7 @@ func serialize() -> Dictionary:
 		py = pos.y,
 		fname = String(name),
 		age = age,
+		lifespan = lifespan,
 		happiness = happiness,
 		adventurousness = adventurousness,
 		carried_wood = carried_wood,
@@ -381,6 +393,7 @@ func serialize() -> Dictionary:
 
 func load_state(d: Dictionary) -> void:
 	age = d.get("age", 0)
+	lifespan = d.get("lifespan", randi_range(LIFESPAN_RANGE.x, LIFESPAN_RANGE.y))
 	happiness = d.get("happiness", 0.6)
 	adventurousness = d.get("adventurousness", 0.5)
 	carried_wood = d.get("carried_wood", 0)

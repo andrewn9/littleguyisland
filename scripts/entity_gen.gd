@@ -436,30 +436,44 @@ func spawn_animal(p: Vector2):
 	_layer(ent, "animals")
 	return ent
 
-func wildlife(attempts := 7) -> void:
+func wildlife(attempts := 20) -> void:
 	if animal_textures.is_empty() or MapData.height_img == null or MapData.val_img == null:
 		return
 	for _i in attempts:
 		_spawn_group()
 
-func _spawn_group() -> void:
+func _spawn_group() -> int:
 	var spot := _find_pasture()
 	if spot == Vector2.INF:
-		return
-	for _n in rng.randi_range(1, 3):
+		return 0
+	var n := 0
+	for _i in rng.randi_range(3, 6):
 		var at := spot + Vector2.from_angle(randf() * TAU) * randf_range(0.0, 8.0)
-		if _pasture_ok(at):
-			spawn_animal(at)
+		if _pasture_ok(at) and spawn_animal(at) != null:
+			n += 1
+	return n
+
+const MIGRATION_CATCHUP := 0.5
+const WILDLIFE_PER_FOLK := 1.5
+const WILDLIFE_FLOOR := 10
+
 
 func _wildlife_day() -> void:
 	if animal_textures.is_empty() or MapData.height_img == null or MapData.val_img == null:
 		return
 	wildlife_capacity = _wildlife_target()
-	if Game.animals >= wildlife_capacity:
+	var deficit := wildlife_capacity - Game.animals
+	if deficit <= 0:
 		return
-	var chance := 0.9 if Game.animals == 0 else 0.3
-	if randf() <= chance:
-		_spawn_group()
+	var want := maxi(1, int(ceil(deficit * MIGRATION_CATCHUP)))
+	var added := 0
+	var tries := 0
+	while added < want and tries < 20:
+		tries += 1
+		var n := _spawn_group()
+		if n == 0:
+			break  # nowhere to land them right now
+		added += n
 
 func _wildlife_target() -> int:
 	var hits := 0
@@ -469,7 +483,10 @@ func _wildlife_target() -> int:
 			hits += 1
 	if hits == 0:
 		return 0
-	return clampi(int((float(hits) / SAMPLES) * 120.0), 2, 40)
+	var land_cap := clampi(int((float(hits) / SAMPLES) * 300.0), 8, 130)
+	
+	var folk_cap := maxi(WILDLIFE_FLOOR, int(round(Game.population * WILDLIFE_PER_FOLK)))
+	return mini(land_cap, folk_cap)
 
 const SETTLER_DELAY := 1
 const SETTLER_PARTY := Vector2i(2, 3)
@@ -529,9 +546,7 @@ func _pasture_ok(p: Vector2) -> bool:
 	var h: float = MapData.height_img.get_pixelv(q).r
 	if h <= MapData.NAV_WATER_LEVEL or h >= MapData.NAV_MOUNTAIN_LEVEL:
 		return false
-	var c: Color = MapData.val_img.get_pixelv(q)
-	var d := Vector3(c.r - MapData.GRASS_KEY.r, c.g - MapData.GRASS_KEY.g, c.b - MapData.GRASS_KEY.b)
-	return d.length_squared() < 0.08
+	return MapData.is_grass(p)
 
 
 func spawn_little_guy(x: int, y: int, birth_home: Entity = null):

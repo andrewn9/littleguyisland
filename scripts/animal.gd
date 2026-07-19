@@ -7,11 +7,11 @@ const GRAZE_TIME := Vector2(3.0, 7.0)
 const MEAT := 12.0 # food yield
 
 const BREED_COOLDOWN := 3
-const BREED_CHANCE := 0.35
+const BREED_CHANCE := 0.5
 const CROWD_RADIUS := 40.0
-const CROWD_LIMIT := 7
+const CROWD_LIMIT := 22
 const ADULT_AGE := 2
-const MAX_AGE := 26
+const MAX_AGE := 45
 
 var _graze_left := 0.0
 var _wander_angle := randf() * TAU
@@ -36,7 +36,12 @@ func _physics_process(delta: float) -> void:
 	if dt <= 0.0:
 		return
 	if not _walkable(pos):
-		queue_free()
+		var land = MapData._nearest_land(Vector2i(pos.round()))
+		if land == null:
+			queue_free()
+			return
+		pos = Vector2(land)
+		_graze()
 		return
 
 	_threat_timer -= delta
@@ -70,7 +75,7 @@ func _walk_somewhere() -> void:
 	for _try in 6:
 		var angle := _wander_angle + randf_range(-1.1, 1.1)
 		var candidate := pos + Vector2.from_angle(angle) * randf_range(4.0, 12.0)
-		if not _walkable(candidate):
+		if not _reachable(candidate):
 			continue
 		var score := (6.0 if _grassy(candidate) else 0.0)
 		score -= absf(_height_at(candidate) - _height_at(pos)) * 8.0
@@ -90,9 +95,12 @@ func _flee_from(threat: Vector2) -> void:
 	var away := (pos - threat).normalized()
 	if away == Vector2.ZERO:
 		away = Vector2.from_angle(randf() * TAU)
-	var dest := pos + away * 14.0
-	if _walkable(dest):
-		target_pos = dest
+	for turn in [0.0, 0.6, -0.6, 1.2, -1.2, 2.0, -2.0]:
+		var dest := pos + away.rotated(turn) * 14.0
+		if _reachable(dest):
+			target_pos = dest
+			return
+	target_pos = pos
 
 func _nearest_folk() -> Vector2:
 	var best := Vector2.INF
@@ -104,6 +112,16 @@ func _nearest_folk() -> Vector2:
 			best = p
 	return best
 
+func _reachable(dest: Vector2) -> bool:
+	if not _walkable(dest):
+		return false
+	var steps := maxi(2, int(pos.distance_to(dest) / 1.5))
+	for i in range(1, steps):
+		if not _walkable(pos.lerp(dest, float(i) / steps)):
+			return false
+	return true
+
+
 func _walkable(p: Vector2) -> bool:
 	if p.x < 1.0 or p.y < 1.0 or p.x > MapData.RESOLUTION - 2 or p.y > MapData.RESOLUTION - 2:
 		return false
@@ -112,9 +130,7 @@ func _walkable(p: Vector2) -> bool:
 
 
 func _grassy(p: Vector2) -> bool:
-	var c: Color = MapData.val_img.get_pixelv(p.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1)))
-	var d := Vector3(c.r - MapData.GRASS_KEY.r, c.g - MapData.GRASS_KEY.g, c.b - MapData.GRASS_KEY.b)
-	return d.length_squared() < 0.08
+	return MapData.is_grass(p)
 
 func _height_at(p: Vector2) -> float:
 	return MapData.height_img.get_pixelv(p.round().clamp(Vector2.ZERO, Vector2.ONE * (MapData.RESOLUTION - 1))).r
