@@ -413,7 +413,7 @@ func _process(_delta: float) -> void:
 	_farms = alive
 
 
-func spawn_little_guy(x: int, y: int, birth_home: Entity = null):
+func spawn_little_guy(x: int, y: int, birth_home: Entity = null) -> Folk:
 	var ent = FOLK_FAB.instantiate() as Entity
 
 	ent.pos = Vector2(x, y)

@@ -29,7 +29,7 @@
 [ext_resource type="Texture2D" uid="uid://b1t612syiu625" path="res://sprites/folk/body/skin1.png" id="23_c3smh"]
 [ext_resource type="Texture2D" uid="uid://d0qbtsipfo1he" path="res://sprites/folk/shirt/shirt1.png" id="24_5jwjf"]
 [ext_resource type="Texture2D" uid="uid://dynh0shhdb3tc" path="res://sprites/folk/hair/hair1.png" id="25_nso1x"]
-[ext_resource type="Script" path="res://scripts/tutorial.gd" id="26_tut"]
+[ext_resource type="Script" uid="uid://h26ek8yldl72" path="res://scripts/tutorial.gd" id="26_tut"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6y3bq"]
 bg_color = Color(0.5082, 0.7089134, 0.77, 0.12156863)
@@ -774,6 +774,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+min_value = -1.0
 max_value = 5.0
 value = 1.0
 scrollable = false
