@@ -233,7 +233,8 @@ func _spawn_starter_folk(count: int) -> void:
 	var c := MapData.RESOLUTION / 2
 	for i in count:
 		var off := Vector2.from_angle(randf() * TAU) * randf_range(0.0, 12.0)
-		gen.spawn_little_guy(int(c + off.x), int(c + off.y))
+		var guy = gen.spawn_little_guy(int(c + off.x), int(c + off.y))
+		guy.age = 3
 
 func _cam_xform() -> Transform3D:
 	var cam := get_viewport().get_camera_3d()
