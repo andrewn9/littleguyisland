@@ -413,11 +413,11 @@ func _on_profile_gui_input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion and _dragging_profile:
 		_place_profile(profile.get_global_mouse_position() - _drag_grab)
 
-
 func _place_profile(p: Vector2) -> void:
 	var vp := get_viewport_rect().size
-	p.x = clampf(p.x, 0.0, maxf(0.0, vp.x - profile.size.x))
-	p.y = clampf(p.y, 0.0, maxf(0.0, vp.y - profile.size.y))
+	var shown := profile.size * profile.scale
+	p.x = clampf(p.x, 0.0, maxf(0.0, vp.x - shown.x))
+	p.y = clampf(p.y, 0.0, maxf(0.0, vp.y - shown.y))
 	profile.global_position = p
 	_profile_pos = p
 

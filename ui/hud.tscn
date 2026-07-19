@@ -1154,8 +1154,8 @@ stretch_mode = 0
 [node name="Profile" type="Panel" parent="CanvasLayer" unique_id=1713301352]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2(185.5, 220.8)
-custom_maximum_size = Vector2(185, 221)
+custom_minimum_size = Vector2(215.975, 257.07)
+custom_maximum_size = Vector2(215, 257)
 propagate_maximum_size = true
 anchors_preset = -1
 anchor_left = 0.5
@@ -1168,6 +1168,7 @@ offset_bottom = -122.274994
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
+scale = Vector2(0.88, 0.88)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Profile" unique_id=1203041896]
 clip_contents = true

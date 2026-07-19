@@ -36,7 +36,7 @@ func _finish() -> void:
 
 func _run() -> void:
 	await _pause(0.8)
-	if not await _say("welcome !! I'm your new personal assistant, suuzane. I'll be giving you helpful tips and tricks! "):
+	if not await _say("welcome !! I'm your new personal assistant, suzanne. I'll be giving you helpful tips and tricks! "):
 		return
 
 	var cam0 := _cam_xform()

@@ -175,7 +175,7 @@ environment = SubResource("Environment_7sc4i")
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=536539044]
 unique_name_in_owner = true
 stream = ExtResource("2_215e1")
-volume_db = -30.0
+volume_db = -10.0
 parameters/looping = true
 script = ExtResource("3_7sc4i")
 
